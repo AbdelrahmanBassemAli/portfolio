@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Abdelrahman Bassem Ali — AI, Robotics & Space Technology Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0d12; --bg2:#10151d; --ink:#e9e6dd; --ink2:#8f99a8;
+    --amber:#d98a4a; --grid:#1c2531; --card:#111823; --line:#223040;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  :root[data-theme="light"]{
+    --bg:#ece6d8; --bg2:#e2dac8; --ink:#1b2a41; --ink2:#5a6578;
+    --amber:#bd6a2b; --grid:#d7cfb8; --card:#f4efe3; --line:#cfc6ab;
+  }
+  html{scroll-padding-top:env(safe-area-inset-top,0px); scroll-behavior:smooth;}
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Archivo',sans-serif; position:relative; overflow-x:hidden;
+    background-image:
+      radial-gradient(circle, var(--grid) 1px, transparent 1.2px),
+      radial-gradient(ellipse 900px 500px at 50% -10%, var(--bg2) 0%, transparent 70%);
+    background-size:28px 28px, 100% 100%;
+    background-repeat:repeat, no-repeat;
+    background-attachment:fixed, scroll;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(circle 420px at 88% 6%, color-mix(in srgb, var(--amber) 9%, transparent), transparent 70%),
+      radial-gradient(circle 600px at -5% 40%, color-mix(in srgb, var(--ink) 5%, transparent), transparent 70%);
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .wrap{max-width:760px; margin:0 auto; padding:0 20px;}
+
+  /* floating pill nav */
+  nav.pill{
+    position:sticky; top:14px; z-index:20; margin:14px auto 0;
+    max-width:760px; display:flex; align-items:center; justify-content:space-between;
+    background:color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter:blur(10px);
+    border:1px solid var(--line); border-radius:999px; padding:8px 8px 8px 14px;
+  }
+  .badge{
+    width:34px; height:34px; border-radius:50%; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:.72rem;
+    font-weight:700; letter-spacing:.02em;
+  }
+  nav.pill details{position:relative;}
+  nav.pill summary{
+    list-style:none; cursor:pointer; width:34px; height:34px; border-radius:50%;
+    border:1px solid var(--line); display:flex; align-items:center; justify-content:center;
+  }
+  nav.pill summary::-webkit-details-marker{display:none;}
+  nav.pill summary span{display:block; width:14px; height:1px; background:var(--ink); position:relative;}
+  nav.pill summary span::before,nav.pill summary span::after{content:""; position:absolute; left:0; width:14px; height:1px; background:var(--ink);}
+  nav.pill summary span::before{top:-4px;} nav.pill summary span::after{top:4px;}
+  nav.pill .menu{
+    position:absolute; right:0; top:44px; background:var(--card); border:1px solid var(--line);
+    border-radius:12px; padding:8px; display:flex; flex-direction:column; min-width:160px;
+  }
+  nav.pill .menu a{color:var(--ink2); text-decoration:none; font-size:.86rem; padding:7px 10px; border-radius:7px;}
+  nav.pill .menu a:hover{background:var(--grid); color:var(--ink);}
+
+  header.hero{padding:40px 0 10px; position:relative;}
+  .status-pill{
+    display:inline-flex; align-items:center; gap:8px; padding:7px 14px;
+    border:1px solid var(--line); border-radius:999px; font-size:.78rem; color:var(--ink2);
+    background:var(--card); margin-bottom:26px;
+  }
+  .dot{width:7px; height:7px; border-radius:50%; background:#5fae6e; animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  @media (prefers-reduced-motion: reduce){.dot{animation:none;}}
+
+  /* satellite illustration */
+  .sat-scene{position:relative; height:190px; margin:0 0 30px;}
+  .sat-ring{
+    position:absolute; left:50%; top:52%; width:260px; height:260px; transform:translate(-50%,-50%) rotate(-8deg);
+    border:1px solid var(--line); border-radius:50%;
+  }
+  .sat-ring.small{width:150px; height:150px; border-style:dashed;}
+  .sat-body{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:64px; height:44px; background:var(--card); border:1px solid var(--line); border-radius:5px;
+  }
+  .sat-body::before,.sat-body::after{
+    content:""; position:absolute; top:50%; width:46px; height:26px; transform:translateY(-50%);
+    background:linear-gradient(180deg,var(--amber),transparent); border:1px solid var(--line); opacity:.55;
+  }
+  .sat-body::before{right:100%; margin-right:6px;}
+  .sat-body::after{left:100%; margin-left:6px;}
+  .sat-dot{position:absolute; width:6px; height:6px; border-radius:50%; background:var(--amber);}
+  .sat-dot.d1{left:18%; top:30%;} .sat-dot.d2{left:80%; top:70%;} .sat-dot.d3{left:62%; top:14%; background:var(--ink2);}
+
+  .bot{
+    position:absolute; left:16%; top:8%; width:30px; height:26px;
+    border:1px solid var(--line); border-radius:4px; background:var(--card);
+  }
+  .bot::before{content:""; position:absolute; left:50%; top:-8px; width:1px; height:8px; background:var(--line); transform:translateX(-50%);}
+  .bot::after{content:""; position:absolute; left:50%; top:-11px; width:4px; height:4px; border-radius:50%; background:var(--amber); transform:translateX(-50%);}
+  .bot .eye{position:absolute; top:7px; width:5px; height:5px; border-radius:50%; background:var(--amber);}
+  .bot .eye.l{left:5px;} .bot .eye.r{right:5px;}
+
+  .ai-net{position:absolute; right:10%; bottom:4%; width:70px; height:46px;}
+  .ai-net span{position:absolute; width:5px; height:5px; border-radius:50%; background:var(--ink2);}
+  .ai-net span.c{background:var(--amber);}
+  .ai-net span.n1{left:0; top:4px;} .ai-net span.n2{left:0; top:34px;}
+  .ai-net span.n3{left:32px; top:19px;} .ai-net span.n4{right:0; top:0;} .ai-net span.n5{right:0; top:38px;}
+  .ai-net svg{position:absolute; inset:0; overflow:visible;}
+
+  h1{
+    font-size:clamp(2.1rem,8vw,3rem); line-height:1.03; margin:0 0 8px;
+    font-weight:800; letter-spacing:-.01em;
+  }
+  .role{color:var(--amber); font-weight:600; font-size:1.08rem; margin-bottom:18px; display:block;}
+  .objective{max-width:58ch; line-height:1.6; color:var(--ink2); font-size:.98rem; margin-bottom:26px;}
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px;}
+  .btn{
+    font-family:inherit; font-size:.9rem; font-weight:600; padding:13px 22px;
+    border-radius:999px; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn.solid{background:var(--amber); color:#14110c; border:1px solid var(--amber);}
+  .btn.outline{border:1px solid var(--line); color:var(--ink);}
+  .contact-row{display:flex; gap:16px; flex-wrap:wrap; margin-top:20px; font-size:.8rem;}
+  .contact-row a{color:var(--ink2); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:2px;}
+
+  /* scroll-reveal statement */
+  .statement{padding:70px 0; text-align:left;}
+  .statement p{
+    font-size:clamp(1.5rem,6vw,2.1rem); font-weight:700; line-height:1.25; margin:0;
+    color:var(--ink2);
+  }
+  .statement .reveal{opacity:.18; transition:opacity .6s ease;}
+  .statement .reveal.on{opacity:1; color:var(--ink);}
+
+  .focus-grid{display:grid; grid-template-columns:1fr; gap:14px; margin-top:4px;}
+  @media(min-width:640px){.focus-grid{grid-template-columns:1fr 1fr 1fr;}}
+  .focus{border:1px solid var(--line); border-radius:10px; padding:18px; background:var(--card);}
+  .focus .mark{width:30px; height:30px; margin-bottom:14px; position:relative;}
+  .focus .mark.space{border:1px solid var(--amber); border-radius:50%;}
+  .focus .mark.space::after{content:""; position:absolute; left:-6px; top:50%; width:42px; height:1px; background:var(--amber); transform:translateY(-50%) rotate(-20deg);}
+  .focus .mark.robot{border:1px solid var(--amber); border-radius:5px;}
+  .focus .mark.robot::before,.focus .mark.robot::after{content:""; position:absolute; top:7px; width:5px; height:5px; border-radius:50%; background:var(--amber);}
+  .focus .mark.robot::before{left:6px;} .focus .mark.robot::after{right:6px;}
+  .focus .mark.ai{border:1px solid var(--amber); border-radius:50%;}
+  .focus .mark.ai::before{content:""; position:absolute; left:50%; top:50%; width:4px; height:4px; background:var(--amber); border-radius:50%; transform:translate(-50%,-50%);}
+  .focus .mark.ai::after{content:""; position:absolute; left:4px; top:4px; right:4px; bottom:4px; border:1px dashed var(--amber); border-radius:50%;}
+  .focus h3{margin:0 0 6px; font-size:.98rem;}
+  .focus p{margin:0; font-size:.85rem; color:var(--ink2); line-height:1.5;}
+
+  section{padding:36px 0; border-top:1px solid var(--line);}
+  .sec-head{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+  .sec-head .idx{color:var(--ink2); font-size:.78rem; letter-spacing:.04em;}
+  .sec-head .rule{flex:0 0 34px; height:1px; background:var(--amber);}
+  .sec-head .label{color:var(--amber); font-size:.78rem; letter-spacing:.08em; font-weight:600; text-transform:uppercase;}
+  .sec-title{font-size:1.3rem; font-weight:700; margin:0 0 22px;}
+
+  .entry{display:grid; grid-template-columns:40px 1fr; gap:14px; margin-bottom:26px;}
+  .entry .n{color:var(--amber); font-weight:700; font-size:.9rem;}
+  .entry .meta{font-size:.78rem; color:var(--ink2); margin-bottom:4px;}
+  .entry h3{margin:0 0 4px; font-size:1.02rem;}
+  .entry ul{margin:8px 0 0; padding-left:18px; font-size:.92rem; color:var(--ink2); line-height:1.55;}
+
+  .grid-projects{display:grid; grid-template-columns:1fr; gap:14px;}
+  @media(min-width:560px){.grid-projects{grid-template-columns:1fr 1fr;}}
+  .card{background:var(--card); border:1px solid var(--line); padding:16px; border-radius:10px;}
+  .card .code{font-size:.7rem; color:var(--amber);}
+  .card h3{margin:6px 0 6px; font-size:.98rem;}
+  .card p{margin:0; font-size:.86rem; color:var(--ink2); line-height:1.5;}
+
+  .tagblock{margin-bottom:18px;}
+  .tagblock .label2{font-size:.78rem; color:var(--amber); margin-bottom:8px;}
+  .tags{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{font-size:.8rem; padding:5px 10px; border:1px solid var(--line); color:var(--ink2); border-radius:999px;}
+
+  .train-list{columns:1; font-size:.88rem; line-height:1.9; color:var(--ink2);}
+  @media(min-width:560px){.train-list{columns:2; column-gap:28px;}}
+
+  #contact{text-align:center; padding:60px 0;}
+  #contact h2{font-size:1.8rem; margin:0 0 14px;}
+  #contact p{color:var(--ink2); margin:0 0 26px;}
+
+  footer{padding:26px 0 48px; font-size:.78rem; color:var(--ink2); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  footer a{color:var(--ink2); text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav class="pill wrap">
+  <span class="badge mono">AB</span>
+  <details>
+    <summary><span></span></summary>
+    <div class="menu">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#training">Training</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </details>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="sat-scene">
+      <div class="sat-ring"></div>
+      <div class="sat-ring small"></div>
+      <div class="sat-body"></div>
+      <span class="sat-dot d1"></span><span class="sat-dot d2"></span><span class="sat-dot d3"></span>
+      <div class="bot"><span class="eye l"></span><span class="eye r"></span></div>
+      <div class="ai-net">
+        <svg viewBox="0 0 70 46"><g stroke="var(--line)" stroke-width="1">
+          <line x1="2" y1="6" x2="34" y2="21"/><line x1="2" y1="36" x2="34" y2="21"/>
+          <line x1="34" y1="21" x2="68" y2="2"/><line x1="34" y1="21" x2="68" y2="40"/>
+        </g></svg>
+        <span class="n1"></span><span class="n2"></span><span class="c n3"></span><span class="n4"></span><span class="n5"></span>
+      </div>
+    </div>
+
+    <div class="status-pill"><span class="dot"></span> Available for robotics, AI & space-tech roles</div>
+
+    <span class="role">AI · Robotics · Space Technology Engineer</span>
+    <h1>Abdelrahman Bassem Ali</h1>
+    <p class="objective">Space Technology and AI engineer with hands-on experience in robotics, CubeSat systems, satellite data analysis, and STEM education. Passionate about space missions, autonomous systems, and applying AI in aerospace technologies.</p>
+
+    <div class="cta-row">
+      <a class="btn solid" href="#projects">View projects</a>
+      <a class="btn outline" href="#contact">Get in touch →</a>
+    </div>
+
+    <div class="contact-row mono">
+      <a href="mailto:abdelrahmanbassemali@gmail.com">abdelrahmanbassemali@gmail.com</a>
+      <a href="tel:+971509476935">+971 50 947 6935</a>
+      <a href="https://www.linkedin.com/in/abdelrahman-bassem-50447721a" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/AbdelrahmanBassemAli" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div style="margin-top:16px; font-size:.84rem; color:var(--ink2); padding-top:14px; border-top:1px dashed var(--line);">
+      Founder, <strong style="color:var(--ink);">Nujoom Space Engineers</strong> — a UAE-based space & robotics education program for students aged 10–24, launching 2027.
+    </div>
+  </header>
+
+  <div class="statement">
+    <p><span class="reveal">Systems, engineered</span><br><span class="reveal">like missions.</span></p>
+  </div>
+
+  <section id="focus" style="border-top:none; padding-top:0;">
+    <div class="focus-grid">
+      <div class="focus">
+        <div class="mark space"></div>
+        <h3>Space Systems</h3>
+        <p>CubeSat and rover subsystem design — power, structure, and satellite data analysis.</p>
+      </div>
+      <div class="focus">
+        <div class="mark robot"></div>
+        <h3>Robotics</h3>
+        <p>Hands-on build and teaching of obstacle-avoidance, line-following, and Arduino-based robots.</p>
+      </div>
+      <div class="focus">
+        <div class="mark ai"></div>
+        <h3>Artificial Intelligence</h3>
+        <p>CNN models for satellite imagery and NLP pipelines, applied to real aerospace and data problems.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="sec-head"><span class="idx mono">01</span><div class="rule"></div><span class="label">Experience</span></div>
+    <h2 class="sec-title">Mission log</h2>
+
+    <div class="entry">
+      <div class="n mono">A</div>
+      <div>
+        <div class="meta mono">08/2025 — PRESENT · DUBAI</div>
+        <h3>Technology Coach — Think N Innovate</h3>
+        <ul>
+          <li>Delivered AI & robotics sessions in schools and training centers</li>
+          <li>Trained students on robotics, programming, and STEM concepts</li>
+          <li>Prepared students for competitions (FLL-style robotics challenges)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="n mono">B</div>
+      <div>
+        <div class="meta mono">06/2023 — 12/2023 · ALEXANDRIA, EGYPT</div>
+        <h3>Robotics Instructor — Smart Technology</h3>
+        <ul>
+          <li>Taught robotics fundamentals, Arduino programming, and engineering basics</li>
+          <li>Supervised student projects — line-following & obstacle-avoidance robots</li>
+          <li>Guided hands-on sessions for university and secondary-school learners</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="sec-head"><span class="idx mono">02</span><div class="rule"></div><span class="label">Projects</span></div>
+    <h2 class="sec-title">Project manifest</h2>
+    <div class="grid-projects">
+      <div class="card">
+        <div class="code mono">RVR-01 · GRADUATION PROJECT (A+)</div>
+        <h3>Space Exploration Rover</h3>
+        <p>Full system-engineering design and implementation, including power subsystem and camera.</p>
+      </div>
+      <div class="card">
+        <div class="code mono">CSAT-1U · CAIRO UNI. AEROSPACE DEPT</div>
+        <h3>Lean CubeSat</h3>
+        <p>Designed, implemented and prototyped a 1U CubeSat for weather broadcasting and prediction — power subsystem and structure.</p>
+      </div>
+      <div class="card">
+        <div class="code mono">CNN-SHIP</div>
+        <h3>Satellite ship detection</h3>
+        <p>CNN model identifying ships in satellite imagery, for port-activity monitoring and supply-chain analysis.</p>
+      </div>
+      <div class="card">
+        <div class="code mono">NLP-AMZN · NTI (B+)</div>
+        <h3>Amazon reviews NLP analysis</h3>
+        <p>Scraped Black Friday product and review data, cleaned it, and engineered new features for analysis.</p>
+      </div>
+      <div class="card">
+        <div class="code mono">MARS-RVR · WITH EGSA</div>
+        <h3>Mars rover project</h3>
+        <p>Rover design and prototyping with the Egyptian Space Agency — power subsystem.</p>
+      </div>
+      <div class="card">
+        <div class="code mono">RBT-CAR</div>
+        <h3>Obstacle-avoiding / line-following car</h3>
+        <p>Hands-on robotics design, implementation and prototyping.</p>
+      </div>
+      <div class="card">
+        <div class="code mono">AIRFOIL</div>
+        <h3>Airfoil design & test</h3>
+        <p>Designed and simulated an aircraft airfoil across different angles of attack.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="sec-head"><span class="idx mono">03</span><div class="rule"></div><span class="label">Skills</span></div>
+    <h2 class="sec-title">Systems & skills</h2>
+
+    <div class="tagblock">
+      <div class="label2 mono">PROGRAMMING & AI</div>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">Machine Learning</span>
+        <span class="tag">Data Analysis</span><span class="tag">Scratch</span>
+        <span class="tag">PictoBlox</span><span class="tag">Tinkercad</span>
+      </div>
+    </div>
+    <div class="tagblock">
+      <div class="label2 mono">SPACE & ROBOTICS</div>
+      <div class="tags">
+        <span class="tag">Satellite subsystems</span><span class="tag">Nanosatellites</span>
+        <span class="tag">Robot Operating System (ROS)</span><span class="tag">PCB design</span>
+        <span class="tag">Electrical power calculations</span><span class="tag">VEX VR</span>
+      </div>
+    </div>
+    <div class="tagblock">
+      <div class="label2 mono">OTHER</div>
+      <div class="tags">
+        <span class="tag">Microsoft Office</span><span class="tag">Leadership</span>
+        <span class="tag">Team working</span><span class="tag">Communication</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="training">
+    <div class="sec-head"><span class="idx mono">04</span><div class="rule"></div><span class="label">Training</span></div>
+    <h2 class="sec-title">Training & certifications</h2>
+    <div class="train-list">
+      Space Innovation Bundle — EgSA<br>
+      Voice Comms, Nav Aids, Satellite Surveillance & ATC — NANSC<br>
+      Lean CubeSat Training (LCTP 1, 2022) — Cairo Uni.<br>
+      Fundamentals of Remote Sensing — NARSS<br>
+      Machine Learning with Big Data — SRTA City<br>
+      Astronomy, Sun & Space Research — NRIAG<br>
+      Artificial Intelligence Training — Digital Egypt Youth / NTI<br>
+      Satellite Technologies & Space Sciences — EgSA<br>
+      Sprints AI & Machine Learning Foundation<br>
+      Airplane Stability & Control — NPU<br>
+      Artificial Intelligence Summer Training — ITI<br>
+      Data Analysis Training — Coursera, IBM<br>
+      Online Leadership — Aspire Institute<br>
+      Safeguarding Certificate<br>
+      First Aid Training
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="sec-head"><span class="idx mono">05</span><div class="rule"></div><span class="label">Education</span></div>
+    <h2 class="sec-title">Education</h2>
+    <div class="entry" style="grid-template-columns:1fr;">
+      <div>
+        <div class="meta mono">09/2018 — 06/2023 · BENI SUEF UNIVERSITY</div>
+        <h3>BSc, Navigation Science and Space Technology</h3>
+        <p style="color:var(--ink2); font-size:.9rem; margin:4px 0 0;">Space Navigation Department — GPA 3.53/4.00, Very Good with Honor. Leader of the first graduating class of the Faculty of Navigation Sciences and Space Technology.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Let's build something.</h2>
+    <p>Open to robotics, AI and space-tech roles across the UAE.</p>
+    <div class="cta-row" style="justify-content:center;">
+      <a class="btn solid" href="mailto:abdelrahmanbassemali@gmail.com">Email me</a>
+      <a class="btn outline" href="https://www.linkedin.com/in/abdelrahman-bassem-50447721a" target="_blank" rel="noopener">LinkedIn →</a>
+      <a class="btn outline" href="https://github.com/AbdelrahmanBassemAli" target="_blank" rel="noopener">GitHub →</a>
+    </div>
+  </section>
+
+  <footer class="mono">
+    <span>Abdelrahman Bassem Ali · Dubai, UAE</span>
+    <span>25.2048°N · 55.2708°E</span>
+  </footer>
+
+</div>
+
+<script>
+  const els = document.querySelectorAll('.statement .reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('on'); });
+  }, {threshold:.6});
+  els.forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
