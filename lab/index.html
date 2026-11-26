@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mission Lab — Interactive Tutor · Arduino, Raspberry Pi, Python</title>
+<meta name="description" content="Interactive bilingual tutor: tap the Arduino and Raspberry Pi boards, learn Python lesson by lesson, and ask NOVA the AI teacher.">
+<link rel="icon" href="../favicon.svg">
+<link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<div class="stars" aria-hidden="true"></div>
+<div class="stars stars-2" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="top-row">
+    <a class="back" href="../" data-i18n="back">← Back to portfolio</a>
+    <div class="lang" role="group" aria-label="Language">
+      <button id="langEn" type="button">EN</button>
+      <button id="langAr" type="button">عربي</button>
+    </div>
+  </div>
+  <h1 data-i18n="title">Mission Lab</h1>
+  <p class="sub" data-i18n="subtitle">Tap the boards, learn Python, ask your AI teacher.</p>
+  <nav class="tabs">
+    <a href="#boards" data-i18n="tabBoards">Boards</a>
+    <a href="#python" data-i18n="tabPython">Python</a>
+    <a href="#teacher" data-i18n="tabTeacher">AI Teacher</a>
+  </nav>
+</header>
+
+<main>
+  <section id="boards" class="panel">
+    <h2 data-i18n="boardsTitle">Tap a part to learn it</h2>
+    <p class="hint" data-i18n="boardsHint"></p>
+    <div class="board-switch" role="tablist">
+      <button id="swUno" type="button" role="tab">Arduino Uno</button>
+      <button id="swRpi" type="button" role="tab">Raspberry Pi 4</button>
+    </div>
+    <div class="board-grid">
+      <div class="board-stage" id="boardStage"></div>
+      <article class="part-card" id="partCard" aria-live="polite">
+        <div class="pc-empty" id="pcEmpty" data-i18n="pickPart">Pick a numbered part…</div>
+        <div class="pc-body" id="pcBody" hidden>
+          <div class="pc-head">
+            <span class="pc-num" id="pcNum"></span>
+            <h3 id="pcName"></h3>
+          </div>
+          <h4 data-i18n="whatIs">What is it?</h4>
+          <p id="pcWhat"></p>
+          <h4 data-i18n="whatDoes">What does it do?</h4>
+          <p id="pcDoes"></p>
+          <div class="pc-tip"><b data-i18n="remember">Remember:</b> <span id="pcTip"></span></div>
+        </div>
+      </article>
+    </div>
+    <ul class="parts-chips" id="partsChips"></ul>
+  </section>
+
+  <section id="python" class="panel">
+    <h2 data-i18n="pyTitle">Python, lesson by lesson</h2>
+    <p class="hint" data-i18n="pyHint"></p>
+    <div class="lessons" id="lessons"></div>
+  </section>
+
+  <section id="teacher" class="panel">
+    <h2 data-i18n="teacherTitle">Ask NOVA, your AI teacher</h2>
+    <p class="hint" data-i18n="teacherHint"></p>
+    <div class="chat">
+      <div class="chat-status" id="chatStatus"></div>
+      <div class="chat-log" id="chatLog" aria-live="polite"></div>
+      <div class="chat-chips" id="chatChips"></div>
+      <form class="chat-form" id="chatForm">
+        <input id="chatInput" type="text" autocomplete="off" data-i18n-ph="placeholder" placeholder="Type your question…">
+        <button type="submit" id="chatSend" data-i18n="send">Ask</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span data-i18n="foot">Built with curiosity · Abdelrahman Bassem Ali</span>
+  <a href="../" data-i18n="back2">abdelrahmanbassemali.github.io/portfolio</a>
+</footer>
+
+<script src="lab.js"></script>
+</body>
+</html>
