@@ -44,7 +44,7 @@ function MockRec(){this.continuous=true;this.interimResults=true;this.maxAlterna
     setTimeout(()=>this.onstart&&this.onstart(),80);
     const tick=()=>{k+=2;
       if(k<words.length){this.onresult&&this.onresult({resultIndex:0,results:Object.assign([{isFinal:false,0:{transcript:words.slice(0,k).join(" ")}}],{length:1})});timer=setTimeout(tick,240)}
-      else{this.onresult&&this.onresult({resultIndex:0,results:Object.assign([{isFinal:true,0:{transcript:q}}],{length:1})});timer=setTimeout(()=>this.onend&&this.onend(),600)}};
+      else{this.onresult&&this.onresult({resultIndex:0,results:Object.assign([{isFinal:true,0:{transcript:q}}],{length:1})});timer=setTimeout(()=>this.onend&&this.onend(),1600)}};
     timer=setTimeout(tick,300)};
   this.abort=()=>{clearTimeout(timer);this.onend&&this.onend()};
   this.stop=()=>{clearTimeout(timer);this.onend&&this.onend()};
