@@ -55,16 +55,19 @@ const DEBUG=/[?&#]debug=1/.test(location.search+location.hash);
    without a mic. It also simulates Chrome-on-Android's habit of re-delivering
    the last final after a restart (every second session), which must be
    ignored by the dedupe and must never re-send. */
+let MOCKN=0; /* session counter is shared across mock instances: each restart
+   creates a fresh recognizer, and the cycle (speak -> stale re-delivery ->
+   silence -> silence) must advance across restarts like a real conversation */
 function MockRec(){this.continuous=true;this.interimResults=true;this.maxAlternatives=1;
   const qs={
     "ar-EG":["يعني ايه المدار الجغرافي الثابت؟","ايه الفرق بين الأردوينو والراسبيري باي؟"],
     "ar-SA":["ما هو المدار الجغرافي الثابت؟","ما الفرق بين أردوينو وراسبيري باي؟"],
     "en-US":["what is the difference between arduino and raspberry pi","what is a geostationary orbit"]};
-  let n=0,timers=[];
+  let timers=[];
   const later=(fn,ms)=>{timers.push(setTimeout(fn,ms))};
   this.start=()=>{
     const list=qs[this.lang]||qs["en-US"];
-    const i=n++,cycle=Math.floor(i/4),phase=i%4;
+    const i=MOCKN++,cycle=Math.floor(i/4),phase=i%4;
     const q=list[cycle%list.length];
     later(()=>this.onstart&&this.onstart(),80);
     if(phase===0&&cycle>0&&cycle%list.length===0&&window.__lsDemoNewCycle)window.__lsDemoNewCycle();
@@ -85,7 +88,7 @@ let SRCX=SRC;
 if(DEMO)SRCX=MockRec;
 const LS={open:false,on:false,rec:null,active:false,state:"off",lang:"",picked:false,autoIdx:0,emptyEnds:0,
  committed:"",interim:"",dirty:false,seen:[],sentNorms:[],lastQ:"",lastQNorm:"",lastQAt:0,
- timer:null,busy:false,queue:null,wl:null,wlOn:false,err:"",netTries:0,hist:[],hotT:null,dbg:[]};
+ timer:null,busy:false,queue:null,wl:null,wlOn:false,err:"",netTries:0,hist:[],hotT:null,dbg:[],sentLog:[]};
 const SILENCE=1200; /* ms of quiet before auto-send */
 const COACH=`You are NOVA, a calm assistant that whispers suggested answers to the user during a live conversation such as a call or an interview. The user's own background (if they chose to save it on this device) is given at the end under PROFILE.
 RULES
@@ -121,7 +124,8 @@ function sentBefore(nq){
   if(!nq)return false;
   for(const s of LS.sentNorms){
     if(s===nq)return true;
-    if(s.length>=10&&nq.length>=10&&(s.includes(nq)||nq.includes(s))&&Math.abs(s.length-nq.length)<12)return true;
+    const lo=Math.min(s.length,nq.length),hi=Math.max(s.length,nq.length);
+    if(lo>=10&&(s.includes(nq)||nq.includes(s))&&lo/hi>=0.5)return true; /* same question, partially re-heard */
   }
   return false;
 }
@@ -347,6 +351,9 @@ function flush(manual){
   segAdd(nq); /* a re-delivered copy of what we just sent is now known stale */
   LS.lastQ=q;LS.lastQNorm=nq;LS.lastQAt=Date.now();
   LS.sentNorms.push(nq);if(LS.sentNorms.length>20)LS.sentNorms.shift();
+  const stk=(new Error()).stack;
+  LS.sentLog.push({q:q.slice(0,90),t:new Date().toLocaleTimeString(),manual:!!manual,from:stk?stk.split("\n").slice(1,3).join(" | "):""});
+  if(LS.sentLog.length>30)LS.sentLog.shift();
   dbg("SEND: "+q.slice(0,60));
   lsAnswer(q);
 }
