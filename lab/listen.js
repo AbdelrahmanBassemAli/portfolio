@@ -219,7 +219,7 @@ function lsLabels(){
   lsEl("lsDebug").hidden=!DEBUG;
   if(!LS.picked)LS.lang=lsSavedLang()||(LANG==="ar"?"ar-EG":"en-US");
   lsRenderLang();lsRenderState();
-  if(!lsEl("lsQ").textContent&&!LS.busy&&!lsEl("lsA").textContent)lsEl("lsA").textContent=t("lsWaiting");
+  if(!lsEl("lsQ").textContent&&!LS.busy&&(!lsEl("lsA").textContent||lsEl("lsA").dataset.waiting==="1")){lsEl("lsA").textContent=t("lsWaiting");lsEl("lsA").dataset.waiting="1"}
 }
 function lsRenderState(){
   if(!lsEl("lsOverlay"))return;
@@ -360,7 +360,7 @@ async function lsAnswer(q){
   if(LS.busy){LS.queue=q;return}
   LS.busy=true;LS.state="think";lsRenderState();
   lsEl("lsQCard").hidden=false;lsEl("lsQ").textContent=q;
-  lsEl("lsA").textContent=t("lsThinking");lsEl("lsSrc").textContent="";
+  lsEl("lsA").textContent=t("lsThinking");lsEl("lsA").dataset.waiting="";lsEl("lsSrc").textContent="";
   let ans=null,online=false;
   if(!forceOffline){
     const msgs=[{role:"system",content:COACH+"\nPROFILE: "+(localStorage.getItem("lab-profile")||"(none saved)")},...LS.hist.slice(-4),{role:"user",content:"Heard: "+q}];
@@ -371,7 +371,7 @@ async function lsAnswer(q){
     if(ans===NOMATCH.en||ans===NOMATCH.ar)ans=t("lsFallback");
   }
   if(isAr(q)&&!isAr(ans)&&online===false)ans=t("lsFallback");
-  lsEl("lsA").textContent=ans;
+  lsEl("lsA").textContent=ans;lsEl("lsA").dataset.waiting="";
   lsEl("lsSrc").textContent=online?"✦ "+t("lsOnline"):t("lsOffline");
   LS.hist.push({role:"user",content:"Heard: "+q},{role:"assistant",content:ans});
   if(LS.hist.length>8)LS.hist=LS.hist.slice(-8);
