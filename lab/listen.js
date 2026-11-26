@@ -60,22 +60,21 @@ let MOCKN=0; /* session counter is shared across mock instances: each restart
    silence -> silence) must advance across restarts like a real conversation */
 function MockRec(){this.continuous=true;this.interimResults=true;this.maxAlternatives=1;
   const qs={
-    "ar-EG":["يعني ايه المدار الجغرافي الثابت؟","ايه الفرق بين الأردوينو والراسبيري باي؟"],
-    "ar-SA":["ما هو المدار الجغرافي الثابت؟","ما الفرق بين أردوينو وراسبيري باي؟"],
-    "en-US":["what is the difference between arduino and raspberry pi","what is a geostationary orbit"]};
+    "ar-EG":["يعني ايه المدار الجغرافي الثابت؟","ايه الفرق بين الأردوينو والراسبيري باي؟","إزاي الأقمار الصناعية بتحدد موقعي بالجي بي إس؟","يعني ايه شبكة عصبية؟"],
+    "ar-SA":["ما هو المدار الجغرافي الثابت؟","ما الفرق بين أردوينو وراسبيري باي؟","كيف تحدد الأقمار الصناعية موقعي عبر GPS؟","ما هي الشبكة العصبية؟"],
+    "en-US":["what is the difference between arduino and raspberry pi","what is a geostationary orbit","how do gps satellites know where I am","what is a neural network"]};
   let timers=[];
   const later=(fn,ms)=>{timers.push(setTimeout(fn,ms))};
   this.start=()=>{
     const list=qs[this.lang]||qs["en-US"];
     const i=MOCKN++,cycle=Math.floor(i/4),phase=i%4;
-    const q=list[cycle%list.length];
     later(()=>this.onstart&&this.onstart(),80);
-    if(phase===0&&cycle>0&&cycle%list.length===0&&window.__lsDemoNewCycle)window.__lsDemoNewCycle();
+    if(cycle>=list.length||phase>=2){later(()=>this.onend&&this.onend(),phase===2?2600:4200);return} /* silence: the demo speaker stopped talking, nothing may re-send */
+    const q=list[cycle];
     if(phase===1){ /* stale-final re-delivery: the same final again, instantly */
       later(()=>{this.onresult&&this.onresult({resultIndex:0,results:Object.assign([{isFinal:true,0:{transcript:q}}],{length:1})});
         later(()=>this.onend&&this.onend(),700)},250);
       return}
-    if(phase>=2){later(()=>this.onend&&this.onend(),phase===2?2600:4200);return} /* silence */
     const words=q.split(" ");let k=0;
     const tick=()=>{k+=2;
       if(k<words.length){this.onresult&&this.onresult({resultIndex:0,results:Object.assign([{isFinal:false,0:{transcript:words.slice(0,k).join(" ")}}],{length:1})});later(tick,240)}
@@ -125,7 +124,7 @@ function sentBefore(nq){
   for(const s of LS.sentNorms){
     if(s===nq)return true;
     const lo=Math.min(s.length,nq.length),hi=Math.max(s.length,nq.length);
-    if(lo>=10&&(s.includes(nq)||nq.includes(s))&&lo/hi>=0.5)return true; /* same question, partially re-heard */
+    if(lo>=10&&(s.includes(nq)||nq.includes(s))&&lo/hi>=0.4)return true; /* same question, partially re-heard */
   }
   return false;
 }
@@ -385,7 +384,6 @@ document.addEventListener("visibilitychange",()=>{
   if(document.visibilityState==="visible"){lsLock();if(LS.on)startRec()}
   else{try{LS.rec&&LS.rec.abort()}catch(e){}LS.active=false}
 });
-if(DEMO)window.__lsDemoNewCycle=()=>{LS.seen=[];LS.sentNorms=[];LS.lastQ="";LS.lastQNorm="";dbg("demo: new speaker round")};
 buildListen();
 if(DEMO)window.addEventListener("load",()=>setTimeout(lsOpen,500));
 EXT_RENDER.push(lsLabels);
