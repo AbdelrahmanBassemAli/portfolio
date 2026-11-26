@@ -232,7 +232,6 @@ document.getElementById("swRpi").addEventListener("click",()=>switchBoard("rpi")
 function switchBoard(b){curBoard=b;curPart=null;
   document.getElementById("swUno").classList.toggle("on",b==="uno");
   document.getElementById("swRpi").classList.toggle("on",b==="rpi");
-  document.getElementById("swUno").textContent=t("arduinoName")||"Arduino Uno";
   document.getElementById("pcEmpty").hidden=false;document.getElementById("pcBody").hidden=true;
   renderBoard();
 }
