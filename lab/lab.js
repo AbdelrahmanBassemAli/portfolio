@@ -111,8 +111,8 @@ parts:[
 const RPI={viewBox:"0 0 900 560",base:`
 <defs><linearGradient id="rpiG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b8a3e"/><stop offset="1" stop-color="#1e6b30"/></linearGradient></defs>
 <rect x="20" y="20" width="860" height="520" rx="24" fill="url(#rpiG)" stroke="#51cf66" stroke-width="2"/>
-<text x="100" y="300" font-family="DM Sans,sans-serif" font-size="27" font-weight="700" fill="#eaffef" opacity=".95">Raspberry Pi 4</text>
-<text x="100" y="324" font-family="sans-serif" font-size="12.5" fill="#c9f2d4">a whole Linux computer</text>
+<text x="240" y="420" font-family="DM Sans,sans-serif" font-size="27" font-weight="700" fill="#eaffef" opacity=".95">Raspberry Pi 4</text>
+<text x="240" y="444" font-family="sans-serif" font-size="12.5" fill="#c9f2d4">a whole Linux computer</text>
 <circle cx="55" cy="55" r="9" fill="none" stroke="#c9f2d4" stroke-width="2"/><circle cx="845" cy="55" r="9" fill="none" stroke="#c9f2d4" stroke-width="2"/>
 <circle cx="55" cy="505" r="9" fill="none" stroke="#c9f2d4" stroke-width="2"/><circle cx="845" cy="505" r="9" fill="none" stroke="#c9f2d4" stroke-width="2"/>`,
 parts:[
