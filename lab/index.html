@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mission Lab — Interactive Tutor · Arduino, Raspberry Pi, Python</title>
+<title>Mission Lab — Robotics · Space · AI in Python</title>
 <meta name="description" content="Interactive bilingual tutor: tap the Arduino and Raspberry Pi boards, learn Python lesson by lesson, and ask NOVA the AI teacher.">
 <link rel="icon" href="../favicon.svg">
 <link rel="stylesheet" href="lab.css">
@@ -22,14 +22,16 @@
   </div>
   <h1 data-i18n="title">Mission Lab</h1>
   <p class="sub" data-i18n="subtitle">Tap the boards, learn Python, ask your AI teacher.</p>
-  <nav class="tabs">
-    <a href="#boards" data-i18n="tabBoards">Boards</a>
-    <a href="#python" data-i18n="tabPython">Python</a>
-    <a href="#teacher" data-i18n="tabTeacher">AI Teacher</a>
+  <nav class="areas" role="tablist">
+    <button type="button" role="tab" data-area="robotics" data-i18n="areaRobotics">Robotics</button>
+    <button type="button" role="tab" data-area="space" data-i18n="areaSpace">Orbits &amp; Space</button>
+    <button type="button" role="tab" data-area="ai" data-i18n="areaAi">AI in Python</button>
   </nav>
+  <button type="button" class="listen-open" id="listenOpen"><span aria-hidden="true">🎙</span> <span data-i18n="listenOpen">Listen mode</span></button>
 </header>
 
 <main>
+  <div class="area" id="area-robotics">
   <section id="boards" class="panel">
     <h2 data-i18n="boardsTitle">Tap a part to learn it</h2>
     <p class="hint" data-i18n="boardsHint"></p>
@@ -63,6 +65,10 @@
     <div class="lessons" id="lessons"></div>
   </section>
 
+  </div>
+  <div class="area" id="area-space"><div id="spaceRoot"></div></div>
+  <div class="area" id="area-ai"><div id="aiRoot"></div></div>
+
   <section id="teacher" class="panel">
     <h2 data-i18n="teacherTitle">Ask NOVA, your AI teacher</h2>
     <p class="hint" data-i18n="teacherHint"></p>
@@ -83,6 +89,12 @@
   <a href="../" data-i18n="back2">abdelrahmanbassemali.github.io/portfolio</a>
 </footer>
 
+<div id="listenRoot"></div>
 <script src="lab.js"></script>
+<script src="common.js"></script>
+<script src="space.js"></script>
+<script src="ai.js"></script>
+<script src="listen.js"></script>
+<script>boot();</script>
 </body>
 </html>
