@@ -11,3 +11,5 @@
 .contact-links a{border:1px solid var(--c40526fff);border-radius:999px;padding:12px 22px;font-size:16px;color:#eaf2ff;text-decoration:none;background:#0b152966}
 .contact-links a:hover{border-color:var(--cyan);color:var(--cyan)}
 @media (max-width:720px){.site-header>.theme-toggle{display:none}.nav-contact{padding:9px 13px;font-size:14px}}
+.site-header .nav-contact{align-self:center}
+@media (max-width:720px){.site-header .id-brand span{display:none}.site-header .nav-contact{padding:8px 13px;font-size:14px}}
