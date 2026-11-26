@@ -216,3 +216,9 @@ body.ls-open{overflow:hidden}
 .ls-foot{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:#6f7da3;text-align:center}
 .ls-foot .linkish{background:none;border:0;color:#8f9bc0;font:inherit;text-decoration:underline;cursor:pointer;padding:2px}
 @media(min-width:900px){.listen{padding:18px 16vw}}
+/* listen mode v3: explicit-start CTA, louder active language, debug line */
+.ls-mic.cta{animation:lsCta 1.7s ease-in-out infinite}
+@keyframes lsCta{0%,100%{box-shadow:0 8px 30px -8px #56e4ff80}50%{box-shadow:0 8px 46px -4px #56e4ffdd;transform:scale(1.06)}}
+.ls-lang button.on{background:linear-gradient(135deg,#1d5fa8,#6a3fd4);color:#fff;box-shadow:0 0 16px -2px #56e4ff99}
+.ls-debug{font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:#5fe0a8bb;background:#04101fcc;border:1px solid #ffffff12;border-radius:8px;padding:6px 9px;max-height:3.4em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-align:start}
+.ls-debug[hidden]{display:none}
