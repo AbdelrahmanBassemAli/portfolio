@@ -14,7 +14,7 @@ var S=[
 ['navigation','thinking','Plotting a course through the stars...'],
 ['drive','excited','Take the wheel, I\'ll navigate!'],
 ['contact','excited','We made it! Now say hi.']];
-var FACE={happy:'\uD83D\uDE0A',thinking:'\uD83E\uDD14',excited:'\uD83E\uDD29'},NAME={happy:'Happy',thinking:'Thinking',excited:'Excited'};
+var FACE={happy:'<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="5.6" cy="6.4" r="1" fill="currentColor"/><circle cx="10.4" cy="6.4" r="1" fill="currentColor"/><path d="M4.8 9.6q3.2 3 6.4 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',thinking:'<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="5.6" cy="6.4" r="1" fill="currentColor"/><circle cx="10.4" cy="6.4" r="1" fill="currentColor"/><path d="M5.4 10.6h5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',excited:'<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4.4 6.8l1.2-1.6 1.2 1.6M9.2 6.8l1.2-1.6 1.2 1.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="8" cy="10.6" rx="2.4" ry="2" fill="currentColor"/></svg>'},NAME={happy:'Happy',thinking:'Thinking',excited:'Excited'};
 var bub,fl,cur=null,hideT,lastY=scrollY,vel=0,reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 function buddy(){return document.querySelector('.orbit-buddy')}
 function mk(){
@@ -30,7 +30,7 @@ function active(){
 }
 function say(s){
  bub.dataset.mood=s[1];document.body.dataset.cmpMood=s[1];
- bub.querySelector('i').textContent=FACE[s[1]];bub.querySelector('span').textContent=NAME[s[1]];bub.querySelector('p').textContent=s[2];
+ bub.querySelector('i').innerHTML=FACE[s[1]];bub.querySelector('span').textContent=NAME[s[1]];bub.querySelector('p').textContent=s[2];
  show();
 }
 function show(){bub.classList.add('on');clearTimeout(hideT);hideT=setTimeout(function(){bub.classList.remove('on')},5200)}
