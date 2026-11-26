@@ -152,33 +152,67 @@ html[dir=rtl] .msg.bot{border-end-start-radius:14px;border-end-end-radius:4px}
 
 /* ---- listen mode ---- */
 body.ls-open{overflow:hidden}
-.listen{position:fixed;inset:0;z-index:100;background:#02050d;color:#e9eefc;display:flex;flex-direction:column;padding:max(12px,env(safe-area-inset-top)) 14px max(12px,env(safe-area-inset-bottom));font-family:inherit}
+.listen{position:fixed;inset:0;z-index:100;background:#030612;color:#eef2ff;display:flex;flex-direction:column;font-family:inherit;
+  padding:max(10px,env(safe-area-inset-top)) 14px max(10px,env(safe-area-inset-bottom))}
 .listen[hidden]{display:none}
-.ls-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.ls-x{border:1px solid #ffffff22;background:transparent;color:#cfd8f3;border-radius:50%;width:38px;height:38px;font-size:16px;cursor:pointer}
-.ls-status{display:flex;align-items:center;gap:8px;font-size:13px;color:#9fb0d6;margin-inline-end:auto}
-.ls-status b{width:9px;height:9px;border-radius:50%;background:#55607f}
-.ls-status b.live{background:#5ef0b8;box-shadow:0 0 10px #5ef0b8;animation:pulse 1.4s infinite}
+.ls-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.ls-bg i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;animation:lsFloat 14s ease-in-out infinite}
+.ls-bg i:nth-child(1){width:44vw;height:44vw;max-width:420px;max-height:420px;background:#123a5f;top:-12%;inset-inline-start:-10%}
+.ls-bg i:nth-child(2){width:38vw;height:38vw;max-width:360px;max-height:360px;background:#3b1d6e;bottom:-10%;inset-inline-end:-8%;animation-delay:-5s}
+.ls-bg i:nth-child(3){width:26vw;height:26vw;max-width:240px;max-height:240px;background:#0e5e52;top:42%;inset-inline-start:58%;opacity:.3;animation-delay:-9s}
+@keyframes lsFloat{50%{transform:translateY(26px) scale(1.07)}}
+@media(prefers-reduced-motion:reduce){.ls-bg i,.ls-wave span,.ls-ring{animation:none!important}}
+.ls-top{position:relative;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ls-x{flex:none;width:38px;height:38px;border-radius:50%;border:1px solid #ffffff22;background:#0a123088;color:#cfd8f3;font-size:15px;cursor:pointer}
+.ls-x:hover{border-color:#56e4ff;color:#56e4ff}
+.ls-status{display:inline-flex;align-items:center;gap:7px;border:1px solid #ffffff1f;background:#0a1230cc;border-radius:999px;padding:8px 14px;font:600 12.5px/1 inherit;color:#aebadd}
+.ls-status b{width:9px;height:9px;border-radius:50%;background:#5b6785;flex:none}
+.listen.live .ls-status b{background:#5ef0b8;box-shadow:0 0 10px #5ef0b8;animation:pulse 1.5s infinite}
+.listen.think .ls-status b{background:#ffd479;box-shadow:0 0 10px #ffd479;animation:pulse .8s infinite}
 @keyframes pulse{50%{opacity:.35}}
-.ls-lang{display:inline-flex;border:1px solid #ffffff22;border-radius:999px;overflow:hidden}
-.ls-lang button{border:0;background:transparent;color:#9fb0d6;padding:8px 12px;font:700 13px/1 inherit;cursor:pointer}
-.ls-lang button.on{background:#17254f;color:#56e4ff}
-.ls-body{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:14px 0}
-.ls-heard{color:#6f7da3;font-size:13px;min-height:2.6em}
-.ls-heard i,.ls-card i{display:block;font-style:normal;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#56e4ff99;margin-bottom:4px}
-.ls-card{border:1px solid #ffffff14;border-radius:16px;padding:14px 16px;background:#070d1f}
-.ls-q div{font-size:18px;line-height:1.4;color:#dfe7ff}
-.ls-a{border-color:#5ef0b844;background:#06140f}
+.ls-lang{display:inline-flex;border:1px solid #ffffff1f;border-radius:999px;overflow:hidden;background:#0a123088;margin-inline-start:auto}
+.ls-lang button{border:0;background:transparent;color:#8f9bc0;padding:9px 13px;font:700 12.5px/1 inherit;cursor:pointer}
+.ls-lang button.on{background:linear-gradient(135deg,#123a5f,#2a1d6e);color:#56e4ff}
+.ls-stage{position:relative;flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:14px 0 6px}
+.ls-wave{display:flex;align-items:center;justify-content:center;gap:4px;height:32px;flex:none}
+.ls-wave span{width:4px;height:6px;border-radius:2px;background:linear-gradient(180deg,#56e4ff,#ac8bff);opacity:.22}
+.listen.live .ls-wave span{animation:wv 1.2s ease-in-out infinite;opacity:.8}
+.listen.hot .ls-wave span{animation-duration:.45s}
+@keyframes wv{0%,100%{height:6px}50%{height:26px}}
+.ls-heard{flex:none}
+.ls-heard i,.ls-card i{display:block;font-style:normal;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#56e4ff99;margin-bottom:5px}
+.ls-heard p{margin:0;font-size:15.5px;line-height:1.55;color:#7c8ab1;min-height:1.5em}
+.ls-heard #lsLive{color:#d4defa;border-bottom:1px dashed #56e4ff55}
+.ls-card{border-radius:18px;padding:16px 18px;background:linear-gradient(160deg,#0a1330f2,#070d1ff2);border:1px solid #ffffff14}
+.ls-q p{margin:0;font-size:17px;line-height:1.45;color:#cdd8f6}
+.ls-a{border-color:#5ef0b833;box-shadow:0 0 44px -16px #5ef0b84d}
 .ls-a i{color:#5ef0b8aa}
-.ls-a div{font-size:clamp(20px,5.2vw,26px);line-height:1.5;color:#f2fff9;white-space:pre-wrap}
-.ls-a small{display:block;margin-top:8px;font-size:11px;color:#6f8f84}
-.ls-msg{border:1px solid #ffd47955;color:#ffd479;background:#ffd47912;border-radius:12px;padding:10px 12px;font-size:14px;margin-bottom:8px}
+.ls-a p{margin:0;font-size:clamp(21px,5.6vw,28px);line-height:1.55;color:#f4fffa;white-space:pre-wrap}
+.ls-a-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px}
+.ls-a small{font-size:11px;color:#6f8f84}
+#lsCopy{border:1px solid #ffffff22;background:transparent;color:#9fb0d8;border-radius:999px;padding:6px 13px;font:700 11.5px/1 inherit;cursor:pointer}
+#lsCopy:hover{border-color:#5ef0b8;color:#5ef0b8}
+.ls-msg{position:relative;border:1px solid #ffd47955;color:#ffd479;background:#ffd47912;border-radius:12px;padding:10px 12px;font-size:13.5px;margin-bottom:8px}
 .ls-msg[hidden]{display:none}
-.ls-bottom{display:flex;flex-direction:column;gap:10px}
+.ls-dock{position:relative;display:flex;flex-direction:column;gap:10px}
 #lsForm{display:flex;gap:8px}
-#lsIn{flex:1;min-width:0;background:#070d1f;border:1px solid #ffffff22;border-radius:12px;color:#e9eefc;padding:11px 13px;font:400 15px/1.2 inherit}
+#lsIn{flex:1;min-width:0;background:#070d1f;border:1px solid #ffffff22;border-radius:12px;color:#e9eefc;padding:12px 14px;font:400 15px/1.2 inherit}
+#lsIn:focus{outline:none;border-color:#56e4ff}
 #lsAsk{border:0;border-radius:12px;padding:0 18px;background:#17254f;color:#56e4ff;font:700 14px/1 inherit;cursor:pointer}
-.ls-mic{border:0;border-radius:14px;padding:16px;font:700 17px/1 inherit;cursor:pointer;background:linear-gradient(135deg,#56e4ff,#ac8bff);color:#050b1b}
-.ls-mic.stop{background:#2a1020;color:#ff9db3;border:1px solid #ff9db355}
+.ls-actions{display:flex;align-items:center;justify-content:center;gap:16px}
+.ls-mic{position:relative;width:78px;height:78px;flex:none;border-radius:50%;border:0;cursor:pointer;
+  background:linear-gradient(135deg,#56e4ff,#ac8bff);color:#050b1b;font-size:25px;display:grid;place-items:center;
+  box-shadow:0 8px 30px -8px #56e4ff80}
+.ls-mic:active{transform:scale(.96)}
+.listen.live .ls-mic{background:#2a1020;color:#ff9db3;border:1px solid #ff9db355;box-shadow:0 8px 30px -8px #ff9db355}
+.ls-ring{position:absolute;inset:0;border-radius:50%;border:2px solid #ff9db355;opacity:0;pointer-events:none}
+.listen.live .ls-ring{animation:lsRing 1.9s ease-out infinite}
+.listen.live .ls-ring.r2{animation-delay:.95s}
+@keyframes lsRing{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.6);opacity:0}}
+.ls-now{border:0;border-radius:999px;padding:15px 24px;font:700 15.5px/1 inherit;cursor:pointer;
+  background:linear-gradient(135deg,#ffd479,#ff9d6e);color:#2a1503;opacity:.35;transition:opacity .2s,transform .1s}
+.ls-now.ready{opacity:1;box-shadow:0 6px 26px -8px #ffd47980}
+.ls-now.ready:active{transform:scale(.97)}
 .ls-foot{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:#6f7da3;text-align:center}
-@media(min-width:900px){.listen{padding:20px 15vw}}
+.ls-foot .linkish{background:none;border:0;color:#8f9bc0;font:inherit;text-decoration:underline;cursor:pointer;padding:2px}
+@media(min-width:900px){.listen{padding:18px 16vw}}
