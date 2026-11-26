@@ -7,23 +7,23 @@ tabBoards:"Boards",tabPython:"Python",tabTeacher:"AI Teacher",
 boardsTitle:"Tap a part to learn it",boardsHint:"Every numbered part of the board opens a short explanation: what it is, what it does, and one thing to remember.",
 pickPart:"Pick a numbered part on the board, or use the chips below.",
 whatIs:"What is it?",whatDoes:"What does it do?",remember:"Remember:",
-pyTitle:"Python, lesson by lesson",pyHint:"Short beginner lessons — the same ones I teach in robotics class. Open a lesson, read it, and try the code.",
+pyTitle:"Python, lesson by lesson",pyHint:"Short beginner lessons — made for classrooms and self-study. Open a lesson, read it, and try the code.",
 teacherTitle:"Ask NOVA, your AI teacher",teacherHint:"Ask anything about Arduino, Raspberry Pi or Python — in English or Arabic — and get a teacher-style explanation.",
-placeholder:"Type your question…",send:"Ask",online:"Live AI teacher connected",offline:"Offline mode — built-in teacher answers",
+placeholder:"Type your question…",send:"Ask",online:"Live AI teacher online",offline:"Offline mode — built-in teacher answers",
 thinking:"NOVA is thinking…",who:"NOVA",
 greet:"Hi! I'm NOVA, your AI teacher on this page. Ask me anything about Arduino, Raspberry Pi or Python, or tap a question below.",
-foot:"Built with curiosity · Abdelrahman Bassem Ali",back2:"abdelrahmanbassemali.github.io/portfolio"},
+photoBy:"Photo",diagramNote:"Simplified diagram of the board.",viewPhoto:"Photo",viewDiagram:"Diagram",foot:"Mission Lab · learn robotics, space and AI in English & Arabic",back2:"Photo credits"},
 ar:{back:"→ رجوع للموقع",title:"معمل المهام",subtitle:"اضغط على اللوحات، اتعلم بايثون، واسأل معلّمك الذكي — بالعربي وEnglish",
 tabBoards:"اللوحات",tabPython:"بايثون",tabTeacher:"المعلّم الذكي",
 boardsTitle:"اضغط على أي جزء عشان تتعرف عليه",boardsHint:"كل جزء مرقّم في اللوحة بيفتح شرحًا قصيرًا: ما هو، ماذا يفعل، ومعلومة افتكرها.",
 pickPart:"اختار جزءًا مرقّمًا على اللوحة، أو من الأزرار تحت.",
 whatIs:"ما هو؟",whatDoes:"ماذا يفعل؟",remember:"افتكر:",
-pyTitle:"بايثون، درس ورا درس",pyHint:"دروس قصيرة للمبتدئين — نفس اللي بشرحه في فصول الروبوتكس. افتح الدرس واقرأه وجرّب الكود.",
+pyTitle:"بايثون، درس ورا درس",pyHint:"دروس قصيرة للمبتدئين — مناسبة للفصول والتعلّم الذاتي. افتح الدرس واقرأه وجرّب الكود.",
 teacherTitle:"اسأل نوفا، معلّمك الذكي",teacherHint:"اسأل أي حاجة عن الأردوينو أو الراسبيري باي أو بايثون — بالعربي أو بالإنجليزي — وهتلاقي شرحًا بأسلوب المعلّم.",
 placeholder:"اكتب سؤالك…",send:"اسأل",online:"المعلّم الذكي متصل",offline:"وضع عدم الاتصال — إجابات مدمجة",
 thinking:"نوفا بيفكر…",who:"نوفا",
 greet:"أهلًا! أنا نوفا، معلّمك الذكي في الصفحة دي. اسألني أي حاجة عن الأردوينو أو الراسبيري باي أو بايثون، أو دوس على سؤال من تحت.",
-foot:"اتبنى بشغف · عبد الرحمن باسم علي",back2:"abdelrahmanbassemali.github.io/portfolio"}};
+photoBy:"الصورة",diagramNote:"رسم مبسط للوحة.",viewPhoto:"صورة حقيقية",viewDiagram:"رسم توضيحي",foot:"معمل المهام · اتعلم الروبوتكس والفضاء والذكاء الاصطناعي بالعربي والإنجليزي",back2:"حقوق الصور"}};
 
 let LANG=localStorage.getItem("lab-lang")||"en";
 const t=k=>STR[LANG][k]||k;
@@ -189,23 +189,50 @@ const BOARDS={uno:UNO,rpi:RPI};
 let curBoard="uno",curPart=null;
 const stage=document.getElementById("boardStage");
 
+/* photo hotspots: [x, y, w, h] in photo pixels; optional badge [bx, by] */
+const PHOTO={
+ uno:{key:"uno",w:1280,h:842,r:{atmega:[605,490,465,130],usb:[145,190,215,160],jack:[200,605,190,125],digital:[460,82,630,68],analog:[865,715,225,50],power:[575,715,285,50],led13:[575,208,52,34],txrx:[570,285,50,55],crystal:[405,405,140,60],reset:[235,90,130,80],regulator:[305,500,85,80],icsp:[1040,355,75,100]}},
+ rpi:{key:"rpi4",w:1312,h:876,r:{soc:[335,255,210,210],gpio:[110,30,750,75],usbc:[110,735,125,125],hdmi:[340,735,300,120],usb3:[1045,345,265,200],usb2:[1045,610,265,200],ethernet:[985,45,300,235],ram:[590,250,160,215],sdcard:[2,270,34,300,[22,225]],csi:[640,505,95,325],dsi:[40,265,80,320],avjack:[750,650,105,225],poe:[870,115,80,80]}}
+};
+let boardView=localStorage.getItem("lab-view")||"photo";
 function renderBoard(){
-  const B=BOARDS[curBoard];
-  let s=`<svg viewBox="${B.viewBox}" role="group" aria-label="board">${B.base}`;
-  B.parts.forEach((p,i)=>{
-    s+=`<g class="part" data-part="${p.id}" tabindex="0" role="button" aria-label="${i+1}">
-      ${p.draw}${p.glow}${p.hit}
-      <g class="badge" transform="translate(${p.badge[0]},${p.badge[1]})"><circle r="11"/><text dy="4">${i+1}</text></g>
-    </g>`;
-  });
-  s+="</svg>";
+  const B=BOARDS[curBoard],P=PHOTO[curBoard];
+  const usePhoto=boardView==="photo"&&P&&typeof PHOTOS!=="undefined";
+  const cr=document.getElementById("boardCredit");
+  let s;
+  if(usePhoto){
+    const ph=PHOTOS[P.key];
+    s=`<svg viewBox="0 0 ${P.w} ${P.h}" role="group" aria-label="${ph.cap[LANG]}" class="photo-svg"><image href="${ph.src}" x="0" y="0" width="${P.w}" height="${P.h}"/>`;
+    B.parts.forEach((p,i)=>{
+      const r=P.r[p.id];if(!r)return;
+      const bx=r[4]?r[4][0]:r[0]+r[2]/2,by=r[4]?r[4][1]:r[1]+r[3]/2;
+      s+=`<g class="part photo-part" data-part="${p.id}" tabindex="0" role="button" aria-label="${i+1}">
+        <rect class="pbox${p.id==="sdcard"?" dashed":""}" x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}" rx="10"/>
+        <g class="badge pbadge" transform="translate(${bx},${by}) scale(2.7)"><circle r="11"/><text dy="4">${i+1}</text></g></g>`;
+    });
+    s+="</svg>";
+    if(cr)cr.innerHTML=`${t("photoBy")}: <a href="${ph.page}" target="_blank" rel="noopener">${ph.by}</a> · ${ph.lic} · Wikimedia Commons`;
+  }else{
+    s=`<svg viewBox="${B.viewBox}" role="group" aria-label="board">${B.base}`;
+    B.parts.forEach((p,i)=>{
+      s+=`<g class="part" data-part="${p.id}" tabindex="0" role="button" aria-label="${i+1}">
+        ${p.draw}${p.glow}${p.hit}
+        <g class="badge" transform="translate(${p.badge[0]},${p.badge[1]})"><circle r="11"/><text dy="4">${i+1}</text></g>
+      </g>`;
+    });
+    s+="</svg>";
+    if(cr)cr.textContent=t("diagramNote");
+  }
   stage.innerHTML=s;
   stage.querySelectorAll(".part").forEach(g=>{
     g.addEventListener("click",()=>selectPart(g.dataset.part));
     g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectPart(g.dataset.part)}});
   });
+  document.querySelectorAll("#viewSw button").forEach(b=>b.classList.toggle("on",b.dataset.v===boardView));
+  if(curPart)stage.querySelectorAll(".part").forEach(g=>g.classList.toggle("active",g.dataset.part===curPart));
   renderChips();
 }
+function setBoardView(v){boardView=v;localStorage.setItem("lab-view",v);renderBoard()}
 function renderChips(){
   const B=BOARDS[curBoard];
   document.getElementById("partsChips").innerHTML=B.parts.map((p,i)=>
@@ -240,7 +267,7 @@ function switchBoard(b){curBoard=b;curPart=null;
 const LESSONS=[
 {en:{title:"Hello, Space! — your first program",tag:"print & syntax",body:"Every programmer starts with one line. print() shows text on the screen — it is how your program talks to you. Python reads top to bottom, and the spaces at the start of a line are grammar, not decoration.",cap:"Run it anywhere Python runs: a Pi, a laptop, even a phone."},
  ar:{title:"أهلًا يا فضاء! — أول برنامج ليك",tag:"الطباعة والقواعد",body:"كل مبرمج بيبدأ بسطر واحد. print() بتعرض كلام على الشاشة — دي طريقة برنامجك إنه يكلمك. بايثون بيقرا من فوق لتحت، والمسافات في أول السطر جزء من القواعد مش زينة.",cap:"جرّبه في أي مكان فيه بايثون: باي، لابتوب، وحتى موبايل."},
- code:'print("Hello, BESOMI!")\nprint("I am learning Python")\n# Comments start with # — Python ignores them'},
+ code:'print("Hello, Mission Lab!")\nprint("I am learning Python")\n# Comments start with # — Python ignores them'},
 {en:{title:"Variables — naming things",tag:"store values",body:"A variable is a labeled box that stores a value: text (string), whole numbers (int), decimals (float) or True/False (bool). You choose the name; Python figures out the type.",cap:"Good names are half of good code."},
  ar:{title:"المتغيرات — تسمية الأشياء",tag:"تخزين القيم",body:"المتغير هو علبة عليها اسم بتخزّن قيمة: نص (string) أو رقم صحيح (int) أو كسر (float) أو صح/غلط (bool). إنت بتختار الاسم، وبايثون بيعرف النوع لوحده.",cap:"الأسماء الكويسة نص الكود الكويس."},
  code:'robot = "ORBIT"      # string\nwheels = 6           # int\nvoltage = 3.3        # float\nis_alive = True      # bool\nprint(robot, "has", wheels, "wheels")'},
@@ -259,37 +286,21 @@ const LESSONS=[
 
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
 function hi(code){
-  return esc(code)
-    .replace(/(#.*)/g,'<span class="cm">$1</span>')
-    .replace(/(&quot;.*?&quot;|".*?")/g,'<span class="st">$1</span>')
-    .replace(/\b(def|for|while|in|return|import|from|print|True|False|not|and|or)\b/g,'<span class="kw">$1</span>');
+  const KW="def|for|while|in|return|import|from|as|if|else|elif|try|except|with|class|print|True|False|None|not|and|or|break|pass|int|void|long|float|bool|const|unsigned|char|byte|String|true|false|HIGH|LOW|INPUT|OUTPUT|INPUT_PULLUP";
+  const re=new RegExp("(#[^\\n]*|//[^\\n]*)|(\"(?:[^\"\\\\\\n]|\\\\.)*\"|'(?:[^'\\\\\\n]|\\\\.)*')|\\b("+KW+")\\b|(\\b\\d+(?:\\.\\d+)?\\b)","g");
+  return code.replace(re,(m,c,st,kw,num)=>{
+    const e=esc(m);
+    return c?`<span class="cm">${e}</span>`:st?`<span class="st">${e}</span>`:kw?`<span class="kw">${e}</span>`:`<span class="nm">${e}</span>`;
+  }).split(/(<span class="(?:cm|st|kw|nm)">[\s\S]*?<\/span>)/).map(p=>p.startsWith("<span class=")?p:esc(p)).join("");
 }
-function renderLessons(){
-  document.getElementById("lessons").innerHTML=LESSONS.map((L,i)=>{
-    const d=L[LANG];
-    return `<div class="lesson${i===0?" open":""}">
-      <button type="button" aria-expanded="${i===0}">
-        <span class="l-num">${i+1}</span>
-        <span><span class="l-title">${d.title}</span><span class="l-tag">${d.tag}</span></span>
-        <span class="l-arrow">▾</span>
-      </button>
-      <div class="l-body"><p>${d.body}</p><pre class="l-code"><code>${hi(L.code)}</code></pre><span class="l-cap">${d.cap}</span></div>
-    </div>`;
-  }).join("");
-  document.querySelectorAll(".lesson>button").forEach(b=>b.addEventListener("click",()=>{
-    const l=b.parentElement,open=l.classList.contains("open");
-    document.querySelectorAll(".lesson").forEach(x=>x.classList.remove("open"));
-    if(!open)l.classList.add("open");
-    b.setAttribute("aria-expanded",String(!open));
-  }));
-}
+function renderLessons(){mountAcc(document.getElementById("lessons"),LESSONS,0)}
 
 /* ---------- AI teacher (keyless, with offline KB fallback) ---------- */
 const ENDPOINTS=[
  {name:"ch.at",url:"https://ch.at/v1/chat/completions",body:{model:"gpt-4o",temperature:.4,max_tokens:500}},
  {name:"pollinations",url:"https://text.pollinations.ai/openai",body:{model:"openai",temperature:.4,max_tokens:500,private:true}}];
 
-const SYS=`You are NOVA, a patient and encouraging AI teacher inside an interactive learning page about Arduino, Raspberry Pi and Python, built by robotics instructor Abdelrahman Bassem Ali.
+const SYS=`You are NOVA, a patient and encouraging AI teacher inside an interactive learning page about Arduino, Raspberry Pi and Python.
 
 RULES
 - Explain like a kind teacher to a beginner: simple words, tiny steps, a small real-life analogy when it helps.
@@ -383,19 +394,20 @@ function addMsg(cls,text,who){
   log.appendChild(d);log.scrollTop=log.scrollHeight;return d;
 }
 function clean(s){return String(s||"").replace(/\s+\n/g,"\n").replace(/[*#`]+/g,"").trim()}
-async function askRemote(msgs){
-  for(const ep of ENDPOINTS){
-    try{
-      const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),20000);
-      const r=await fetch(ep.url,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
-        body:JSON.stringify({...ep.body,messages:msgs})});
-      clearTimeout(to);
-      if(!r.ok)continue;
-      const j=await r.json(),out=clean(j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content);
-      if(out&&out.length>1)return out;
-    }catch(e){}
-  }
-  return null;
+let LAST_AI="";
+function askRemote(msgs){
+  /* race the keyless providers; the 2nd one only starts if the 1st has not answered after a short head start */
+  const one=(ep,delay)=>new Promise((res,rej)=>{
+    setTimeout(()=>{
+      const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),28000);
+      fetch(ep.url,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,body:JSON.stringify({...ep.body,messages:msgs})})
+        .then(r=>{if(!r.ok)throw new Error("http");return r.json()})
+        .then(j=>{clearTimeout(to);const out=clean(j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content);
+          if(out&&out.length>1){LAST_AI=ep.name;res(out)}else rej(new Error("empty"))})
+        .catch(e=>{clearTimeout(to);rej(e)});
+    },delay);
+  });
+  return Promise.any(ENDPOINTS.map((ep,i)=>one(ep,i*4000))).catch(()=>null);
 }
 function norm(s){return String(s||"").toLowerCase().replace(/[\u0640\u064B-\u0652]/g,"")}
 function kbAnswer(q){
@@ -404,9 +416,11 @@ function kbAnswer(q){
   if(!best)return isAr(q)?NOMATCH.ar:NOMATCH.en;
   return isAr(q)?best.ar:best.en;
 }
+let AI_STATE="live";
 function setStatus(online){
+  AI_STATE=online?"live":"off";
   statusEl.classList.toggle("off",!online);
-  statusEl.innerHTML=`<b></b>${online?t("online"):t("offline")}`;
+  statusEl.innerHTML=`<b></b>${online?t("online")+(LAST_AI?" · "+LAST_AI:""):t("offline")}`;
 }
 let busy=false;
 form.addEventListener("submit",async e=>{
@@ -463,4 +477,5 @@ function boot(){
   switchBoard("uno");
   applyLang();
   addMsg("bot",t("greet"),t("who"));
+  if(!forceOffline)askRemote([{role:"system",content:"Reply with the single word OK."},{role:"user",content:"ping"}]).then(a=>setStatus(!!a));
 }

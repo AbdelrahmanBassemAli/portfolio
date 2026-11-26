@@ -3,10 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mission Lab — Robotics · Space · AI in Python</title>
-<meta name="description" content="Interactive bilingual tutor: tap the Arduino and Raspberry Pi boards, learn Python lesson by lesson, and ask NOVA the AI teacher.">
-<link rel="icon" href="../favicon.svg">
+<title>Mission Lab: Robotics, Space &amp; AI in Python</title>
+<meta name="description" content="Bilingual learning hub: real photo boards of the Arduino and Raspberry Pi, orbit and GNSS simulators, AI in Python, and NOVA the AI teacher.">
+<meta name="theme-color" content="#050b1b">
+<meta name="application-name" content="Mission Lab">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mission Lab">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta property="og:title" content="Mission Lab: Robotics, Space &amp; AI">
+<meta property="og:description" content="Bilingual (English/Arabic) learning hub with real photos, interactive boards, orbit and GNSS simulators, AI in Python, and NOVA the AI teacher.">
+<meta property="og:image" content="assets/icons/icon-512.png">
+<link rel="icon" type="image/svg+xml" href="assets/nova.svg">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/icons/favicon-48.png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="lab.css">
+<link rel="stylesheet" href="hub.css">
 </head>
 <body>
 <div class="stars" aria-hidden="true"></div>
@@ -14,33 +27,41 @@
 
 <header class="top">
   <div class="top-row">
-    <a class="back" href="../" data-i18n="back">← Back to portfolio</a>
-    <div class="lang" role="group" aria-label="Language">
-      <button id="langEn" type="button">EN</button>
-      <button id="langAr" type="button">عربي</button>
+    <a class="brand" href="#home" id="brand" aria-label="Mission Lab home"><img src="assets/nova.svg" alt="" width="40" height="40"><span><b data-i18n="title">Mission Lab</b><small data-i18n="tagline">Robotics · Space · AI</small></span></a>
+    <div class="top-tools">
+      <button type="button" class="install-btn" id="installBtn" hidden data-i18n="install">Install app</button>
+      <div class="lang" role="group" aria-label="Language">
+        <button id="langEn" type="button">EN</button>
+        <button id="langAr" type="button">عربي</button>
+      </div>
     </div>
   </div>
-  <h1 data-i18n="title">Mission Lab</h1>
-  <p class="sub" data-i18n="subtitle">Tap the boards, learn Python, ask your AI teacher.</p>
-  <nav class="areas" role="tablist">
-    <button type="button" role="tab" data-area="robotics" data-i18n="areaRobotics">Robotics</button>
-    <button type="button" role="tab" data-area="space" data-i18n="areaSpace">Orbits &amp; Space</button>
-    <button type="button" role="tab" data-area="ai" data-i18n="areaAi">AI in Python</button>
+  <nav class="areas" role="tablist" aria-label="Areas">
+    <button type="button" role="tab" data-area="home"><i aria-hidden="true">⌂</i><span data-i18n="navHome">Home</span></button>
+    <button type="button" role="tab" data-area="robotics"><i aria-hidden="true">🤖</i><span data-i18n="areaRobotics">Robotics</span></button>
+    <button type="button" role="tab" data-area="space"><i aria-hidden="true">🛰</i><span data-i18n="areaSpace">Orbits &amp; Space</span></button>
+    <button type="button" role="tab" data-area="ai"><i aria-hidden="true">🧠</i><span data-i18n="areaAi">AI in Python</span></button>
+    <button type="button" class="nav-nova" id="navNova"><i aria-hidden="true">✦</i><span data-i18n="navNova">Ask NOVA</span></button>
+    <button type="button" class="listen-open" id="listenOpen"><i aria-hidden="true">🎙</i><span data-i18n="listenOpen">Listen mode</span></button>
   </nav>
-  <button type="button" class="listen-open" id="listenOpen"><span aria-hidden="true">🎙</span> <span data-i18n="listenOpen">Listen mode</span></button>
+  <div class="subnav" id="subnav" aria-label="On this page"></div>
 </header>
 
 <main>
+  <div class="area" id="area-home"><div id="homeRoot"></div></div>
   <div class="area" id="area-robotics">
   <section id="boards" class="panel">
     <h2 data-i18n="boardsTitle">Tap a part to learn it</h2>
     <p class="hint" data-i18n="boardsHint"></p>
-    <div class="board-switch" role="tablist">
-      <button id="swUno" type="button" role="tab">Arduino Uno</button>
-      <button id="swRpi" type="button" role="tab">Raspberry Pi 4</button>
+    <div class="board-bar">
+      <div class="board-switch" role="tablist">
+        <button id="swUno" type="button" role="tab">Arduino Uno</button>
+        <button id="swRpi" type="button" role="tab">Raspberry Pi 4</button>
+      </div>
+      <div class="view-sw" id="viewSw" role="group"><button type="button" data-v="photo" data-i18n="viewPhoto">Photo</button><button type="button" data-v="diagram" data-i18n="viewDiagram">Diagram</button></div>
     </div>
     <div class="board-grid">
-      <div class="board-stage" id="boardStage"></div>
+      <div><div class="board-stage" id="boardStage"></div><p class="credit" id="boardCredit"></p></div>
       <article class="part-card" id="partCard" aria-live="polite">
         <div class="pc-empty" id="pcEmpty" data-i18n="pickPart">Pick a numbered part…</div>
         <div class="pc-body" id="pcBody" hidden>
@@ -70,7 +91,7 @@
   <div class="area" id="area-ai"><div id="aiRoot"></div></div>
 
   <section id="teacher" class="panel">
-    <h2 data-i18n="teacherTitle">Ask NOVA, your AI teacher</h2>
+    <div class="nova-head"><img src="assets/nova.svg" alt="" width="52" height="52"><div><h2 data-i18n="teacherTitle">Ask NOVA, your AI teacher</h2></div></div>
     <p class="hint" data-i18n="teacherHint"></p>
     <div class="chat">
       <div class="chat-status" id="chatStatus"></div>
@@ -85,16 +106,20 @@
 </main>
 
 <footer class="foot">
-  <span data-i18n="foot">Built with curiosity · Abdelrahman Bassem Ali</span>
-  <a href="../" data-i18n="back2">abdelrahmanbassemali.github.io/portfolio</a>
+  <span data-i18n="foot">Mission Lab</span>
+  <button type="button" class="linkish" id="creditsOpen" data-i18n="back2">Photo credits</button>
 </footer>
+<nav class="bnav" id="bnav" aria-label="Main"></nav>
 
 <div id="listenRoot"></div>
+<div id="modalRoot"></div>
 <script src="lab.js"></script>
 <script src="common.js"></script>
 <script src="space.js"></script>
 <script src="ai.js"></script>
 <script src="listen.js"></script>
+<script src="content.js"></script>
+<script src="hub.js"></script>
 <script>boot();</script>
 </body>
 </html>
