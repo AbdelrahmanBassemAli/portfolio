@@ -1,0 +1,21 @@
+/* El-Rayeq (الرايق) — chill cartoon guide for the portfolio. No dependencies. */
+.rayeq-wrap{position:fixed;left:14px;bottom:14px;z-index:60;display:flex;flex-direction:column;align-items:flex-start;gap:8px;font-family:"DM Sans",system-ui,sans-serif}
+.rayeq-bud{width:72px;height:78px;cursor:pointer;border:0;background:none;padding:0;filter:drop-shadow(0 6px 14px #0007);transition:transform .25s}
+.rayeq-bud:hover{transform:translateY(-4px) rotate(-3deg)}
+.rayeq-bud:focus-visible{outline:2px solid #ffd36b;outline-offset:3px;border-radius:18px}
+.rayeq-bud svg{width:100%;height:100%;display:block}
+.rayeq-wrap[data-hidden="1"]{display:none}
+.rayeq-bubble{max-width:min(300px,calc(100vw - 40px));background:linear-gradient(150deg,#fff8ec,#ffe9c9);color:#3a2a12;border:2px solid #e8a94d;border-radius:18px 18px 18px 4px;padding:12px 14px;box-shadow:0 14px 34px -8px #0009;opacity:0;transform:translateY(8px) scale(.96);transform-origin:bottom left;transition:opacity .25s,transform .25s;pointer-events:none}
+.rayeq-bubble.on{opacity:1;transform:none;pointer-events:auto}
+.rayeq-bubble .ar{direction:rtl;text-align:right;font-weight:700;font-size:15px;line-height:1.5;margin:0}
+.rayeq-bubble .en{font-size:12.5px;line-height:1.4;color:#7a5c2e;margin:5px 0 0}
+.rayeq-bubble .name{display:flex;align-items:center;gap:7px;margin:0 0 6px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#b3771a}
+.rayeq-bubble .name:before{content:"";width:8px;height:8px;border-radius:50%;background:#e8a94d;box-shadow:0 0 8px #e8a94d}
+.rayeq-btns{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.rayeq-btns button{cursor:pointer;border:0;border-radius:999px;padding:7px 13px;font:700 12.5px/1 "DM Sans",system-ui,sans-serif;background:#3a2a12;color:#ffe9c9;transition:transform .15s,background .15s}
+.rayeq-btns button:hover{transform:translateY(-1px);background:#54401c}
+.rayeq-btns button.ghost{background:#00000014;color:#3a2a12;box-shadow:inset 0 0 0 1.5px #3a2a1240}
+.rayeq-btns button.ghost:hover{background:#00000022}
+.rayeq-spot{outline:3px solid #ffd36b !important;outline-offset:6px;border-radius:10px;box-shadow:0 0 0 8px #ffd36b22,0 0 40px -6px #ffd36b88 !important;transition:outline-color .3s,box-shadow .3s}
+@media(max-width:560px){.rayeq-bud{width:60px;height:66px}.rayeq-bubble .ar{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.rayeq-bud,.rayeq-bud:hover{transform:none}.rayeq-bubble{transition:none}}
