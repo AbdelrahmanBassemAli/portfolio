@@ -220,3 +220,30 @@ html[dir=rtl] .brand,html[dir=rtl] .cont-btn,html[dir=rtl] .search{direction:rtl
 .mq-dock{flex:none}
 @media(min-width:900px){.mock{padding:18px 16vw}}
 @media(prefers-reduced-motion:reduce){.mq-qcard.pop,.mq-fbc{animation:none}.mq-prog .bar b{transition:none}}
+
+/* ---- motion layer ---- */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
+.rv.in{opacity:1;transform:none}
+.area.sweep{animation:areaIn .4s cubic-bezier(.22,1,.36,1)}
+@keyframes areaIn{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:none}}
+.areas button,.quick button,.presets button,.parts-chips button,.subnav button,.bnav button,.l-done,.lang button,.view-sw button,.board-switch button,.primary,.cont-btn,.q-opts button{transition:transform .16s,border-color .2s,box-shadow .25s,background .25s,color .2s}
+.areas button:active,.quick button:active,.presets button:active,.parts-chips button:active,.subnav button:active,.bnav button:active,.l-done:active,.primary:active,.cont-btn:active,.q-opts button:active{transform:scale(.95)}
+.areas button:hover,.presets button:hover{box-shadow:0 0 16px -6px var(--cyan)}
+.hero-logo{animation:heroFloat 7s ease-in-out infinite}
+@keyframes heroFloat{50%{transform:translateY(-7px);box-shadow:0 14px 44px -8px #56e4ffcc}}
+.nova-head img{animation:novaPulse 5s ease-in-out infinite}
+@keyframes novaPulse{50%{box-shadow:0 0 26px -4px #ac8bff99;border-radius:16px}}
+.msg{animation:msgIn .3s cubic-bezier(.22,1,.36,1)}
+@keyframes msgIn{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
+.lesson.is-done .l-num{animation:donePop .45s cubic-bezier(.22,1,.36,1)}
+@keyframes donePop{0%{transform:scale(.4)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+.brand img{transition:box-shadow .3s}
+.brand:hover img{box-shadow:0 0 26px -4px #56e4ffcc}
+/* diagram figures */
+.l-fig.dg{padding:6px;background:#0a1230}
+.l-fig.dg svg{width:100%;height:auto;display:block;border-radius:9px}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .area.sweep,.hero-logo,.nova-head img,.msg,.lesson.is-done .l-num{animation:none}
+  *{scroll-behavior:auto}
+}

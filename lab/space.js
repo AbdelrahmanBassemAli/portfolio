@@ -82,6 +82,10 @@ const SP_PRESETS={ISS:[410,420],Star:[550,550],GPS:[20180,20180],GEO:[35786,3578
 const orb={rp:420,ra:420,M:0,tsim:0,last:0};
 let orbCtx,gCtx,gRecv={x:330,y:250},gClockErr=0,gMode=3;
 const OW=640,OH=440,GW=640,GH=360;
+/* motion extras (skipped under prefers-reduced-motion) */
+const SPM=matchMedia("(prefers-reduced-motion: reduce)");
+const ORBSTARS=Array.from({length:46},(_,i)=>({x:(i*131+40)%OW,y:(i*89+26)%(OH-30)+10,r:.7+(i%3)*.55,p:.5+(i%5)*.4}));
+orb.trail=[];let gPulseT=0,gLastRead="";
 
 function orbitClass(rpAlt,raAlt){
   const rp=RE+rpAlt,ra=RE+raAlt,a=(rp+ra)/2,e=(ra-rp)/(ra+rp);
@@ -148,7 +152,7 @@ function orbReadout(){
   const {a,e,T}=orbElems();
   document.getElementById("rpOut").textContent=orb.rp.toLocaleString("en")+" "+t("alt");
   document.getElementById("raOut").textContent=orb.ra.toLocaleString("en")+" "+t("alt");
-  orbDrawFrame.v=null;
+  orbDrawFrame.v=null;orb.trail.length=0;
 }
 const orbDrawFrame={v:null};
 function orbTick(ts){
@@ -164,6 +168,8 @@ function orbTick(ts){
   const c=orbCtx,cx=OW/2,cy=OH/2;
   c.clearRect(0,0,OW,OH);
   c.fillStyle="#071026";c.fillRect(0,0,OW,OH);
+  // twinkling starfield
+  if(!SPM.matches){c.fillStyle="#fff";for(const st of ORBSTARS){c.globalAlpha=.18+.3*(1+Math.sin(ts/850*st.p+st.x))/2;c.beginPath();c.arc(st.x,st.y,st.r,0,7);c.fill()}c.globalAlpha=1}
   // reference rings GEO
   c.strokeStyle="#ffffff14";c.setLineDash([4,6]);c.beginPath();c.arc(cx,cy,pxR(42164),0,7);c.stroke();c.setLineDash([]);
   // orbit path
@@ -177,8 +183,17 @@ function orbTick(ts){
   const fx=cx+55*Math.cos(ang),fy=cy-55*Math.sin(ang);
   c.strokeStyle="#ffd479";c.lineWidth=2;c.beginPath();c.moveTo(fx,fy);c.lineTo(cx+66*Math.cos(ang),cy-66*Math.sin(ang));c.stroke();
   c.fillStyle="#ffd479";c.beginPath();c.arc(cx+66*Math.cos(ang),cy-66*Math.sin(ang),3.5,0,7);c.fill();
-  // satellite
+  // satellite (with fading trail)
   const p=pxR(r),sx=cx+p*Math.cos(nu),sy=cy-p*Math.sin(nu);
+  if(!SPM.matches){
+    orb.trail.push({x:sx,y:sy});if(orb.trail.length>52)orb.trail.shift();
+    c.lineWidth=1.6;
+    for(let i=1;i<orb.trail.length;i++){
+      const a=i/orb.trail.length;
+      c.strokeStyle=`rgba(94,240,184,${(a*.5).toFixed(3)})`;
+      c.beginPath();c.moveTo(orb.trail[i-1].x,orb.trail[i-1].y);c.lineTo(orb.trail[i].x,orb.trail[i].y);c.stroke();
+    }
+  }else orb.trail.length=0;
   c.fillStyle="#5ef0b8";c.shadowColor="#5ef0b8";c.shadowBlur=12;c.beginPath();c.arc(sx,sy,6,0,7);c.fill();c.shadowBlur=0;
   c.strokeStyle="#5ef0b866";c.lineWidth=1;c.beginPath();c.moveTo(sx,sy);c.lineTo(cx,cy);c.stroke();
   document.getElementById("orbRead").innerHTML=
@@ -213,6 +228,10 @@ function gDraw(){
   const used=gMode===2?2:3;
   GSATS.forEach((s,i)=>{
     c.strokeStyle=cols[i]+(i<used?"cc":"33");c.lineWidth=1.5;c.beginPath();c.arc(s.x,s.y,Math.max(1,rho[i]),0,7);c.stroke();
+    // expanding signal pulse from each satellite in use
+    if(i<used&&!SPM.matches){const ph=(gPulseT*.45+i*.33)%1;
+      c.strokeStyle=cols[i]+Math.round((1-ph)*170).toString(16).padStart(2,"0");c.setLineDash([3,6]);c.lineWidth=1.2;
+      c.beginPath();c.arc(s.x,s.y,Math.max(1,rho[i]*ph),0,7);c.stroke();c.setLineDash([])}
     c.fillStyle=cols[i];c.fillRect(s.x-7,s.y-7,14,14);c.fillStyle="#050b1b";c.font="700 11px sans-serif";c.textAlign="center";c.fillText(i+1,s.x,s.y+4);
   });
   const est=gMode===2?gSolve(rho,2,false):gSolve(rho,3,true);
@@ -221,8 +240,19 @@ function gDraw(){
   c.fillStyle="#ffd479";c.beginPath();c.arc(gRecv.x,gRecv.y,7,0,7);c.fill();
   c.strokeStyle="#ff6b8a";c.lineWidth=2;c.beginPath();c.moveTo(est.x-7,est.y-7);c.lineTo(est.x+7,est.y+7);c.moveTo(est.x+7,est.y-7);c.lineTo(est.x-7,est.y+7);c.stroke();
   if(err>1.5){c.setLineDash([3,4]);c.beginPath();c.moveTo(gRecv.x,gRecv.y);c.lineTo(est.x,est.y);c.stroke();c.setLineDash([])}
-  document.getElementById("gRead").innerHTML=`<div><i>${t("gErr")}</i><b dir="ltr">${err<1.5?t("gErr0"):err.toFixed(0)+" px"}</b></div>`;
+  const readHTML=`<div><i>${t("gErr")}</i><b dir="ltr">${err<1.5?t("gErr0"):err.toFixed(0)+" px"}</b></div>`;
+  if(readHTML!==gLastRead){gLastRead=readHTML;document.getElementById("gRead").innerHTML=readHTML}
 }
+/* GNSS pulse driver: redraws the scene so the signal rings expand; cheap because
+   the DOM readout only updates when its text actually changes */
+let gLastTs=0;
+function gTick(ts){
+  requestAnimationFrame(gTick);
+  if(!gCtx||curArea!=="space"||SPM.matches)return;
+  if(ts-(gLastTs||0)<50)return; /* ~20fps is plenty for the pulses */
+  gLastTs=ts;gPulseT+=.05;gDraw();
+}
+requestAnimationFrame(gTick);
 buildSpace();
 EXT_RENDER.push(renderSpace);
 requestAnimationFrame(orbTick);

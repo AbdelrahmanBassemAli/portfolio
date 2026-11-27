@@ -33,7 +33,7 @@ function accHTML(items,openIdx){
         <span><span class="l-title">${d.title}</span><span class="l-tag">${d.tag||""}</span></span>
         <span class="l-arrow">▾</span>
       </button>
-      <div class="l-body">${L.img&&typeof PHOTOS!=="undefined"&&PHOTOS[L.img]?`<figure class="l-fig"><img loading="lazy" src="${PHOTOS[L.img].src}" alt="${PHOTOS[L.img].cap[LANG]}"><figcaption>${PHOTOS[L.img].cap[LANG]} · <a href="${PHOTOS[L.img].page}" target="_blank" rel="noopener">${PHOTOS[L.img].by}, ${PHOTOS[L.img].lic}</a></figcaption></figure>`:""}<p>${d.body}</p>${L.code?`<pre class="l-code"><code>${hi(L.code)}</code></pre>`:""}${d.cap?`<span class="l-cap">${d.cap}</span>`:""}<button type="button" class="l-done" data-k="${L.en.title.replace(/"/g,"&quot;")}"></button></div>
+      <div class="l-body">${L.img&&typeof PHOTOS!=="undefined"&&PHOTOS[L.img]?`<figure class="l-fig"><img loading="lazy" src="${PHOTOS[L.img].src}" alt="${PHOTOS[L.img].cap[LANG]}"><figcaption>${PHOTOS[L.img].cap[LANG]} · <a href="${PHOTOS[L.img].page}" target="_blank" rel="noopener">${PHOTOS[L.img].by}, ${PHOTOS[L.img].lic}</a></figcaption></figure>`:""}${L.dg&&typeof DIAG!=="undefined"&&DIAG[L.dg]?`<figure class="l-fig dg">${DIAG[L.dg](LANG)}</figure>`:""}<p>${d.body}</p>${L.code?`<pre class="l-code"><code>${hi(L.code)}</code></pre>`:""}${d.cap?`<span class="l-cap">${d.cap}</span>`:""}<button type="button" class="l-done" data-k="${L.en.title.replace(/"/g,"&quot;")}"></button></div>
     </div>`;}).join("");
 }
 function accBind(root){
