@@ -1,8 +1,6 @@
 "use strict";
-/* Orbitworks interview prep area: countdown, company briefing, study track, playbook, formulas, quiz.
+/* Orbitworks interview prep area: company briefing, study track, playbook, formulas, quiz.
    Depends on lab.js (STR, t, LANG), common.js (mountAcc), hub.js (IC, SUB, areaStats, store), ow-content.js, ow-nova.js. */
-const OW_TARGET=Date.parse("2026-12-01T13:00:00+04:00");   /* Tue 1 Dec 2026, 1:00 pm Dubai */
-const OW_END=OW_TARGET+30*60000;
 const OW_SRC=[
  ["Orbitworks: About","https://orbitworks.space/about/"],
  ["Orbitworks: Altair","https://orbitworks.space/altair/"],
@@ -16,11 +14,10 @@ const OW_SRC=[
  ["Orbitworks on LinkedIn","https://linkedin.com/company/orbitworksuae"]
 ];
 Object.assign(STR.en,{areaOw:"Orbitworks prep",navOw:"Orbitworks",
- areaDescOw:"Interview prep for Tuesday: company briefing, space navigation study track, playbook and NOVA mock interviews.",
+ areaDescOw:"Interview prep: company briefing, space navigation study track, playbook and NOVA mock interviews.",
  subOwBrief:"Briefing",subOwStudy:"Study track",subOwFormulas:"Formulas",subOwPlay:"Playbook",subOwQuiz:"Quiz",
- owTitle:"Orbitworks interview prep",owSub:"Recruiter call with Lobhana Ahale",owWhen:"Tue 1 Dec 2026 · 1:00 to 1:30 pm Dubai",
+ owTitle:"Orbitworks interview prep",owSub:"Company briefing and practice",
  owPractice:"Practise with NOVA",owAsk:"Ask NOVA",owStudy:"Start studying",owOpen:"Open prep",
- owLeft:"to go",owLive:"Call window now. You've got this.",owDone:"The call is done. Well done.",
  owBriefTitle:"Company briefing",owBriefHint:"What to know about Orbitworks before you speak to them. Every fact comes from public sources listed at the bottom.",
  owStudyTitle:"Space navigation study track",owStudyHint:"Twelve cards in the order a space-navigation graduate is most likely to be asked, each tied to what Orbitworks does. Open a card, read it, run the code, tap Mark as learned.",
  owFormTitle:"Formula and number sheet",owFormHint:"Numbers worth knowing by heart.",
@@ -34,17 +31,16 @@ Object.assign(STR.en,{areaOw:"Orbitworks prep",navOw:"Orbitworks",
  mqKp:"Key points to cover",mqSrcOw:"curated Orbitworks question bank + live AI feedback",
  mqOwCat1:"Recruiter screen",mqOwCat2:"Orbitworks and the mission",mqOwCat3:"Space navigation and systems",mqOwCat4:"Behavioural and fit"});
 Object.assign(STR.ar,{areaOw:"تحضير Orbitworks",navOw:"Orbitworks",
- areaDescOw:"تحضير مقابلة الثلاثاء: ملخص الشركة ومسار مذاكرة ملاحة الفضاء ودليل المقابلة ومقابلات تجريبية مع نوفا.",
+ areaDescOw:"تحضير للمقابلة: ملخص الشركة ومسار مذاكرة ملاحة الفضاء ودليل المقابلة ومقابلات تجريبية مع نوفا.",
  subOwBrief:"الملخص",subOwStudy:"المذاكرة",subOwFormulas:"المعادلات",subOwPlay:"الدليل",subOwQuiz:"اختبار",
- owTitle:"تحضير مقابلة Orbitworks",owSub:"مكالمة الريكروتر مع Lobhana Ahale",owWhen:"الثلاثاء 1 ديسمبر 2026 · 1:00 لـ 1:30 ظهرًا بتوقيت دبي",
+ owTitle:"تحضير مقابلة Orbitworks",owSub:"ملخص الشركة وتدريب عملي",
  owPractice:"اتمرن مع نوفا",owAsk:"اسأل نوفا",owStudy:"ابدأ المذاكرة",owOpen:"افتح التحضير",
- owLeft:"فاضل",owLive:"وقت المكالمة دلوقتي. إنت قدها.",owDone:"المكالمة خلصت. برافو عليك.",
  owBriefTitle:"ملخص الشركة",owBriefHint:"اللي لازم تعرفه عن Orbitworks قبل ما تكلمهم. كل معلومة من مصادر عامة مذكورة تحت.",
  owStudyTitle:"مسار مذاكرة ملاحة الفضاء",owStudyHint:"اتناشر كارت بالترتيب اللي خريج ملاحة فضاء غالبًا هيتسأل بيه، وكل واحد مربوط بشغل Orbitworks. افتح الكارت واقرا وشغّل الكود وعلّم إنه اتعلّم.",
  owFormTitle:"ورقة المعادلات والأرقام",owFormHint:"أرقام تستاهل تحفظها.",
  owPlayTitle:"دليل المقابلة",owPlayHint:"المكالمة بتمشي إزاي وتعريفك وهياكل الإجابات وتسأل إيه.",
  owQuizTitle:"اختبار الفضاء وOrbitworks",owQuizHint:"تمان أسئلة سريعة. أفضل نتيجة بتتحفظ على جهازك.",
- owStats:"نظرة سريعة",owAccess:"تلات طرق للوصول للفضاء",owTime:"الخط الزمني",owProcess:"مراحل التوظيف",owHere:"مكالمتك غالبًا هنا",
+ owStats:"نظرة سريعة",owAccess:"تلات طرق للوصول للفضاء",owTime:"الخط الزمني",owProcess:"مراحل التوظيف",owHere:"الخطوة التعريفية غالبًا هنا",
  owMap:"فين مهاراتك تناسب",owTalk:"نقاط للكلام",owSrc:"المصادر",owVerify:"المعلومات لحد 27 نوفمبر 2026 من المصادر تحت. بص على الموقع تاني يوم الاثنين لأي أخبار.",
  owProg:"اتعلّم",
  mqTrackL:"مسار المقابلة",mqTrackOw:"Orbitworks (الفضاء)",mqTrackTr:"مدرّب ذكاء اصطناعي وروبوتكس",
@@ -57,23 +53,6 @@ AREAS.push("ow");
 SUB.ow=[["#owBrief","subOwBrief"],["#owStudy","subOwStudy",1],["#owFormulas","subOwFormulas"],["#owPlay","subOwPlay",1],["#quiz-ow","subOwQuiz"]];
 
 const owT=(en,ar)=>LANG==="ar"?ar:en;
-function owCountdown(){
-  const now=Date.now(),d=OW_TARGET-now;
-  let big,small="";
-  if(d>0){
-    const days=Math.floor(d/864e5),h=Math.floor(d%864e5/36e5),m=Math.floor(d%36e5/6e4);
-    const nf=n=>LANG==="ar"?String(n).replace(/\d/g,x=>"٠١٢٣٤٥٦٧٨٩"[x]):String(n);
-    big=LANG==="ar"?`${nf(days)} يوم ${nf(h)} ساعة ${nf(m)} دقيقة`:`${days}d ${h}h ${m}m`;
-    small=t("owLeft");
-  }else if(now<OW_END){big=t("owLive")}else{big=t("owDone")}
-  return {big,small,live:d<=0&&now<OW_END};
-}
-function owTick(){
-  const c=owCountdown();
-  document.querySelectorAll(".ow-cd").forEach(el=>{el.querySelector("b").textContent=c.big;el.querySelector("small").textContent=c.small;el.classList.toggle("live",c.live)});
-}
-setInterval(owTick,30000);
-const owCdHTML=()=>{const c=owCountdown();return `<div class="ow-cd${c.live?" live":""}" role="timer"><span class="ow-dot" aria-hidden="true"></span><b>${c.big}</b><small>${c.small}</small></div>`};
 const OW_RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const OW_ORBIT=(()=>{
  const mot=(d,path)=>OW_RM?"":`<animateMotion dur="${d}" repeatCount="indefinite" path="${path}" rotate="auto"/>`;
@@ -139,8 +118,6 @@ function renderOw(){
    <div class="ow-hero-txt">
     <span class="ow-kicker">${t("owSub")}</span>
     <h2>${t("owTitle")}</h2>
-    <p class="ow-when">${t("owWhen")}</p>
-    ${owCdHTML()}
     <div class="prog"><div class="bar"><b style="width:${s.total?Math.round(s.done/s.total*100):0}%"></b></div><small>${s.done}/${s.total} ${t("owProg")}</small></div>
     <div class="ow-cta"><button type="button" class="primary" id="owGoMock">${t("owPractice")}</button><button type="button" class="ghost" id="owGoStudy">${t("owStudy")}</button><button type="button" class="ghost" id="owGoNova">${t("owAsk")}</button></div>
    </div>
@@ -168,7 +145,7 @@ renderHome=function(){
   const hero=document.querySelector("#homeRoot .hero");if(!hero)return;
   hero.insertAdjacentHTML("afterend",`<article class="ow-banner" id="owBanner" tabindex="0" role="link" aria-label="${t("owTitle")}">
     <div class="ow-b-art" aria-hidden="true">${OW_ORBIT}</div>
-    <div class="ow-b-txt"><span class="ow-kicker">${t("owWhen")}</span><h3>${t("owTitle")}</h3><p>${t("areaDescOw")}</p>${owCdHTML()}
+    <div class="ow-b-txt"><span class="ow-kicker">${t("owSub")}</span><h3>${t("owTitle")}</h3><p>${t("areaDescOw")}</p>
     <div class="ow-cta"><button type="button" class="primary" data-owgo="open">${t("owOpen")} →</button><button type="button" class="ghost" data-owgo="mock">${t("owPractice")}</button></div></div></article>`);
   const b=document.getElementById("owBanner");
   const go=()=>{setArea("ow");window.scrollTo({top:0,behavior:"smooth"})};
@@ -179,7 +156,6 @@ renderHome=function(){
 /* ---------- wiring ---------- */
 buildOw();
 EXT_RENDER.push(renderOw);
-window.addEventListener("areachange",()=>{if(curArea==="ow")owTick()});
 
 /* ---------- mock interview: Orbitworks track helpers ---------- */
 const OW_ORDER=[1,2,3,3,4,3,2,3,3,4];
@@ -209,4 +185,4 @@ function owHeuristic(ans,kp){
   return {score:s,strong,missing,hint};
 }
 document.querySelectorAll(".areas button[data-area=ow] i").forEach(i=>{i.innerHTML=ic("ow")});
-window.OW_SYS=`\n\nINTERVIEW PREP MODE: The student is a fresh space-navigation graduate preparing for a recruiter call with Orbitworks (UAE satellite company) on Tuesday 1 Dec 2026. Orbitworks interview preparation, company questions, space navigation (orbital mechanics, GNSS, orbit determination, attitude determination and control, satellite subsystems, Earth observation, ground operations) and interview technique are all on topic, in addition to the topics above. When asked to quiz, ask ONE question at a time, wait for the answer, then give short feedback.\n\n${OW_FACTS}`;
+window.OW_SYS=`\n\nINTERVIEW PREP MODE: The student is a fresh space-navigation graduate preparing for an interview with Orbitworks (UAE satellite company). Orbitworks interview preparation, company questions, space navigation (orbital mechanics, GNSS, orbit determination, attitude determination and control, satellite subsystems, Earth observation, ground operations) and interview technique are all on topic, in addition to the topics above. When asked to quiz, ask ONE question at a time, wait for the answer, then give short feedback.\n\n${OW_FACTS}`;

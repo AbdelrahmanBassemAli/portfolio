@@ -36,10 +36,6 @@
 .ow-hero h2{margin:6px 0 4px;font-size:clamp(26px,5.5vw,38px);line-height:1.15;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--gold),var(--cyan));background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:owShim 10s linear infinite}
 .ow-kicker{display:inline-block;font:700 12px/1 inherit;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:#ffd4791a;border:1px solid #ffd47933;border-radius:999px;padding:6px 12px}
 .ow-when{margin:6px 0 14px;color:var(--muted)}
-.ow-cd{display:inline-flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:12px 18px;border-radius:16px;border:1px solid #56e4ff44;background:#071026cc;margin:0 0 14px}
-.ow-cd b{font:800 clamp(20px,5vw,28px)/1.1 inherit;color:var(--ink);font-variant-numeric:tabular-nums}
-.ow-cd small{color:var(--muted);font-size:14px}
-.ow-cd.live{border-color:var(--aurora);box-shadow:0 0 28px -8px var(--aurora)}
 .ow-dot{align-self:center;width:9px;height:9px;border-radius:50%;background:var(--aurora);box-shadow:0 0 0 0 #5ef0b8aa;animation:owPulse 2s infinite}
 @keyframes owPulse{70%{box-shadow:0 0 0 10px #5ef0b800}100%{box-shadow:0 0 0 0 #5ef0b800}}
 .ow-hero .prog{max-width:420px;margin:0 0 16px}
@@ -55,7 +51,6 @@
 .ow-b-art .ow-orbsvg{max-width:150px}
 .ow-b-txt h3{margin:8px 0 4px;font-size:clamp(20px,4.5vw,26px)}
 .ow-b-txt p{margin:0 0 12px;color:var(--muted);max-width:56ch}
-.ow-banner .ow-cd{padding:9px 14px;margin-bottom:12px}.ow-banner .ow-cd b{font-size:20px}
 
 /* ----- briefing ----- */
 .ow-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:6px}
