@@ -1,21 +1,64 @@
-/* El-Rayeq (الرايق) — chill cartoon guide for the portfolio. No dependencies. */
-.rayeq-wrap{position:fixed;left:14px;bottom:14px;z-index:60;display:flex;flex-direction:column;align-items:flex-start;gap:8px;font-family:"DM Sans",system-ui,sans-serif}
-.rayeq-bud{width:72px;height:78px;cursor:pointer;border:0;background:none;padding:0;filter:drop-shadow(0 6px 14px #0007);transition:transform .25s}
-.rayeq-bud:hover{transform:translateY(-4px) rotate(-3deg)}
-.rayeq-bud:focus-visible{outline:2px solid #ffd36b;outline-offset:3px;border-radius:18px}
-.rayeq-bud svg{width:100%;height:100%;display:block}
+/* Mascot guide — ORBIT's little sibling: same flat robot family, dark themed bubble.
+   No dependencies. Additive only: nothing outside .rayeq-* / .rq-* is touched. */
+
+.rayeq-wrap{position:fixed;right:186px;bottom:14px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-family:"DM Sans",system-ui,sans-serif}
 .rayeq-wrap[data-hidden="1"]{display:none}
-.rayeq-bubble{max-width:min(300px,calc(100vw - 40px));background:linear-gradient(150deg,#fff8ec,#ffe9c9);color:#3a2a12;border:2px solid #e8a94d;border-radius:18px 18px 18px 4px;padding:12px 14px;box-shadow:0 14px 34px -8px #0009;opacity:0;transform:translateY(8px) scale(.96);transform-origin:bottom left;transition:opacity .25s,transform .25s;pointer-events:none}
+
+.rayeq-bud{width:78px;height:88px;cursor:pointer;border:0;background:none;padding:0;filter:drop-shadow(0 8px 14px #0008);transition:transform .25s}
+.rayeq-bud:hover{transform:translateY(-4px)}
+.rayeq-bud:focus-visible{outline:2px solid #56e4ff;outline-offset:3px;border-radius:18px}
+.rayeq-bud svg{width:100%;height:100%;display:block;overflow:visible}
+
+/* --- mascot motion (inline SVG classes) --- */
+.rq-float{animation:rq-bob 3.4s ease-in-out infinite}
+@keyframes rq-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3.4px)}}
+.rq-flame{animation:rq-flame .5s ease-in-out infinite alternate;transform-origin:48px 88px}
+@keyframes rq-flame{from{transform:scaleY(.72);opacity:.65}to{transform:scaleY(1.06);opacity:1}}
+.rq-eye{animation:rq-blink 4.8s infinite;transform-box:fill-box;transform-origin:center}
+.rq-eye.e2{animation-delay:.06s}
+@keyframes rq-blink{0%,91%,100%{transform:scaleY(1)}94%{transform:scaleY(.12)}}
+.rq-eyes{filter:drop-shadow(0 0 3px #56e4ff)}
+.rayeq-wrap[data-wave="1"] .rq-arm{animation:rq-wave 1s ease-in-out 3;transform-origin:65px 66px}
+@keyframes rq-wave{0%,100%{transform:rotate(0)}25%{transform:rotate(-38deg)}75%{transform:rotate(14deg)}}
+.rq-head{transition:transform .18s ease-out}
+
+/* --- speech bubble: same family as ORBIT's (dark navy, cyan edge) --- */
+.rayeq-bubble{position:relative;max-width:min(300px,calc(100vw - 40px));margin-right:6px;
+ background:linear-gradient(135deg,#101c4af4,#1b1458f4);color:#eaf3ff;
+ border:1px solid #56e4ff55;border-radius:16px 16px 4px 16px;padding:12px 14px;
+ box-shadow:0 14px 40px -10px #000a,0 0 24px -8px #56e4ff66;
+ -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+ opacity:0;transform:translateY(8px) scale(.96);transform-origin:bottom right;
+ transition:opacity .25s,transform .25s;pointer-events:none}
 .rayeq-bubble.on{opacity:1;transform:none;pointer-events:auto}
+.rayeq-bubble:after{content:"";position:absolute;right:26px;bottom:-6px;width:11px;height:11px;
+ background:#17185a;border:solid #56e4ff55;border-width:0 1px 1px 0;transform:rotate(45deg);border-radius:0 0 3px}
 .rayeq-bubble .ar{direction:rtl;text-align:right;font-weight:700;font-size:15px;line-height:1.5;margin:0}
-.rayeq-bubble .en{font-size:12.5px;line-height:1.4;color:#7a5c2e;margin:5px 0 0}
-.rayeq-bubble .name{display:flex;align-items:center;gap:7px;margin:0 0 6px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#b3771a}
-.rayeq-bubble .name:before{content:"";width:8px;height:8px;border-radius:50%;background:#e8a94d;box-shadow:0 0 8px #e8a94d}
-.rayeq-btns{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
-.rayeq-btns button{cursor:pointer;border:0;border-radius:999px;padding:7px 13px;font:700 12.5px/1 "DM Sans",system-ui,sans-serif;background:#3a2a12;color:#ffe9c9;transition:transform .15s,background .15s}
-.rayeq-btns button:hover{transform:translateY(-1px);background:#54401c}
-.rayeq-btns button.ghost{background:#00000014;color:#3a2a12;box-shadow:inset 0 0 0 1.5px #3a2a1240}
-.rayeq-btns button.ghost:hover{background:#00000022}
-.rayeq-spot{outline:3px solid #ffd36b !important;outline-offset:6px;border-radius:10px;box-shadow:0 0 0 8px #ffd36b22,0 0 40px -6px #ffd36b88 !important;transition:outline-color .3s,box-shadow .3s}
-@media(max-width:560px){.rayeq-bud{width:60px;height:66px}.rayeq-bubble .ar{font-size:14px}}
-@media(prefers-reduced-motion:reduce){.rayeq-bud,.rayeq-bud:hover{transform:none}.rayeq-bubble{transition:none}}
+.rayeq-bubble .en{font-size:12.5px;line-height:1.4;color:#9fb4d8;margin:5px 0 0}
+.rayeq-bubble .name{display:flex;align-items:center;gap:7px;margin:0 0 6px;
+ font:700 11px/1 "Space Grotesk","DM Sans",system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#ffd36b}
+.rayeq-bubble .name:before{content:"";width:7px;height:7px;border-radius:50%;background:#ffd36b;box-shadow:0 0 8px #ffd36b}
+.rayeq-btns{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;justify-content:flex-end}
+.rayeq-btns button{cursor:pointer;border:0;border-radius:999px;padding:7px 13px;
+ font:700 12.5px/1 "DM Sans",system-ui,sans-serif;
+ background:linear-gradient(135deg,#56e4ff,#3fb0f0);color:#052038;
+ transition:transform .15s,box-shadow .15s}
+.rayeq-btns button:hover{transform:translateY(-1px);box-shadow:0 6px 16px -6px #56e4ffcc}
+.rayeq-btns button.ghost{background:transparent;color:#cfe6ff;box-shadow:inset 0 0 0 1.5px #56e4ff66}
+.rayeq-btns button.ghost:hover{background:#56e4ff1a;box-shadow:inset 0 0 0 1.5px #56e4ff99}
+
+/* tour spotlight */
+.rayeq-spot{outline:3px solid #ffd36b !important;outline-offset:6px;border-radius:10px;
+ box-shadow:0 0 0 8px #ffd36b22,0 0 40px -6px #ffd36b88 !important;
+ transition:outline-color .3s,box-shadow .3s}
+
+@media(max-width:780px){
+ .rayeq-wrap{right:92px;bottom:8px}
+ .rayeq-bud{width:56px;height:64px}
+ .rayeq-bubble .ar{font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){
+ .rayeq-bud,.rayeq-bud:hover{transform:none}
+ .rayeq-bubble{transition:none}
+ .rq-float,.rq-flame,.rq-eye,.rq-arm{animation:none!important}
+}

@@ -1,6 +1,13 @@
-/* El-Rayeq — the chill guide. Vanilla JS, no deps, no network calls. */
+/* Mascot guide — ORBIT's little sibling. Vanilla JS, no deps, no network calls. */
 (function(){
 "use strict";
+
+/* ============================================================
+   MASCOT NAME — edit these two lines only to rename the guide.
+   ============================================================ */
+var NAME_AR="نجم";
+var NAME_EN="Najm";
+
 var LS_HELLO="rayeq-hello-v1", SS_HIDE="rayeq-hidden";
 var REDUCE=matchMedia("(prefers-reduced-motion:reduce)").matches;
 if(sessionStorage.getItem(SS_HIDE))return;
@@ -10,7 +17,7 @@ var STEPS=[
  ["about","هنا حكايته بنفسه: منين بدأ، وإيه اللي خلاه ماسك في الفضاء من صغره.","His own story: where he started and why space never let go of him."],
  ["skills","عدة الشغل كلها هنا… لغات وأنظمة وأدوات، كل واحدة اتعلمها بمشروع حقيقي.","The full toolkit. Every skill here was earned on a real build."],
  ["projects","دي التحف! مشاريع مكسّرة الدنيا، دوس على أي واحد وشوف التفاصيل.","The good stuff. Tap any project, the details are worth it."],
- ["rover","الروفر بقا… ده شغل عجول وكاميرات حقيقية، مش رسم على ورق. شغّل الفيديو واستمتع.","The rover. Real wheels, real footage, not slideware. Press play."],
+ ["rover","الروفر بقا… ده شغل عجلات وكاميرات حقيقية، مش رسم على ورق. شغّل الفيديو واستمتع.","The rover. Real wheels, real footage, not slideware. Press play."],
  ["experience","الخبرات الحقيقية: شغل اتعمل بإيد، ومهمات اتسلمت بجد.","Hands-on experience. Real missions, actually shipped."],
  ["mentorship","وبيعلّم كمان! بياخد عيال وشباب ويدخلهم عالم التكنولوجيا من أوسع أبوابه.","He teaches too, bringing young builders into tech properly."],
  ["teaching-portfolio","خطط الدروس والمناهج بتاعته، منظمها زي مهندس ما ينظم محطة فضاء.","His lesson plans and curriculum, organized like a mission checklist."],
@@ -20,39 +27,59 @@ var STEPS=[
  ["contact","وصلنا الآخر الرحلة! عجبك اللي شوفته؟ كلمه من هنا، بيرد بجد.","End of the ride. Like what you saw? Say hi from here, he actually replies."]
 ];
 
+/* Chibi hover-robot in ORBIT's flat design family: same shell/visor gradients,
+   cyan visor eyes, chest planet badge, jet flame — with a gold antenna light. */
 var SVG=''
-+'<svg viewBox="0 0 72 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
++'<svg viewBox="0 0 96 108" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
 +'<defs>'
-+'<linearGradient id="rq-glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dff4ff"/><stop offset="1" stop-color="#9fd8f2"/></linearGradient>'
-+'<linearGradient id="rq-suit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe7f2"/></linearGradient>'
++'<linearGradient id="rq-shell" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5faff"/><stop offset=".38" stop-color="#c5d8f1"/><stop offset=".7" stop-color="#6882ae"/><stop offset="1" stop-color="#1b3158"/></linearGradient>'
++'<linearGradient id="rq-visor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#183651"/><stop offset=".45" stop-color="#071627"/><stop offset="1" stop-color="#020912"/></linearGradient>'
++'<linearGradient id="rq-jet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ef3ff" stop-opacity=".8"/><stop offset=".4" stop-color="#ae8bff" stop-opacity=".35"/><stop offset="1" stop-color="#ac8bff" stop-opacity="0"/></linearGradient>'
++'<radialGradient id="rq-aura"><stop offset="0" stop-color="#77deff" stop-opacity=".22"/><stop offset="1" stop-color="#77deff" stop-opacity="0"/></radialGradient>'
 +'</defs>'
-+'<line x1="36" y1="11" x2="36" y2="4" stroke="#c8d6ea" stroke-width="2.4" stroke-linecap="round"/>'
-+'<circle cx="36" cy="3.6" r="2.6" fill="#ffb84d"><animate attributeName="opacity" values="1;.4;1" dur="1.6s" repeatCount="indefinite"/></circle>'
++'<ellipse cx="48" cy="103" rx="24" ry="5" fill="url(#rq-aura)"/>'
 +'<g class="rq-float">'
-+'<g class="rq-arm"><circle cx="57" cy="47" r="6.4" fill="url(#rq-suit)" stroke="#b9c6da" stroke-width="1.6"/></g>'
-+'<path d="M20 74c0-10 7-15 16-15s16 5 16 15z" fill="url(#rq-suit)" stroke="#b9c6da" stroke-width="1.6"/>'
-+'<path d="M26 64h20" stroke="#ce1126" stroke-width="2.6" stroke-linecap="round"/>'
-+'<path d="M29 67.5h14" stroke="#e8a94d" stroke-width="2.2" stroke-linecap="round"/>'
-+'<rect x="31" y="62" width="10" height="7" rx="2.4" fill="#56e4ff" opacity=".9"/>'
-+'<circle cx="36" cy="34" r="23" fill="url(#rq-glass)" stroke="#ffffff" stroke-width="2.6" opacity=".97"/>'
-+'<ellipse cx="27" cy="25" rx="7" ry="4.4" fill="#ffffff" opacity=".55" transform="rotate(-24 27 25)"/>'
-+'<circle cx="36" cy="37" r="14.5" fill="#f4c491"/>'
-+'<g class="rq-head">'
-+'<rect x="24.5" y="31.5" width="10" height="7.2" rx="3.2" fill="#1c2233"/>'
-+'<rect x="37.5" y="31.5" width="10" height="7.2" rx="3.2" fill="#1c2233"/>'
-+'<path d="M34.5 34.4h3" stroke="#1c2233" stroke-width="2" stroke-linecap="round"/>'
-+'<path d="M26.5 33.4l3-1.4M39.5 33.4l3-1.4" stroke="#ffffff88" stroke-width="1.4" stroke-linecap="round"/>'
-+'<path d="M31.5 44.5q4.5 3 9 .4" fill="none" stroke="#8a5a2b" stroke-width="1.8" stroke-linecap="round"/>'
+/* hover flame */
++'<path class="rq-flame" d="M42 88 Q40 100 48 103 Q56 100 54 88 Z" fill="url(#rq-jet)"/>'
+/* left arm (resting) */
++'<path d="M31 66 q-9 2 -10 12" fill="none" stroke="#7795bc" stroke-width="7" stroke-linecap="round"/>'
++'<path d="M31 66 q-9 2 -10 12" fill="none" stroke="#c5e0f4" stroke-width="3.5" stroke-linecap="round"/>'
++'<circle cx="21" cy="79" r="4.6" fill="url(#rq-shell)" stroke="#8bb7d5" stroke-width="1.4"/>'
+/* right arm (raised, waves) */
++'<g class="rq-arm">'
++'<path d="M65 66 q9 -1 11 -10" fill="none" stroke="#7795bc" stroke-width="7" stroke-linecap="round"/>'
++'<path d="M65 66 q9 -1 11 -10" fill="none" stroke="#d0e9fb" stroke-width="3.5" stroke-linecap="round"/>'
++'<circle cx="77" cy="54" r="4.6" fill="url(#rq-shell)" stroke="#86a8d2" stroke-width="1.4"/>'
++'</g>'
+/* body */
++'<rect x="29" y="62" width="38" height="27" rx="11" fill="url(#rq-shell)" stroke="#8fbee0" stroke-width="1.6"/>'
++'<circle cx="48" cy="75" r="6.5" fill="#07172e" stroke="#56e4ff" stroke-width="1.2"/>'
++'<ellipse cx="48" cy="75" rx="10" ry="3" transform="rotate(-30 48 75)" fill="none" stroke="#ac8bff" stroke-width="1"/>'
++'<circle cx="52" cy="71.5" r="1.1" fill="#8feeff"/>'
++'<circle cx="41" cy="84.5" r="1.3" fill="#ce1126"/>'
++'<circle cx="48" cy="84.5" r="1.3" fill="#ffffff"/>'
++'<circle cx="55" cy="84.5" r="1.3" fill="#e8a94d"/>'
+/* antenna with gold light */
++'<path d="M48 15 V9" stroke="#95bce0" stroke-width="2.6" stroke-linecap="round"/>'
++'<circle cx="48" cy="6.8" r="3" fill="#ffd36b" stroke="#d9a94d" stroke-width="1"><animate attributeName="opacity" values="1;.35;1" dur="1.6s" repeatCount="indefinite"/></circle>'
+/* ear pods */
++'<rect x="13" y="33" width="6.5" height="13" rx="3" fill="#1d3d60" stroke="#8499c4" stroke-width="1.2"/>'
++'<rect x="76.5" y="33" width="6.5" height="13" rx="3" fill="#1d3d60" stroke="#8499c4" stroke-width="1.2"/>'
+/* head shell + visor */
++'<rect x="17" y="17" width="62" height="42" rx="15" fill="url(#rq-shell)" stroke="#a0d3ef" stroke-width="1.8"/>'
++'<path d="M23 22 h40 q8 0 10 5" fill="none" stroke="#f0fbff" stroke-width="2" stroke-opacity=".8" stroke-linecap="round"/>'
++'<rect x="23" y="23.5" width="50" height="31" rx="11.5" fill="url(#rq-visor)" stroke="#335b7c" stroke-width="1.5"/>'
++'<path d="M27 27 q21 -6 42 -2" fill="none" stroke="#6e9dbd" stroke-width="2.5" stroke-opacity=".25"/>'
+/* face (follows the cursor) */
++'<g class="rq-head"><g class="rq-eyes">'
++'<rect class="rq-eye" x="31.5" y="31" width="8.5" height="11" rx="4.2" fill="#71edff"/>'
++'<rect class="rq-eye e2" x="56" y="31" width="8.5" height="11" rx="4.2" fill="#71edff"/>'
++'<circle cx="34.5" cy="34" r="1.3" fill="#e8ffff"/>'
++'<circle cx="59" cy="34" r="1.3" fill="#e8ffff"/>'
++'</g>'
++'<path d="M42 47.5 q6 4.5 12 0" fill="none" stroke="#71edff" stroke-width="2" stroke-linecap="round"/>'
 +'</g>'
 +'</g></svg>';
-
-var CSS_ANIM=''
-+'.rq-float{animation:rq-bob 3.4s ease-in-out infinite;transform-origin:36px 40px}'
-+'@keyframes rq-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3.4px)}}'
-+'.rayeq-wrap[data-wave="1"] .rq-arm{animation:rq-wave 1s ease-in-out 3;transform-origin:57px 47px}'
-+'@keyframes rq-wave{0%,100%{transform:rotate(0)}25%{transform:rotate(-40deg) translateY(-3px)}75%{transform:rotate(14deg)}}'
-+'.rq-head{transition:transform .18s ease-out;transform-origin:36px 37px}'
-+'@media(prefers-reduced-motion:reduce){.rq-float,.rq-arm{animation:none!important}}';
 
 var wrap,bud,bub,pAr,pEn,btns,tourIdx=-1,touring=false,spotEl=null,idleT=null;
 
@@ -62,17 +89,19 @@ function build(){
  wrap=el("div","rayeq-wrap");
  bud=el("button","rayeq-bud");
  bud.type="button";
- bud.setAttribute("aria-label","الرايق — El-Rayeq, your chill site guide");
+ bud.setAttribute("aria-label",NAME_AR+" — "+NAME_EN+", your site guide");
  bud.innerHTML=SVG;
- var st=document.createElement("style");st.textContent=CSS_ANIM;document.head.appendChild(st);
  bub=el("div","rayeq-bubble");
  bub.setAttribute("role","status");bub.setAttribute("aria-live","polite");
- var nm=el("p","name");nm.textContent="الرايق · El-Rayeq";bub.appendChild(nm);
+ var nm=el("p","name");nm.textContent=NAME_AR+" · "+NAME_EN;bub.appendChild(nm);
  pAr=el("p","ar");pEn=el("p","en");btns=el("div","rayeq-btns");
  bub.appendChild(pAr);bub.appendChild(pEn);bub.appendChild(btns);
  wrap.appendChild(bub);wrap.appendChild(bud);
  document.body.appendChild(wrap);
- bud.addEventListener("click",function(){touring?null:(bub.classList.contains("on")?hideBubble():menu())});
+
+ bud.addEventListener("click",function(){
+  touring?null:(bub.classList.contains("on")?hideBubble():menu());
+ });
  document.addEventListener("keydown",function(e){if(e.key==="Escape"){touring?endTour():hideBubble()}});
  if(!REDUCE){
   document.addEventListener("pointermove",function(e){
@@ -96,8 +125,8 @@ function show(ar,en,list){
 }
 
 function greet(){
- show("أهلاً بيك في موقع عبد الرحمن! أنا الرايق، هلفّ بيك المكان كله في دقيقة… يلا؟",
-  "Welcome to Abdelrahman's site! I'm El-Rayeq, your chill guide. One-minute tour?",
+ show("أهلاً بيك في موقع عبد الرحمن! أنا "+NAME_AR+"، هلفّ بيك المكان كله في دقيقة… يلا؟",
+  "Welcome to Abdelrahman's site! I'm "+NAME_EN+", your guide. One-minute tour?",
   [["يلا بينا 🚀",startTour],["بعدين / Later",function(){hideBubble();idleNudge()},true]]);
 }
 
@@ -106,7 +135,7 @@ function menu(){
   [["وريني الموقع 🚀",startTour],["مين انت؟",who,true],["اختفي 👋",bye,true]]);
 }
 function who(){
- show("أنا الرايق… أهدى مرشد في المجرة. شغلتي أشرحلك الموقع وانت مرتاح على كرسيك.","I'm El-Rayeq, the chillest guide in the galaxy. I explain the site, you stay comfy.",
+ show("أنا "+NAME_AR+"… مرشدك هنا. شغلتي أشرحلك الموقع وانت مرتاح على كرسيك.","I'm "+NAME_EN+", your guide. I explain the site, you stay comfy.",
   [["وريني الموقع 🚀",startTour],["تمام 👍",hideBubble,true]]);
 }
 function bye(){
@@ -137,7 +166,7 @@ function endTour(){
  if(spotEl)spotEl.classList.remove("rayeq-spot");spotEl=null;
  confetti();
  show("كده شفت كل حاجة! أي حتة عجبتك ارجعلها براحتك… وأنا موجود لو احتجتني.","That's the whole tour! Wander anywhere you like, I'm right here if you need me.",
-  [["شكراً يا رايق ❤️",function(){hideBubble();idleNudge()}]]);
+  [["شكراً ❤️",function(){hideBubble();idleNudge()}]]);
 }
 
 function confetti(){
@@ -145,7 +174,8 @@ function confetti(){
  var c=el("canvas");c.style.cssText="position:fixed;inset:0;pointer-events:none;z-index:70";
  c.width=innerWidth;c.height=innerHeight;document.body.appendChild(c);
  var x=c.getContext("2d"),cols=["#ce1126","#e8a94d","#56e4ff","#ffffff","#7dffb0"],ps=[],t0=performance.now();
- for(var i=0;i<90;i++)ps.push({x:innerWidth/2+(Math.random()-.5)*140,y:innerHeight-90,vx:(Math.random()-.5)*9,vy:-Math.random()*11-4,g:.22,r:Math.random()*4+2,c:cols[i%5],a:Math.random()*6.28,va:(Math.random()-.5)*.3});
+ var ox=innerWidth-225,oy=innerHeight-90;
+ for(var i=0;i<90;i++)ps.push({x:ox+(Math.random()-.5)*140,y:oy,vx:(Math.random()-.5)*9,vy:-Math.random()*11-4,g:.22,r:Math.random()*4+2,c:cols[i%5],a:Math.random()*6.28,va:(Math.random()-.5)*.3});
  (function fr(t){
   x.clearRect(0,0,c.width,c.height);
   ps.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.a+=p.va;
