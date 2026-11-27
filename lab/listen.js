@@ -363,7 +363,7 @@ async function lsAnswer(q){
   lsEl("lsA").textContent=t("lsThinking");lsEl("lsA").dataset.waiting="";lsEl("lsSrc").textContent="";
   let ans=null,online=false;
   if(!forceOffline){
-    const msgs=[{role:"system",content:COACH+"\nPROFILE: "+(localStorage.getItem("lab-profile")||"(none saved)")},...LS.hist.slice(-4),{role:"user",content:"Heard: "+q}];
+    const msgs=[{role:"system",content:COACH+"\nPROFILE: "+(localStorage.getItem("lab-profile")||"(none saved)")},...LS.hist.slice(-6),{role:"user",content:"Heard: "+q}];
     ans=await askRemote(msgs);online=!!ans;
   }
   if(!ans){
@@ -374,7 +374,7 @@ async function lsAnswer(q){
   lsEl("lsA").textContent=ans;lsEl("lsA").dataset.waiting="";
   lsEl("lsSrc").textContent=online?"✦ "+t("lsOnline"):t("lsOffline");
   LS.hist.push({role:"user",content:"Heard: "+q},{role:"assistant",content:ans});
-  if(LS.hist.length>8)LS.hist=LS.hist.slice(-8);
+  if(LS.hist.length>12)LS.hist=LS.hist.slice(-12);
   LS.busy=false;LS.state=LS.on?"listen":(LS.open?"ready":"off");lsRenderState();
   lsEl("lsACard").scrollIntoView({behavior:"smooth",block:"nearest"});
   if(LS.queue){const n=LS.queue;LS.queue=null;lsAnswer(n)}
