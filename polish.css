@@ -1,0 +1,24 @@
+/* Site polish: additive overlays only. No existing selectors restyled. */
+
+/* scroll progress bar */
+.pls-bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:80;pointer-events:none;
+ background:linear-gradient(90deg,#56e4ff,#ae8bff 55%,#ff7bd5);
+ box-shadow:0 0 12px #56e4ff88;border-radius:0 3px 3px 0}
+.pls-bar:after{content:"";position:absolute;right:-3px;top:50%;width:9px;height:9px;border-radius:50%;
+ background:#fff;box-shadow:0 0 10px 3px #ae8bffcc;transform:translateY(-50%)}
+
+/* aurora cursor glow */
+.pls-glow{position:fixed;left:0;top:0;width:520px;height:520px;z-index:1;pointer-events:none;
+ border-radius:50%;opacity:.16;filter:blur(10px);
+ background:radial-gradient(circle,#56e4ff66 0%,#ae8bff33 38%,transparent 68%);
+ transform:translate(-50%,-50%);mix-blend-mode:screen;transition:opacity .5s}
+body.pls-day .pls-glow{opacity:.09}
+
+/* themed scrollbar */
+html{scrollbar-color:#3b4a7a #0a1230}
+::-webkit-scrollbar{width:11px}
+::-webkit-scrollbar-track{background:#0a1230}
+::-webkit-scrollbar-thumb{background:linear-gradient(#3b4a7a,#2a3560);border-radius:8px;border:2px solid #0a1230}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(#56e4ff,#ae8bff)}
+
+@media(prefers-reduced-motion:reduce){.pls-glow{display:none}}
