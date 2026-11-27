@@ -178,7 +178,7 @@ function renderHome(){
     <img class="hero-logo" src="assets/nova.svg" alt="" width="84" height="84">
     <h2>${t("homeTitle")}</h2><p>${t("homeSub")}</p>
     <div class="search"><input id="hubSearch" type="search" autocomplete="off" placeholder="${t("searchPh")}" aria-label="${t("searchPh")}"><div class="search-res" id="searchRes" hidden></div></div>
-    <div class="quick"><button type="button" data-qa="nova">${ic("nova")} ${t("qaNova")}</button><button type="button" data-qa="listen">${ic("mic")} ${t("qaListen")}</button><button type="button" data-qa="quiz">${ic("quiz")} ${t("qaQuiz")}</button></div>
+    <div class="quick"><button type="button" data-qa="mock">${ic("nova")} ${t("mqOpen")}</button><button type="button" data-qa="nova">${ic("nova")} ${t("qaNova")}</button><button type="button" data-qa="listen">${ic("mic")} ${t("qaListen")}</button><button type="button" data-qa="quiz">${ic("quiz")} ${t("qaQuiz")}</button></div>
   </section>
   <div class="area-cards">${cards}</div>
   <div class="home-row">
@@ -192,7 +192,7 @@ function renderHome(){
   });
   $$("[data-qa]",$("#homeRoot")).forEach(b=>b.addEventListener("click",()=>{
     const q=b.dataset.qa;
-    if(q==="nova")gotoNova();else if(q==="listen")$("#listenOpen").click();
+    if(q==="mock")$("#mockOpen").click();else if(q==="nova")gotoNova();else if(q==="listen")$("#listenOpen").click();
     else{setArea("robotics");setTimeout(()=>$("#quiz-robotics").scrollIntoView({behavior:"smooth",block:"start"}),60)}
   }));
   $("#installNow").addEventListener("click",doInstall);
