@@ -369,10 +369,10 @@ const KB=[
 {keys:["i2c","spi","uart","serial","سيريال"],boost:2,
  en:"I2C, SPI and UART are ways chips talk. UART is a simple two-wire serial line. I2C shares two wires among many devices with addresses. SPI is the fastest, using separate data lines. Your sensors and displays usually speak one of them.",
  ar:"I2C وSPI وUART طرق بتخلي الشرائح تتكلم مع بعض. UART خط تسلسلي بسيط بسلكين. I2C بيشارك سلكين بين أجهزة كتير لكل منها عنوان. وSPI هو الأسرع وبستخدم خطوط بيانات منفصلة. الحساسات والشاشات بتاعتك عادة بتتكلم واحدة منهم."},
-{keys:["learn","start","beginner","first","اتعلم","ابدأ","مبتدئ","اول","أول","نصيحة","نصائح","advice"],boost:1,
+{keys:["learning","التعلم","learn","start","beginner","first","اتعلم","ابدأ","مبتدئ","اول","أول","نصيحة","نصائح","advice"],boost:1,
  en:"Learn in this order: one, Arduino basics — blink, buttons, a sensor; two, Python fundamentals; three, bring them together on the Raspberry Pi with gpiozero. Build tiny projects and finish them; five finished minis beat one abandoned mega-project.",
  ar:"اتعلم بالترتيب ده: واحد، أساسيات الأردوينو — وميض وزراير وحساس. اتنين، أساسيات بايثون. تلاتة، جمّعهم على الراسبيري باي بمكتبة gpiozero. اعمل مشاريع صغيرة وخلّصها؛ خمسة مشاريع صغيرة مكتملة أحسن من مشروع ضخم متساب."},
-{keys:["ide","thonny","mu editor","program it","program the","how do i program","upload the code","sketch","ابرمج","برمجه","برمجتها","ارفع الكود","ازاي ابرمج"],boost:2,
+{keys:["programming","البرمجة","ide","thonny","mu editor","program it","program the","how do i program","upload the code","sketch","ابرمج","برمجه","برمجتها","ارفع الكود","ازاي ابرمج"],boost:2,
  en:"An IDE is where you write code. Arduino IDE uploads C++ sketches to the board; Thonny comes with Raspberry Pi OS and is the friendliest Python editor for beginners; both are free.",
  ar:"الـIDE هو المكان اللي بتكتب فيه الكود. Arduino IDE بترفع أكواد C++ على اللوحة؛ وThonny بتيجي مع نظام الراسبيري باي وهي ألطف محرر بايثون للمبتدئين؛ والاتنين مجانًا."}];
 
