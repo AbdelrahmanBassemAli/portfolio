@@ -300,13 +300,17 @@ const DIAG={
  ${dgT(262,96,"35.2!",DG_R,10)}
  ${dgT(160,168,l==="ar"?"اللي بره الانحرافين يستاهل نظرة":"beyond 2σ deserves a look",DG_M,10.5)}`)
 };
-/* attach diagrams to lessons by English title prefix */
-(function(){
+/* attach diagrams to lessons by English title prefix. Runs after every render
+   (content.js arrays exist by then); idempotent thanks to the !x.dg guard. */
+function dgWire(){
   const wire=(arr,map)=>{if(!arr)return;for(const pre in map){const x=arr.find(y=>y.en&&y.en.title&&y.en.title.startsWith(pre));if(x&&!x.dg)x.dg=map[pre]}};
-  wire(LESSONS,{"Hello, Space!":"py-print","Variables":"py-var","Loops":"py-loop","Functions":"py-func","GPIO":"gpio-blink","Button input":"gpio-button"});
-  wire(ELEC,{"Ohm's law":"ohm","Breadboard":"breadboard","Digital vs analog":"dig-analog","PWM":"pwm","Talking to chips":"buses","Motors and drivers":"hbridge","Power and safety":"level-shift","Buttons: pull-ups":"pullup"});
-  wire(PROJECTS,{"Night light":"vdivider","Parking sensor":"ultrasonic"});
-  wire(CONCEPTS,{"What is an orbit?":"newton","Hohmann":"hohmann","GNSS constellations":"gnss-trilat","Rockets":"stages","Radio links":"linkbudget"});
-  wire(ORBTYPES,{"HEO":"kepler"});
-  wire(AILESS,{"A neuron":"neuron","Is the model any good?":"confusion","Cleaning data":"pandas","Space project: spot a bad sensor":"zscore"});
-})();
+  const g=n=>typeof window[n]!=="undefined"?window[n]:null;
+  try{wire(typeof LESSONS!=="undefined"?LESSONS:null,{"Hello, Space!":"py-print","Variables":"py-var","Loops":"py-loop","Functions":"py-func","GPIO":"gpio-blink","Button input":"gpio-button"})}catch(e){}
+  try{wire(typeof ELEC!=="undefined"?ELEC:null,{"Ohm's law":"ohm","Breadboard":"breadboard","Digital vs analog":"dig-analog","PWM":"pwm","Talking to chips":"buses","Motors and drivers":"hbridge","Power and safety":"level-shift","Buttons: pull-ups":"pullup"})}catch(e){}
+  try{wire(typeof PROJECTS!=="undefined"?PROJECTS:null,{"Night light":"vdivider","Parking sensor":"ultrasonic"})}catch(e){}
+  try{wire(typeof CONCEPTS!=="undefined"?CONCEPTS:null,{"What is an orbit?":"newton","Hohmann":"hohmann","GNSS constellations":"gnss-trilat","Rockets":"stages","Radio links":"linkbudget"})}catch(e){}
+  try{wire(typeof ORBTYPES!=="undefined"?ORBTYPES:null,{"HEO":"kepler"})}catch(e){}
+  try{wire(typeof AILESS!=="undefined"?AILESS:null,{"A neuron":"neuron","Is the model any good?":"confusion","Cleaning data":"pandas","Space project: spot a bad sensor":"zscore"})}catch(e){}
+}
+/* run after all scripts have parsed, then re-render so every area picks up its diagrams */
+window.addEventListener("load",()=>{dgWire();try{applyLang()}catch(e){}});

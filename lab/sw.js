@@ -1,5 +1,5 @@
 /* Mission Lab service worker: app shell + photos work offline. AI calls are never cached. */
-const V="lab-v5";
+const V="lab-v6";
 const SHELL=["./","index.html","lab.css","hub.css","lab.js","common.js","space.js","ai.js","listen.js","mock.js","diagrams.js","motion.js","hub.js","content.js","manifest.webmanifest",
 "assets/nova.svg","assets/icons/icon-192.png","assets/icons/icon-512.png",
 "assets/img/uno.jpg","assets/img/rpi4.jpg","assets/img/iss.jpg","assets/img/hubble.jpg","assets/img/sputnik.jpg","assets/img/galileo.jpg","assets/img/hope-mars.jpg","assets/img/hope-model.jpg","assets/img/gps-launch.jpg","assets/img/cubesat.jpg","assets/img/starlink.jpg","assets/img/ground-station.jpg"];
