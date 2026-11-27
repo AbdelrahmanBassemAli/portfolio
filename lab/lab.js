@@ -451,7 +451,7 @@ form.addEventListener("submit",async e=>{
   typing.appendChild(Object.assign(document.createElement("span"),{textContent:"•"}));
   let ans=null;
   if(!forceOffline){
-    const msgs=[{role:"system",content:SYS},...history.slice(-10),{role:"user",content:q}];
+    const msgs=[{role:"system",content:SYS+(window.OW_SYS||"")},...history.slice(-10),{role:"user",content:q}];
     ans=await askRemote(msgs);
     setStatus(!!ans);
   }

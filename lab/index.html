@@ -20,6 +20,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="lab.css">
 <link rel="stylesheet" href="hub.css">
+<link rel="stylesheet" href="orbitworks.css">
 </head>
 <body>
 <div class="stars" aria-hidden="true"></div>
@@ -38,6 +39,7 @@
   </div>
   <nav class="areas" role="tablist" aria-label="Areas">
     <button type="button" role="tab" data-area="home"><i aria-hidden="true">⌂</i><span data-i18n="navHome">Home</span></button>
+    <button type="button" role="tab" data-area="ow" class="nav-ow"><i aria-hidden="true">🚀</i><span data-i18n="areaOw">Orbitworks prep</span></button>
     <button type="button" role="tab" data-area="robotics"><i aria-hidden="true">🤖</i><span data-i18n="areaRobotics">Robotics</span></button>
     <button type="button" role="tab" data-area="space"><i aria-hidden="true">🛰</i><span data-i18n="areaSpace">Orbits &amp; Space</span></button>
     <button type="button" role="tab" data-area="ai"><i aria-hidden="true">🧠</i><span data-i18n="areaAi">AI in Python</span></button>
@@ -50,6 +52,7 @@
 
 <main>
   <div class="area" id="area-home"><div id="homeRoot"></div></div>
+  <div class="area" id="area-ow"><div id="owRoot"></div></div>
   <div class="area" id="area-robotics">
   <section id="boards" class="panel">
     <h2 data-i18n="boardsTitle">Tap a part to learn it</h2>
@@ -124,6 +127,10 @@
 <script src="diagrams.js"></script>
 <script src="content.js"></script>
 <script src="hub.js"></script>
+<script src="ow-diagrams.js"></script>
+<script src="ow-content.js"></script>
+<script src="ow-nova.js"></script>
+<script src="orbitworks.js"></script>
 <script src="motion.js"></script>
 <script>boot();</script>
 </body>

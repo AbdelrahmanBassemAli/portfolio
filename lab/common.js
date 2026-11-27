@@ -9,7 +9,7 @@ Object.assign(STR.ar,{subtitle:"الروبوتكس، المدارات والفض
 
 let curArea="home";
 function setArea(a,noHash){
-  if(!["home","robotics","space","ai"].includes(a))a="robotics";
+  if(!["home","ow","robotics","space","ai"].includes(a))a="robotics";
   curArea=a;
   document.querySelectorAll(".area").forEach(x=>x.classList.toggle("on",x.id==="area-"+a));
   document.querySelectorAll(".areas button").forEach(b=>{const on=b.dataset.area===a;b.classList.toggle("on",on);b.setAttribute("aria-selected",String(on))});
@@ -18,7 +18,7 @@ function setArea(a,noHash){
   window.dispatchEvent(new Event("areachange"));
 }
 document.querySelectorAll(".areas button").forEach(b=>b.addEventListener("click",()=>setArea(b.dataset.area)));
-{const h=(location.hash||"").slice(1);if(["home","robotics","space","ai"].includes(h))curArea=h}
+{const h=(location.hash||"").slice(1);if(["home","ow","robotics","space","ai"].includes(h))curArea=h}
 document.querySelectorAll(".area").forEach(x=>x.classList.toggle("on",x.id==="area-"+curArea));
 document.querySelectorAll(".areas button").forEach(b=>b.classList.toggle("on",b.dataset.area===curArea));
 

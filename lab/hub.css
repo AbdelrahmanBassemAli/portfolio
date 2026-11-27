@@ -26,7 +26,7 @@ body.noscroll{overflow:hidden}
 .subnav button:hover{border-color:var(--cyan);color:var(--cyan)}
 .bnav{display:none}
 @media(max-width:759px){
-  .bnav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);background:#050b1bf5;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  .bnav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(6,1fr);background:#050b1bf5;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
   .bnav button{border:0;background:transparent;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;font:600 11px/1.1 inherit;cursor:pointer;border-radius:12px}
   .bnav button i{font-style:normal;font-size:19px;line-height:1}
   .bnav button.on{color:var(--cyan);background:#56e4ff14}

@@ -64,22 +64,23 @@ const MQ_BANK=[
  {c:4,en:"How do you check that students actually understood, beyond asking 'any questions?'",ar:"بتتأكد إن الطلبة فهموا فعلًا إزاي، غير إنك تسأل: حد عنده سؤال؟"},
  {c:4,en:"Describe how you would run your very first session with a new robotics class.",ar:"اوصفلنا هتعمل أول حصة ليك مع فصل روبوتكس جديد إزاي."}];
 
+const mqRole=()=>MQ.track==="ow"?OW_ROLE:MQ_ROLE;
 const MQ_ROLE="AI and Robotics Trainer (teaching Arduino, Raspberry Pi, Python and beginner AI/ML to students)";
-const MQ_QSYS=lng=>`You are NOVA, a warm but professional interviewer running a mock job interview for the role: ${MQ_ROLE}.
+const MQ_QSYS=lng=>`You are NOVA, a warm but professional interviewer running a mock job interview for the role: ${mqRole()}.
 Write the NEXT interview question, one only.
 Rules:
 - Output ONLY the question text: 1-2 sentences, plain text, no numbering, no quotes, no emojis.
 - Write the question in ${lng}.
 - Match the requested CATEGORY. Do not repeat or rephrase any earlier question.
-- Keep it realistic for a junior-to-mid trainer candidate.`;
-const MQ_FBSYS=lng=>`You are NOVA, an interview coach evaluating one answer in a mock interview for the role: ${MQ_ROLE}.
+- Keep it realistic for a junior-to-mid trainer candidate.${MQ.track==="ow"?OW_CTX:""}`;
+const MQ_FBSYS=lng=>`You are NOVA, an interview coach evaluating one answer in a mock interview for the role: ${mqRole()}.
 The candidate's answer came from speech-to-text and may contain recognition errors; judge the meaning, not the spelling.
 Reply with STRICT JSON only, no other text:
 {"score": <integer 1-10>, "strong": "<one short sentence>", "missing": "<one short sentence>", "hint": "<one short sentence>"}
 - score: 9-10 specific, structured, real example; 7-8 good but could be sharper; 5-6 generic; 3-4 very thin; 1-2 off-topic.
 - strong: what was strongest. missing: the single most important thing missing. hint: a better way to phrase or structure it that the candidate can reuse.
-- Write strong, missing and hint in ${lng}. Be honest but encouraging.`;
-const MQ_SMSYS=lng=>`You are NOVA, an interview coach closing a mock interview for the role: ${MQ_ROLE}.
+- Write strong, missing and hint in ${lng}. Be honest but encouraging.${MQ.track==="ow"?OW_CTX+"\nThe user message may include KEY POINTS the ideal answer covers: use them as the reference, reward the ones covered, and name the most important missing one in 'missing'.":""}`;
+const MQ_SMSYS=lng=>`You are NOVA, an interview coach closing a mock interview for the role: ${mqRole()}.
 Given the transcript (JSON array of {question, answer, score}), reply with STRICT JSON only, no other text:
 {"strengths": ["..", ".."], "weaknesses": ["..", ".."], "fixes": ["..", "..", ".."]}
 - strengths: 2-3 short items, weaknesses: 2-3 short items, fixes: exactly 3 concrete things to fix before the real interview.
@@ -87,11 +88,12 @@ Given the transcript (JSON array of {question, answer, score}), reply with STRIC
 
 const MQ={open:false,step:"intro",total:5,qi:0,q:null,cat:1,answers:[],hist:[],busy:false,
  mic:false,rec:null,active:false,spoken:"",interim:"",seen:[],timer:null,lang:"",picked:false,
- online:true,usedBank:[],dbg:[]};
+ online:true,usedBank:[],dbg:[],track:(localStorage.getItem("lab-mock-track")||"ow"),kp:null};
 const MQDEMO=/[?&#]demo=mock/.test(location.search+location.hash);
 const MQDEBUG=/[?&#]debug=1/.test(location.search+location.hash);
 const mqLangName=()=>LANG==="ar"?"Egyptian Arabic":"English";
 const MQSRC=window.SpeechRecognition||window.webkitSpeechRecognition;
+const mqCatName=()=>MQ.track==="ow"?t("mqOwCat"+MQ.cat):t("mqCat"+MQ.cat);
 function mqEl(id){return document.getElementById(id)}
 function mqNorm(s){return (s||"").toLowerCase()
  .replace(/[ً-ْٰ]/g,"")
@@ -121,10 +123,12 @@ function mqBuild(){
         <h2 id="mqTitle"></h2>
         <p class="mq-sub" id="mqIntroTxt"></p>
         <p class="mq-best" id="mqBestLine" hidden></p>
+        <div class="mq-track" id="mqTrack" role="group"><button type="button" data-tr="ow"></button><button type="button" data-tr="tr"></button></div>
         <div class="mq-count" id="mqCount" role="group">
           <button type="button" data-n="3">3</button>
           <button type="button" data-n="5" class="on">5</button>
           <button type="button" data-n="7">7</button>
+          <button type="button" data-n="10">10</button>
         </div>
         <button type="button" class="mq-go" id="mqStart"></button>
         <p class="mq-src"><small id="mqSrc"></small></p>
@@ -180,6 +184,7 @@ function mqBuild(){
   mqEl("mqNext").addEventListener("click",()=>{if(MQ.qi>=MQ.total)mqSummary();else mqNextQuestion(false)});
   document.querySelectorAll("#mqCount button").forEach(b=>b.addEventListener("click",()=>{
     MQ.total=+b.dataset.n;document.querySelectorAll("#mqCount button").forEach(x=>x.classList.toggle("on",x===b))}));
+  document.querySelectorAll("#mqTrack button").forEach(b=>b.addEventListener("click",()=>{MQ.track=b.dataset.tr;try{localStorage.setItem("lab-mock-track",MQ.track)}catch(e){}mqLabels()}));
   document.querySelectorAll("#mqLangBtns button").forEach(b=>b.addEventListener("click",()=>{
     MQ.lang=b.dataset.l;MQ.picked=true;try{localStorage.setItem("lab-ls-lang",MQ.lang)}catch(e){}
     mqRenderLang();if(MQ.mic)mqRestart()}));
@@ -196,7 +201,9 @@ function mqLabels(){
   if(!mqEl("mqOverlay"))return;
   if(!MQ.picked){MQ.lang=lsSavedLang()||(LANG==="ar"?"ar-EG":"en-US");if(MQ.lang==="auto")MQ.lang=LANG==="ar"?"ar-EG":"en-US"}
   mqEl("mqTitle").textContent=t("mqTitle");
-  mqEl("mqIntroTxt").textContent=t("mqIntro");
+  mqEl("mqIntroTxt").textContent=MQ.track==="ow"?t("mqIntroOw"):t("mqIntro");
+  document.querySelectorAll("#mqTrack button").forEach(b=>{b.textContent=b.dataset.tr==="ow"?t("mqTrackOw"):t("mqTrackTr");b.classList.toggle("on",b.dataset.tr===MQ.track)});
+  mqEl("mqTrack").setAttribute("aria-label",t("mqTrackL"));
   mqEl("mqStart").textContent=t("mqStart");
   document.querySelector("#mqCount").setAttribute("aria-label",t("mqHowMany"));
   mqEl("mqScoreL").textContent=t("mqScore");
@@ -211,7 +218,7 @@ function mqLabels(){
   mqEl("mqStrengthsL").textContent=t("mqStrengths");mqEl("mqWeakL").textContent=t("mqWeak");mqEl("mqFixesL").textContent=t("mqFixes");
   mqEl("mqAgain").textContent=t("mqAgain");mqEl("mqDone2").textContent=t("mqClose");
   mqEl("mqNext").textContent=MQ.qi>=MQ.total?t("mqFinish"):t("mqNext");
-  mqEl("mqSrc").textContent=MQ.online?"✦ "+t("mqLive"):t("mqOff");
+  mqEl("mqSrc").textContent=MQ.track==="ow"?"✦ "+t("mqSrcOw"):MQ.online?"✦ "+t("mqLive"):t("mqOff");
   const best=store.get("lab-mock-best",null);
   mqEl("mqBestLine").hidden=best==null;
   if(best!=null)mqEl("mqBestLine").textContent="★ "+t("mqBest")+": "+best+"/10";
@@ -235,7 +242,7 @@ function mqState(){
   const m=!MQSRC?t("lsUnsupported"):MQ.err==="denied"?t("lsDenied"):MQ.err==="nomic"?t("lsNoMic"):MQ.err==="net"?t("lsNet"):"";
   mqEl("mqMsg").textContent=m;mqEl("mqMsg").hidden=!m;
   if(MQ.step==="play"){mqEl("mqQLabel").textContent=t("mqQof")+" "+MQ.qi+" "+t("mqOf")+" "+MQ.total;
-    mqEl("mqCat").textContent=t("mqCat"+MQ.cat);
+    mqEl("mqCat").textContent=mqCatName();
     mqEl("mqBar").style.width=((MQ.qi-1)/MQ.total*100)+"%"}
   const avg=MQ.answers.length?(MQ.answers.reduce((a,x)=>a+x.score,0)/MQ.answers.length):0;
   mqEl("mqScoreV").textContent=MQ.answers.length?avg.toFixed(1):"–";
@@ -257,20 +264,25 @@ async function mqNextQuestion(skipped){
   if(MQ.busy)return;MQ.busy=true;mqMicStop(true);mqState();
   MQ.qi=skipped?MQ.qi:MQ.qi+1;
   if(MQ.qi>MQ.total){MQ.busy=false;mqSummary();return}
-  MQ.cat=((MQ.qi-1)%4)+1;
+  MQ.cat=MQ.track==="ow"?OW_ORDER[(MQ.qi-1)%OW_ORDER.length]:((MQ.qi-1)%4)+1;MQ.kp=null;
   MQ.spoken="";MQ.interim="";MQ.seen=[];
   mqEl("mqIn").value="";mqEl("mqHeard").hidden=true;mqEl("mqDone").textContent="";mqEl("mqLive").textContent="";
   mqEl("mqQ").textContent=t("mqNewQ");
   mqShow("play");mqState();
   let q=null;
-  if(!forceOffline){
+  if(MQ.track==="ow"){
+    const pool=OW_BANK.filter(x=>x.c===MQ.cat&&!MQ.usedBank.includes(OW_BANK.indexOf(x)));
+    const pick=(pool.length?pool:OW_BANK.filter(x=>!MQ.usedBank.includes(OW_BANK.indexOf(x))))[0]||OW_BANK[0];
+    MQ.usedBank.push(OW_BANK.indexOf(pick));q=pick[LANG];MQ.kp=pick.kp;MQ.online=true;
+  }
+  else if(!forceOffline){
     const prev=MQ.hist.filter(h=>h.q).map(h=>h.q).slice(-8);
     const msgs=[{role:"system",content:MQ_QSYS(mqLangName())},
-      {role:"user",content:"CATEGORY: "+t("mqCat"+MQ.cat)+" ("+MQ.cat+" of 4).\nEarlier questions (do not repeat): "+JSON.stringify(prev)+"\nCandidate profile: "+(localStorage.getItem("lab-profile")||"(none)")}];
+      {role:"user",content:"CATEGORY: "+mqCatName()+" ("+MQ.cat+" of 4).\nEarlier questions (do not repeat): "+JSON.stringify(prev)+"\nCandidate profile: "+(localStorage.getItem("lab-profile")||"(none)")}];
     const raw=await askRemote(msgs);
     if(raw){q=clean(raw).replace(/^["'\d.\-\s]+/,"").split("\n")[0].trim();if(q.length<12)q=null}
   }
-  MQ.online=!!q;
+  if(MQ.track!=="ow")MQ.online=!!q;
   if(!q){
     const pool=MQ_BANK.filter(x=>x.c===MQ.cat&&!MQ.usedBank.includes(MQ_BANK.indexOf(x)));
     const pick=(pool.length?pool:MQ_BANK.filter(x=>!MQ.usedBank.includes(MQ_BANK.indexOf(x))))[0];
@@ -389,7 +401,7 @@ async function mqSubmitAnswer(){
   let fb=null;
   if(!forceOffline){
     const msgs=[{role:"system",content:MQ_FBSYS(mqLangName())},
-      {role:"user",content:"QUESTION: "+MQ.q+"\nANSWER: "+ans}];
+      {role:"user",content:"QUESTION: "+MQ.q+(MQ.kp?"\nKEY POINTS: "+MQ.kp.map(k=>k[0]).join(" | "):"")+"\nANSWER: "+ans}];
     const raw=await askRemote(msgs);
     const j=mqParseJson(raw);
     if(j&&j.score!=null){
@@ -398,11 +410,12 @@ async function mqSubmitAnswer(){
       if(!fb.strong&&!fb.missing)fb=null;
     }
   }
-  if(!fb)fb=mqHeuristic(ans);
+  if(!fb)fb=MQ.track==="ow"&&MQ.kp?owHeuristic(ans,MQ.kp):mqHeuristic(ans);
   MQ.answers.push({q:MQ.q,a:ans,score:fb.score});
   MQ.hist.push({q:MQ.q});
   mqEl("mqFbQ").textContent=MQ.q;
   mqEl("mqStrong").textContent=fb.strong;mqEl("mqMissing").textContent=fb.missing;mqEl("mqHint").textContent=fb.hint;
+  owShowKp();
   mqShow("fb");MQ.busy=false;mqLabels();mqState();
   mqCountUp(mqEl("mqFbScore"),fb.score,mqEl("mqRing"));
 }

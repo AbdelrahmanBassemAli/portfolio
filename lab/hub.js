@@ -287,7 +287,7 @@ function renderSubnav(){
 }
 /* bottom nav (mobile) */
 function renderBnav(){
-  const items=[["home","navHome"],["robotics","areaRobotics"],["space","areaSpace"],["ai","areaAi"],["nova","navNova"]];
+  const items=[["home","navHome"],["ow","navOw"],["robotics","areaRobotics"],["space","areaSpace"],["ai","areaAi"],["nova","navNova"]];
   $("#bnav").innerHTML=items.map(([k,l])=>`<button type="button" data-k="${k}" class="${k===curArea?"on":""}"><i>${ICON[k]}</i><span>${t(l)}</span></button>`).join("");
   $$("#bnav button").forEach(b=>b.addEventListener("click",()=>{b.dataset.k==="nova"?gotoNova():(setArea(b.dataset.k),window.scrollTo({top:0,behavior:"smooth"}))}));
 }
