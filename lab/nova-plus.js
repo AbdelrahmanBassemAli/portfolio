@@ -58,7 +58,7 @@ add(["import statement","library","libraries","modules","pip install","مكتب�
 add(["strings","f-string","fstring","نص","نصوص","ستر نج"],1,
 "A string is text in quotes. f-strings are the friendly way to mix text and values: print(f'Speed is {speed} km/h'). The curly braces are replaced by the value. Strings can be sliced too: 'ORBIT'[0:2] gives 'OR'.",
 "الـstring نص بين علامتين تنصيص. الـf-string هي الطريقة الودودة لخلط النص مع القيم: print(f'Speed is {speed} km/h'). الأقواس المعقوصة بتتبدل بالقيمة. وتقدر تقص النص: 'ORBIT'[0:2] بتدي 'OR'.");
-add(["pid controller","control loop","pid control","بي اي دي"],3,
+add(["pid","control loop","بي اي دي","بي آي دي"],3,
 "A PID controller steers by looking at the error (target minus actual). P pushes in proportion to the error now, I corrects the error that has been building up, D calms things down by watching how fast the error changes. Think of a driver holding a car in the lane: P is the steering, I fixes a steady drift, D stops the wobble.",
 "متحكم PID بيوجّه بالنظر للخطأ (المطلوب ناقص الفعلي). الـP بيدفع بنسبة الخطأ دلوقتي، والـI بيصلّح الخطأ اللي بيتراكم، والـD بيهدّي الأمور بمراقبة سرعة تغير الخطأ. تخيّل سواق ماسك العربية في الحارة: P هو الدريكسيون، وI بيصلّح الانجراف الثابت، وD بيوقف الهزّ.");
 add(["line follower","line following","line-following","متتبع الخط","تتبع الخط","لاين فولور"],3,
@@ -171,7 +171,8 @@ kbAnswer=function(q){
   const sm=small(q);if(sm)return sm;
   const a=prev(q),ar=AR(q);
   const fallbacks=[typeof NOMATCH==="object"&&NOMATCH.en,typeof NOMATCH==="object"&&NOMATCH.ar];
-  if(a===fallbacks[0]||a===fallbacks[1]){
+  const ctxMsg=typeof a==="string"&&/^(Just to make sure|عشان أتأكد)/.test(a);
+  if(a===fallbacks[0]||a===fallbacks[1]||(ctxMsg&&q.trim().split(/\s+/).length>=4)){
     return ar?"دي لسه برا الكتالوج المدمج بتاعي 😅 لكن اسألني عن: الأردوينو، الباي، GPIO، PWM، حلقات بايثون، المدارات، GPS، أو الذكاء الاصطناعي، أو اكتب 'اختبرني' وهنلعب. ولما أكون أونلاين بجاوب أي حاجة في المواضيع دي بتفصيل أكتر."
       :"That one is outside my built-in notebook 😅 but I know a lot about: Arduino, the Pi, GPIO, PWM, Python loops, orbits, GPS and AI. Or type 'quiz me' and we play. When I'm online I can go much deeper on all of these.";
   }

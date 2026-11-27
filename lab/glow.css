@@ -114,7 +114,7 @@ html[dir=rtl] .brand::after{left:auto;right:-6px}
 .gd-row.gd-q .ans{display:none;margin-top:8px!important;color:var(--aurora)}
 .gd-row.gd-q.shown .ans{display:block;animation:g-in .4s var(--g-ease)}
 .gd-anim{display:flex;justify-content:center;padding:6px 0;border-radius:14px;background:radial-gradient(260px 100px at 50% 50%,#56e4ff12,transparent),#050a1e;border:1px solid #56e4ff22}
-.gd-anim svg{width:100%;max-width:420px;height:auto;display:block}
+.gd-anim svg{width:100%;max-width:250px;height:auto;display:block}
 .gd-anim text{font:600 11px "DM Sans",system-ui,sans-serif;fill:#a0aec5}
 /* animated mini diagrams */
 .a-orbit{transform-origin:100px 80px;animation:g-spin 7s linear infinite}
