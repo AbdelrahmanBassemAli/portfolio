@@ -89,3 +89,7 @@
 .area.on{animation:nj-rise .45s both}
 @media(max-width:759px){.nj-next{margin-bottom:84px}}
 @media(prefers-reduced-motion:reduce){.nj-intro,.area.on{animation:none}.nj-spin,.najm-btns button{animation:none!important}.nj-next,.nj-next i{transition:none}}
+
+/* keep the duo anchored right even when the page is RTL */
+.najm-wrap{direction:ltr}
+.najm-bubble .en{direction:ltr;text-align:left}
