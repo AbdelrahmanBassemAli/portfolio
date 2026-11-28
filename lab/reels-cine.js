@@ -266,13 +266,14 @@ function drawS(S,dt){
  if(!fit(S))return;
  const c=S.c;S.dt=dt||.016;
  /* camera */
- const k=1-Math.exp(-S.dt*1.35);S.cam.z+=(S.camT.z-S.cam.z)*k;S.cam.x+=((S.camT.x||0)-S.cam.x)*k;S.cam.y+=((S.camT.y||0)-S.cam.y)*k;
+ const kz=1-Math.exp(-S.dt*.95),kxy=1-Math.exp(-S.dt*.75);S.cam.z+=(S.camT.z-S.cam.z)*kz;S.cam.x+=((S.camT.x||0)-S.cam.x)*kxy;S.cam.y+=((S.camT.y||0)-S.cam.y)*kxy;
  const iq=M.min(1,S.t/2.6),intro=1+.4*M.pow(1-iq,4);
  S.fade=ease(S.t/.7);
  c.setTransform(S.dpr,0,0,S.dpr,0,0);c.clearRect(0,0,S.W,S.H);c.globalCompositeOperation="lighter";c.globalAlpha=1;c.lineCap="round";
  /* beat punch: tiny zoom kick */
- const kick=1+.028*Math.exp(-S.bt*2.2)*(S.bt>0?1:0),br=1+.012*sin(S.t*.33),dx=sin(S.t*.19)*2.2+S.pxs*4,dy=cos(S.t*.15)*1.6+S.pys*3;S.pxs+=(S.px-S.pxs)*M.min(1,S.dt*3);S.pys+=(S.py-S.pys)*M.min(1,S.dt*3);
- const z=S.cam.z*intro*kick*br;
+ const kick=1+.026*Math.exp(-S.bt*2.2)*(S.bt>0?1:0),br=1+.014*sin(S.t*.33),push=1+M.min(.16,S.t*.0038),
+ dx=sin(S.t*.13)*4.2+sin(S.t*.043+S.idx*1.7)*3+S.pxs*4,dy=cos(S.t*.16)*3+cos(S.t*.051+S.idx*2.3)*2.2+S.pys*3;S.pxs+=(S.px-S.pxs)*M.min(1,S.dt*3);S.pys+=(S.py-S.pys)*M.min(1,S.dt*3);
+ const z=S.cam.z*intro*kick*br*push;
  c.save();c.translate(S.W/2,S.H/2);c.scale(S.U*z,S.U*z);c.translate(-S.cam.x-dx,-S.cam.y-dy);
  const zs=S.cam.z;S.cam.z=z;
  try{(CN.sc[S.kind]||CN.sc.fallback)(S)}catch(e){if(!S.err){S.err=e;console.warn("cine draw",S.kind,e)}}

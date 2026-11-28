@@ -126,13 +126,20 @@ function wordsCap(){
 /* ---- wrappers ---- */
 const oBeat=rlBeat,oGo=rlGo,oScenes=rlScenes,oClose=rlClose;
 window.rlBeat=rlBeat=function(n){
- oBeat(n);
- if(RL_RM.matches||!FX.cv)return;
- wordsCap();
+ if(RL_RM.matches){oBeat(n);return}
+ const say=RL.els.say,tok=RL.tok,hasTxt=say&&say.textContent.trim();
+ if(hasTxt)say.classList.add("rl-out");
+ setTimeout(()=>{
+  if(tok!==RL.tok)return;
+  oBeat(n);
+  say.classList.remove("rl-out");
+  if(!FX.cv)return;
+  wordsCap();
  const box=RL.els.reels[RL.idx]&&RL.els.reels[RL.idx].querySelector(".rl-scene");
  if(box){box.style.setProperty("--bd",(Math.max(RL.dur,3.5)+1.2).toFixed(1)+"s");void box.offsetWidth}
  FX.zt=1;FX.kick=.5;try{navigator.vibrate&&navigator.vibrate(7)}catch(e){}
- restart(FX.ring,"go");restart(RL.els.najm,"hop");
+  restart(FX.ring,"go");restart(RL.els.najm,"hop");
+ },hasTxt?170:0);
 };
 window.rlScenes=rlScenes=function(i){
  oScenes(i);

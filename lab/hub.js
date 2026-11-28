@@ -3,6 +3,7 @@
 
 Object.assign(STR.en,{
  tagline:"Robotics · Space · AI",navHome:"Home",navNova:"Ask NOVA",install:"Install app",
+ heroKicker:"Learn by building",hsReels:"cinematic reels",hsTracks:"tracks",hsLessons:"lessons",hsLangs:"languages",
  homeTitle:"Your learning hub for robotics, space and AI",
  homeSub:"Real boards, live simulators, Python lessons and NOVA, an AI teacher that answers in English and Arabic.",
  searchPh:"Search lessons, parts and topics…",noRes:"Nothing found. Try another word, or ask NOVA.",
@@ -30,6 +31,7 @@ Object.assign(STR.en,{
  openSource:"Source page",resPart:"Board part",resLesson:"Lesson"});
 Object.assign(STR.ar,{
  tagline:"روبوتكس · فضاء · ذكاء اصطناعي",navHome:"الرئيسية",navNova:"اسأل نوفا",install:"ثبّت التطبيق",
+ heroKicker:"اتعلّم وإنت بتبني",hsReels:"ريل سينمائي",hsTracks:"مسارات",hsLessons:"درس",hsLangs:"لغتين",
  homeTitle:"مركز تعلّمك للروبوتكس والفضاء والذكاء الاصطناعي",
  homeSub:"لوحات حقيقية ومحاكيات حية ودروس بايثون ونوفا، معلّم ذكي بيرد بالعربي والإنجليزي.",
  searchPh:"ابحث في الدروس والأجزاء والمواضيع…",noRes:"مفيش نتيجة. جرّب كلمة تانية أو اسأل نوفا.",
@@ -167,18 +169,24 @@ function renderHome(){
     const key=a==="robotics"?"Robotics":a==="space"?"Space":"Ai";
     const media=AREA_PHOTO[a]?`<img src="${PHOTOS[AREA_PHOTO[a]==="uno"?"uno":"iss"].src}" alt="" loading="lazy">`:NEURAL;
     const q=store.get("lab-quiz",{})[a];
-    return `<article class="area-card" data-go="${a}" tabindex="0" role="link">
+    return `<article class="area-card ac-${a}" data-go="${a}" tabindex="0" role="link">
       <div class="ac-media">${media}</div>
       <div class="ac-body"><h3><i>${ICON[a]}</i>${t("area"+key)}</h3><p>${t("areaDesc"+key)}</p>
       <div class="prog"><div class="bar"><b id="pb-${a}"></b></div><small id="pt-${a}"></small></div>
       ${q!=null?`<small class="qbest">${t("bestQuiz")}: ${q}/5</small>`:""}
       <span class="ac-go">${t("startArea")} →</span></div></article>`}).join("");
+  const nReels=typeof REELS!=="undefined"?REELS.length:89;
+  const nLess=["LESSONS","ELEC","PROJECTS","ORBTYPES","CONCEPTS","SPACE_MORE","AI_MORE","AILESS"].reduce((s,k)=>s+(typeof window[k]!=="undefined"&&window[k]?window[k].length:0),0);
   $("#homeRoot").innerHTML=`
   <section class="hero">
+    <canvas class="hero-cv" aria-hidden="true"></canvas>
+    <div class="orb o1" aria-hidden="true"></div><div class="orb o2" aria-hidden="true"></div>
     <img class="hero-logo" src="assets/nova.svg" alt="" width="84" height="84">
+    <p class="hero-kicker">${t("heroKicker")}</p>
     <h2>${t("homeTitle")}</h2><p>${t("homeSub")}</p>
     <div class="search"><input id="hubSearch" type="search" autocomplete="off" placeholder="${t("searchPh")}" aria-label="${t("searchPh")}"><div class="search-res" id="searchRes" hidden></div></div>
     <div class="quick"><button type="button" data-qa="mock">${ic("nova")} ${t("mqOpen")}</button><button type="button" data-qa="nova">${ic("nova")} ${t("qaNova")}</button><button type="button" data-qa="listen">${ic("mic")} ${t("qaListen")}</button><button type="button" data-qa="quiz">${ic("quiz")} ${t("qaQuiz")}</button></div>
+    <div class="hero-stats"><div><b data-cv="${nReels}">0</b><span>${t("hsReels")}</span></div><div><b data-cv="${nLess||40}">0</b><span>${t("hsLessons")}</span></div><div><b data-cv="4">0</b><span>${t("hsTracks")}</span></div><div><b>EN·ع</b><span>${t("hsLangs")}</span></div></div>
   </section>
   <div class="area-cards">${cards}</div>
   <div class="home-row">

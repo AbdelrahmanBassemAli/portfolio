@@ -188,6 +188,7 @@ function rlBeat(n){
  const r=REELS[RL.idx];if(!r)return;
  RL.beat=n;RL.t=0;RL.spDone=false;RL.tail=0;const tok=++RL.tok;
  const b=r.beats[n],txt=rlText(b),ar=LANG==="ar";
+ RL.els.wrap.classList.toggle("cameo",n===r.beats.length-1);
  RL.els.cap.textContent=txt;RL.els.say.dir=ar?"rtl":"ltr";
  RL.els.say.classList.remove("pop");void RL.els.say.offsetWidth;RL.els.say.classList.add("pop");
  RL.dur=Math.max(3.2,txt.length*(ar?.11:.09));
@@ -237,6 +238,7 @@ function rlGo(i){
  RL.els.replay.hidden=true;
  RL.els.hint.classList.toggle("gone",RL.seen>1||i>0);
  if(moved)sfx("whoosh");
+ RL.els.wrap.classList.remove("cameo");
  {const bx=RL.els.reels[i].querySelector('.rl-scene');bx.dataset.l=''}
  rlScenes(i);rlTexts();
  cancelAnimationFrame(RL.raf);spCancel();RL.tok++;
