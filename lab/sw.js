@@ -1,6 +1,6 @@
 /* Mission Lab service worker: app shell + photos work offline. AI calls are never cached. */
-const V="lab-v20";
-const SHELL=["./","index.html","lab.css","hub.css","lab.js","common.js","space.js","ai.js","listen.js","mock.js","diagrams.js","motion.js","hub.js","content.js","orbitworks.js","orbitworks.css","ow-content.js","ow-diagrams.js","ow-nova.js","najm.js","najm.css","glow.css","glow.js","glow-content.js","nova-plus.js","manifest.webmanifest","reels-scenes.js?v=20","reels-data.js?v=20","reels.js?v=20","reels.css?v=20","reels-fx.js?v=20","reels-cine.js?v=20","reels-cine2.js?v=20","reels-cine3.js?v=20",
+const V="lab-v21";
+const SHELL=["./","index.html","lab.css","hub.css","lab.js","common.js","space.js","ai.js","listen.js","mock.js","diagrams.js","motion.js","hub.js","content.js","orbitworks.js","orbitworks.css","ow-content.js","ow-diagrams.js","ow-nova.js","najm.js","najm.css","glow.css","glow.js","glow-content.js","nova-plus.js","manifest.webmanifest","reels-scenes.js?v=21","reels-data.js?v=21","reels-copy.js?v=21","reels.js?v=21","reels.css?v=21","reels-fx.js?v=21","reels-cine.js?v=21","reels-cine2.js?v=21","reels-cine3.js?v=21",
 "assets/nova.svg","assets/icons/icon-192.png","assets/icons/icon-512.png",
 "assets/img/uno.jpg","assets/img/rpi4.jpg","assets/img/iss.jpg","assets/img/hubble.jpg","assets/img/sputnik.jpg","assets/img/galileo.jpg","assets/img/hope-mars.jpg","assets/img/hope-model.jpg","assets/img/gps-launch.jpg","assets/img/cubesat.jpg","assets/img/starlink.jpg","assets/img/ground-station.jpg"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(V).then(c=>Promise.all(SHELL.map(u=>c.add(u).catch(()=>{})))).then(()=>self.skipWaiting()))});

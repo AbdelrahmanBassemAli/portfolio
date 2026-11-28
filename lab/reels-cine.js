@@ -11,8 +11,8 @@ const cc={};
 const col=x=>{if(!x)return PAL.cy;if(Array.isArray(x))return x;if(PAL[x])return PAL[x];if(cc[x])return cc[x];
  const h=String(x).replace("#","");const r=[parseInt(h.slice(0,2),16)||0,parseInt(h.slice(2,4),16)||0,parseInt(h.slice(4,6),16)||0];return cc[x]=r};
 const spr={};
-function sp(rgb){const k=rgb.join();if(spr[k])return spr[k];const c=document.createElement("canvas");c.width=c.height=48;const g=c.getContext("2d"),r=g.createRadialGradient(24,24,0,24,24,24);
- r.addColorStop(0,"rgba(255,255,255,1)");r.addColorStop(.16,`rgba(${rgb},.95)`);r.addColorStop(.5,`rgba(${rgb},.26)`);r.addColorStop(1,`rgba(${rgb},0)`);g.fillStyle=r;g.fillRect(0,0,48,48);return spr[k]=c}
+function sp(rgb){const k=rgb.join();if(spr[k])return spr[k];const c=document.createElement("canvas");c.width=c.height=64;const g=c.getContext("2d"),r=g.createRadialGradient(32,32,0,32,32,32);
+ r.addColorStop(0,"rgba(255,255,255,1)");r.addColorStop(.09,"rgba(255,255,255,.92)");r.addColorStop(.2,`rgba(${rgb},.8)`);r.addColorStop(.42,`rgba(${rgb},.2)`);r.addColorStop(.72,`rgba(${rgb},.05)`);r.addColorStop(1,`rgba(${rgb},0)`);g.fillStyle=r;g.fillRect(0,0,64,64);return spr[k]=c}
 const ease=t=>t<0?0:t>1?1:t*t*(3-2*t);
 const eo=t=>t<0?0:t>1?1:1-Math.pow(1-t,3);
 const eb=t=>{if(t<=0)return 0;if(t>=1)return 1;const c=1.70158+1;return 1+c*Math.pow(t-1,3)+1.70158*Math.pow(t-1,2)};
@@ -60,7 +60,7 @@ CN.kep=(a,e,M0)=>{let E=M0;for(let i=0;i<6;i++)E=M0+e*sin(E);return[a*(cos(E)-e)
 CN.o3=(px,pz,inc,Om)=>{const y=pz*sin(inc),z=pz*cos(inc),x=px;return[x*cos(Om)+z*sin(Om),y,-x*sin(Om)+z*cos(Om)]};
 
 /* ---- the particle Earth ---- */
-const EP=(()=>{const n=560,o=[],ga=PI*(3-M.sqrt(5)),r=rng(7);
+const EP=(()=>{const n=innerWidth<520?820:1300,o=[],ga=PI*(3-M.sqrt(5)),r=rng(7);
  for(let i=0;i<n;i++){const y=1-i/(n-1)*2,rr=M.sqrt(1-y*y),th=ga*i,lat=M.asin(y),lon=th%TAU;
   const L=sin(lon*1.7+1)*cos(lat*2.1)+sin(lon*3.1+lat*1.3)*.6+cos(lon*.9-2)*.5+cos(lat*3+lon*2)*.25;
   o.push({x:rr*cos(th),y:-y,z:rr*sin(th),land:L>.5,city:r()<.1})}
@@ -210,6 +210,17 @@ CN.sc.orbit=S=>{
  if(s.hoh)CN.cap(S,rsL(S.p.labels&&S.p.labels[0]?"":""),12,15,"yl");
 };
 
+/* ================= POST: bloom (two soft passes at low res, additive) ================= */
+CN.post=S=>{
+ const W=S.cv.width,H=S.cv.height;if(!W||!H)return;
+ if(!S.bl||S.bl.w!==W){const mk=(d)=>{const k=document.createElement("canvas");k.width=M.max(8,W/d|0);k.height=M.max(8,H/d|0);const g=k.getContext("2d");g.imageSmoothingQuality="high";return k};
+  S.bl={w:W,a:mk(5),b:mk(18)};S.bl.ac=S.bl.a.getContext("2d");S.bl.bc=S.bl.b.getContext("2d")}
+ const B=S.bl;
+ B.ac.globalCompositeOperation="copy";B.ac.drawImage(S.cv,0,0,B.a.width,B.a.height);
+ B.bc.globalCompositeOperation="copy";B.bc.drawImage(B.a,0,0,B.b.width,B.b.height);
+ const c=S.c;c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation="lighter";c.imageSmoothingEnabled=true;c.imageSmoothingQuality="high";
+ c.globalAlpha=.5;c.drawImage(B.a,0,0,W,H);c.globalAlpha=.55;c.drawImage(B.b,0,0,W,H);c.globalAlpha=1;c.globalCompositeOperation="source-over"};
+
 /* ================= ENGINE ================= */
 const INST=[];let raf=0,last=0;
 function mount(host,k,idx){
@@ -232,18 +243,18 @@ function drawS(S,dt){
  if(!fit(S))return;
  const c=S.c;S.dt=dt||.016;
  /* camera */
- const k=1-Math.exp(-S.dt*2.4);S.cam.z+=(S.camT.z-S.cam.z)*k;S.cam.x+=((S.camT.x||0)-S.cam.x)*k;S.cam.y+=((S.camT.y||0)-S.cam.y)*k;
- const intro=1+.55*(1-eo(S.t/1.6));
+ const k=1-Math.exp(-S.dt*1.35);S.cam.z+=(S.camT.z-S.cam.z)*k;S.cam.x+=((S.camT.x||0)-S.cam.x)*k;S.cam.y+=((S.camT.y||0)-S.cam.y)*k;
+ const iq=M.min(1,S.t/2.6),intro=1+.4*M.pow(1-iq,4);
  S.fade=ease(S.t/.7);
  c.setTransform(S.dpr,0,0,S.dpr,0,0);c.clearRect(0,0,S.W,S.H);c.globalCompositeOperation="lighter";c.globalAlpha=1;c.lineCap="round";
  /* beat punch: tiny zoom kick */
- const kick=1+.05*Math.exp(-S.bt*4)*(S.bt>0?1:0);
- const z=S.cam.z*intro*kick;
- c.save();c.translate(S.W/2,S.H/2);c.scale(S.U*z,S.U*z);c.translate(-S.cam.x,-S.cam.y);
+ const kick=1+.028*Math.exp(-S.bt*2.2)*(S.bt>0?1:0),br=1+.012*sin(S.t*.33),dx=sin(S.t*.19)*2.2,dy=cos(S.t*.15)*1.6;
+ const z=S.cam.z*intro*kick*br;
+ c.save();c.translate(S.W/2,S.H/2);c.scale(S.U*z,S.U*z);c.translate(-S.cam.x-dx,-S.cam.y-dy);
  const zs=S.cam.z;S.cam.z=z;
  try{(CN.sc[S.kind]||CN.sc.fallback)(S)}catch(e){if(!S.err){S.err=e;console.warn("cine draw",S.kind,e)}}
  S.cam.z=zs;
- c.restore();c.globalAlpha=1;c.globalCompositeOperation="source-over"}
+ c.restore();c.globalAlpha=1;c.globalCompositeOperation="source-over";if(CN.post)CN.post(S)}
 function loop(ts){
  raf=0;if(!RL.open)return;
  const dt=last?M.min((ts-last)/1000,.05):.016;last=ts;

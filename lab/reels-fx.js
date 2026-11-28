@@ -28,6 +28,10 @@ function init(){
  RL.els.wrap.insertBefore(cv,RL.els.wrap.firstChild);
  FX.cv=cv;FX.cx=cv.getContext("2d");
  const ring=document.createElement("div");ring.className="rl-ring";RL.els.wrap.appendChild(ring);FX.ring=ring;
+ const gr=document.createElement("div");gr.className="rl-grade";gr.setAttribute("aria-hidden","true");RL.els.wrap.appendChild(gr);
+ const gn=document.createElement("div");gn.className="rl-grain";gn.setAttribute("aria-hidden","true");
+ try{const nc=document.createElement("canvas");nc.width=nc.height=96;const g=nc.getContext("2d"),im=g.createImageData(96,96);for(let i=0;i<im.data.length;i+=4){const v=Math.random()*255;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}g.putImageData(im,0,0);gn.style.backgroundImage="url("+nc.toDataURL()+")"}catch(e){}
+ RL.els.wrap.appendChild(gn);
  seed();size();
  addEventListener("resize",()=>{if(RL.open)size()});
 }
@@ -49,7 +53,9 @@ function draw(dt,t){
  FX.rot+=dt*.12;
  /* nebula */
  const nb=(x,y,r,a)=>{const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${T[0]},${T[1]},${T[2]},${a})`);g.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=g;c.fillRect(x-r,y-r,r*2,r*2)};
- nb(W*(.3+.06*Math.sin(t*.2)),H*.3,W*.7,.1);nb(W*(.75+.05*Math.cos(t*.17)),H*.75,W*.8,.08);
+ nb(W*(.3+.06*Math.sin(t*.12)),H*.3,W*.75,.1);nb(W*(.75+.05*Math.cos(t*.1)),H*.75,W*.85,.08);
+ c.save();const nc=(x,y,r,rgb,a)=>{const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=g;c.fillRect(x-r,y-r,r*2,r*2)};
+ nc(W*.85,H*.18,W*.7,"30,70,200",.1);nc(W*.1,H*.85,W*.7,"120,40,160",.08);c.restore();
  /* stars: three parallax depths, streak on swipe */
  c.fillStyle="#fff";c.strokeStyle="#fff";
  for(const s of FX.stars){
@@ -71,7 +77,7 @@ function draw(dt,t){
   const core=p.r<.28;
   c.globalAlpha=.2*p.b*(.55+.45*Math.abs(Math.sin(t*.9+p.w)))*(1-p.r*.4);
   c.fillStyle=core?"#fff2d0":`rgb(${T[0]},${T[1]},${T[2]})`;
-  c.fillRect(x,y,p.s*(core?1.4:1.7),p.s*(core?1.4:1.7));
+  c.fillRect(x,y,p.s*(core?1.1:1.25),p.s*(core?1.1:1.25));
  }
  /* comet */
  if(!FX.comet&&dt&&Math.random()<dt*.25)FX.comet={x:rnd(.3,1.1)*W,y:rnd(-.05,.3)*H,v:rnd(260,420),l:0};
