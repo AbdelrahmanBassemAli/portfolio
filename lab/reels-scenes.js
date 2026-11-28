@@ -135,7 +135,7 @@ RS.sw=p=>{const m=p.mode||"press";
 
 /* ---- gnss: satellites beaming to a receiver ---- */
 RS.gnss=p=>{const n=p.n||4,sx=[50,120,190,255,150],sy=[34,22,32,46,60];let s="";
- for(let i=0;i<n;i++)s+=`<line x1="${sx[i]}" y1="${sy[i]+10}" x2="150" y2="150" stroke="${C.yl}" stroke-width="2.5" stroke-dasharray="6 6" class="a-dash" style="animation-delay:${i*.2}s"/><g transform="translate(${sx[i]},${sy[i]})" class="a-bob" style="animation-delay:${i*.3}s">${rsSat(.65)}</g>`;
+ for(let i=0;i<n;i++)s+=`<line x1="${sx[i]}" y1="${sy[i]+10}" x2="150" y2="150" stroke="${C.yl}" stroke-width="2.5" stroke-dasharray="6 6" class="a-dash" style="animation-delay:${i*.2}s"/><g transform="translate(${sx[i]},${sy[i]})"><g class="a-bob" style="animation-delay:${i*.3}s">${rsSat(.65)}</g></g>`;
  return rsSvg(`${s}<circle cx="150" cy="150" r="${p.err||14}" fill="${C.pk}" opacity=".35" class="a-pulse"/><text x="150" y="162" text-anchor="middle" font-size="28">📱</text>${p.tag?rsT(150,184,p.tag,13,C.yl):""}`)};
 
 /* ---- bread: breadboard ---- */
