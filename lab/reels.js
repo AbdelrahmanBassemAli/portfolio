@@ -282,7 +282,7 @@ function rlSetCaption(r){
  const nj=RL.els.reels[RL.idx].querySelector("[data-rl=najm]");
  if(RL.elapsed>=r.najm.at){
   if(!nj.dataset.v){nj.dataset.v="1";const b=nj.querySelector("[data-rl=bubble]");const t2=LANG==="ar"?r.najm.ar:r.najm.en;b.textContent=t2;b.dir=isAr(t2)?"rtl":"ltr"}
-  nj.classList.add("show");
+  nj.classList.add("show");RL.els.hint.classList.add("gone");
  }
 }
 function rlFinish(){
