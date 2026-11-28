@@ -142,3 +142,4 @@ html[dir=rtl] .rl-say::before{transform:rotate(-135deg)}
 .a-drop{opacity:0;animation:rsDrop .8s both}
 .a-slide{animation:rsSlide 3.4s ease-in-out infinite}.a-slide2{animation:rsSlide2 3.4s ease-in-out infinite}
 .a-wig{animation:rsWig 1.4s ease-in-out infinite}
+@media(min-width:760px){.rl-narr{max-width:820px;margin:0 auto;width:100%}.rl-scene{width:min(560px,90vw)}}
