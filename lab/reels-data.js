@@ -168,29 +168,29 @@ R("CanSat-style telemetry probe","space","CanSat: a satellite in a soda can","ك
  ["Add a checksum to every packet, so the ground can reject corrupted lines.","زوّد checksum في كل باكت، عشان الأرض ترفض الأسطر التالفة.","wow"]]);
 
 /* ===== Space: orbit types ===== */
-R("LEO — Low Earth Orbit","space","LEO: close, fast, crowded","LEO: قريب وسريع وزحمة",{k:"orbit",rx:62,ry:62,n:3,spread:120,dur:5,er:26,labels:[[150,24,"160–2,000 km",13,C.yl]]},[
+R("LEO — Low Earth Orbit","space","LEO: close, fast, crowded","LEO: قريب وسريع وزحمة",{k:"orbit",v:"leo",rx:62,ry:62,n:3,spread:120,dur:5,er:26,labels:[[150,24,"160–2,000 km",13,C.yl]]},[
  ["LEO is close to Earth: one lap takes about 90 to 127 minutes, at roughly 7.5 kilometres a second.","LEO قريب من الأرض: اللفة بتاخد حوالي 90 لـ 127 دقيقة، بسرعة حوالي 7.5 كم في الثانية.","point"],
  ["Great for Earth imaging, the ISS, CubeSats and Starlink at about 550 kilometres.","ممتاز لتصوير الأرض ومحطة الفضاء والكيوبسات وستارلينك على حوالي 550 كم.","happy"],
  ["Low means low delay, but each satellite sees a small patch, so you need many. And thin air slowly drags them down.","المنخفض يعني تأخير قليل، بس كل قمر بيشوف مساحة صغيرة فمحتاج كتير. والهواء الرفيع بيشدّهم لتحت ببطء.","think"]]);
-R("MEO — Medium Earth Orbit","space","MEO: the navigation neighbourhood","MEO: حي أنظمة الملاحة",{k:"orbit",rx:96,ry:96,n:4,spread:90,dur:12,er:20,labels:[[150,20,"~20,200 km · GPS",13,C.yl]]},[
+R("MEO — Medium Earth Orbit","space","MEO: the navigation neighbourhood","MEO: حي أنظمة الملاحة",{k:"orbit",v:"meo",rx:96,ry:96,n:4,spread:90,dur:12,er:20,labels:[[150,20,"~20,200 km · GPS",13,C.yl]]},[
  ["MEO is the home of navigation. GPS flies at about 20,200 kilometres, with a period near 11 hours 58 minutes.","MEO بيت الملاحة. الـGPS بيطير على حوالي 20,200 كم، وزمن دورته قرب 11 ساعة و58 دقيقة.","point"],
  ["Galileo is at about 23,200 kilometres, and GLONASS at about 19,100.","Galileo على حوالي 23,200 كم، وGLONASS على حوالي 19,100.","think"],
  ["Higher orbit means each satellite covers more. About 24 give worldwide coverage, with at least 4 visible almost anywhere.","مدار أعلى يعني القمر يغطي أكتر. حوالي 24 قمر بيغطوا العالم، وعلى الأقل 4 ظاهرين تقريبا في أي مكان.","wow"]]);
-R("GEO — Geostationary Orbit","space","GEO: hanging over one spot","GEO: واقف فوق نقطة واحدة",{k:"orbit",rx:104,ry:104,n:1,dur:22,er:18,ground:true,labels:[[150,14,"35,786 km",13,C.yl]]},[
+R("GEO — Geostationary Orbit","space","GEO: hanging over one spot","GEO: واقف فوق نقطة واحدة",{k:"orbit",v:"geo",rx:104,ry:104,n:1,dur:22,er:18,ground:true,labels:[[150,14,"35,786 km",13,C.yl]]},[
  ["At exactly 35,786 kilometres above the equator, one lap takes a sidereal day, the same as Earth's spin.","على 35,786 كم بالظبط فوق خط الاستواء، اللفة بتاخد يوم نجمي، زي دوران الأرض.","point"],
  ["So the satellite hangs over one spot, and a fixed dish can talk to it forever. TV, weather and communications live here.","فالقمر بيفضل فوق نقطة واحدة، وطبق ثابت يكلمه على طول. التلفزيون والطقس والاتصالات هنا.","happy"],
  ["The price: about a quarter of a second round-trip delay, and poor coverage near the poles.","التمن: تأخير حوالي ربع ثانية رايح جاي، وتغطية ضعيفة قرب القطبين.","think"]]);
-R("SSO — Sun-synchronous orbit","space","SSO: same light every pass","SSO: نفس الإضاءة كل عبور",{k:"orbit",rx:42,ry:78,n:1,dur:5,er:24,tilt:8,labels:[[150,20,"~98°",14,C.yl]]},[
+R("SSO — Sun-synchronous orbit","space","SSO: same light every pass","SSO: نفس الإضاءة كل عبور",{k:"orbit",v:"sso",rx:42,ry:78,n:1,dur:5,er:24,tilt:8,labels:[[150,20,"~98°",14,C.yl]]},[
  ["SSO is a slightly retrograde, nearly polar LEO, at about 600 to 800 kilometres.","SSO مدار LEO شبه قطبي ورجعي شوية، على حوالي 600 لـ 800 كم.","point"],
  ["Earth's bulge turns the orbit plane about one degree a day, matching the Sun.","انتفاخ الأرض بيلف مستوى المدار حوالي درجة في اليوم، زي الشمس.","think"],
  ["So the satellite passes each place at the same local time. Perfect for imaging, with consistent shadows.","فالقمر بيعدي كل مكان في نفس الوقت المحلي. مثالي للتصوير، والضلال ثابتة.","happy"]]);
-R("HEO — Molniya and other elliptical orbits","space","Molniya: a stretched ellipse","مولنيا: قطع ناقص مستطيل",{k:"orbit",rx:110,ry:52,e:.72,n:1,dur:9,er:16,wedge:false,labels:[[150,16,"63.4° · 12 h",13,C.yl]]},[
+R("HEO — Molniya and other elliptical orbits","space","Molniya: a stretched ellipse","مولنيا: قطع ناقص مستطيل",{k:"orbit",v:"mol",rx:110,ry:52,e:.72,n:1,dur:9,er:16,wedge:false,labels:[[150,16,"63.4° · 12 h",13,C.yl]]},[
  ["A very stretched ellipse: low perigee, very high apogee.","قطع ناقص مستطيل جدا: حضيض منخفض وأوج عالي جدا.","point"],
  ["The satellite crawls near apogee, Kepler's second law, so it hangs over high latitudes for hours.","القمر بيزحف قرب الأوج، قانون كبلر التاني، فبيفضل فوق خطوط العرض العالية لساعات.","wow"],
  ["Russia used Molniya orbits because GEO covers its far north poorly. And 63.4 degrees is the special tilt where the ellipse does not rotate.","روسيا استخدمت مولنيا لأن GEO بيغطي أقصى شمالها ضعيف. و63.4 درجة هي الميل الخاص اللي القطع مبيدورش فيه.","think"]]);
 
 /* ===== Space: concepts ===== */
-R("What is an orbit?","space","Falling that keeps missing","سقوط بيفضل يغلط الأرض",{k:"orbit",rx:70,ry:70,n:1,dur:6,er:30,labels:[[150,16,"7.7 km/s",14,C.yl]]},[
+R("What is an orbit?","space","Falling that keeps missing","سقوط بيفضل يغلط الأرض",{k:"orbit",v:"fall",rx:70,ry:70,n:1,dur:6,er:30,labels:[[150,16,"7.7 km/s",14,C.yl]]},[
  ["An orbit is falling that keeps missing the ground.","المدار هو سقوط بيفضل يغلط الأرض.","point"],
  ["The satellite moves sideways so fast, about 7.7 kilometres a second, that as it falls, Earth's surface curves away beneath it.","القمر بيتحرك جنب بسرعة كبيرة، حوالي 7.7 كم في الثانية، فكل ما يقع سطح الأرض بيتحني من تحته.","wow"],
  ["One sentence for the interview: an orbit is a balance between sideways speed and gravity.","جملة للمقابلة: المدار توازن بين السرعة الجانبية والجاذبية.","happy"]]);
@@ -198,11 +198,11 @@ R("What is an orbit?","space","Why astronauts float","ليه رواد الفضا
  ["Gravity never switches off up there. It is still strong at the station's height.","الجاذبية عمرها ما بتقفل هناك. لسه قوية على ارتفاع المحطة.","think"],
  ["Astronauts float because they and the station fall together, in free fall.","رواد الفضاء بيعوموا لأنهم والمحطة بيقعوا مع بعض، سقوط حر.","point"],
  ["So it is not zero gravity. It is the longest fall ever. No landing, though.","يعني مش انعدام جاذبية. دي أطول وقعة في التاريخ. من غير هبوط.","laugh"]]);
-R("Kepler's three laws","space","Kepler 1: orbits are ellipses","كبلر ١: المدارات قطع ناقص",{k:"orbit",rx:104,ry:60,e:.5,n:1,dur:9,er:18,labels:[[150,16,"Earth at one focus",12,C.yl]]},[
+R("Kepler's three laws","space","Kepler 1: orbits are ellipses","كبلر ١: المدارات قطع ناقص",{k:"orbit",v:"kep1",rx:104,ry:60,e:.5,n:1,dur:9,er:18,labels:[[150,16,"Earth at one focus",12,C.yl]]},[
  ["Kepler's first law: orbits are ellipses.","قانون كبلر الأول: المدارات قطع ناقص.","point"],
  ["And the Earth sits at one focus of the ellipse, not in the middle.","والأرض واقفة في إحدى بؤرتي القطع، مش في النص.","think"],
  ["Planets are not perfect circles. Nobody is perfect. Not even planets.","الكواكب مش دواير مثالية. محدش مثالي. حتى الكواكب.","laugh"]]);
-R("Kepler's three laws","space","Kepler 2: equal areas, equal times","كبلر ٢: مساحات متساوية في أزمنة متساوية",{k:"orbit",rx:104,ry:60,e:.55,n:1,dur:9,er:16,wedge:true,labels:[[150,176,"equal areas",13,C.yl]]},[
+R("Kepler's three laws","space","Kepler 2: equal areas, equal times","كبلر ٢: مساحات متساوية في أزمنة متساوية",{k:"orbit",v:"kep2",rx:104,ry:60,e:.55,n:1,dur:9,er:16,wedge:true,labels:[[150,176,"equal areas",13,C.yl]]},[
  ["A line from Earth to the satellite sweeps equal areas in equal times.","الخط من الأرض للقمر بيمسح مساحات متساوية في أزمنة متساوية.","point"],
  ["So the satellite is fastest at perigee, the closest point, and slowest at apogee, the farthest.","فالقمر أسرع ما يكون عند الحضيض، أقرب نقطة، وأبطأ عند الأوج، أبعد نقطة.","wow"],
  ["Close to Earth it speeds up, like me near a pizza.","قرب الأرض بيسرّع، زيي قدام البيتزا.","laugh"]]);
@@ -226,11 +226,11 @@ R("Attitude control (ADCS)","space","Actuators: wheels and magnets","المنف�
  ["Reaction wheels: spin up a wheel inside, and the satellite turns the other way.","عجلات رد الفعل: دوّر عجلة جوه والقمر يلف عكسها.","point"],
  ["Magnetorquers are coils that push against Earth's magnetic field. Thrusters are the third option.","المغناطيسات ملفات بتدفع ضد مجال الأرض المغناطيسي. والدافعات الاختيار التالت.","think"],
  ["Spin the wheel one way, the satellite goes the other. Newton is always watching.","دوّر العجلة يمين والقمر يلف شمال. نيوتن دايما بيراقب.","laugh"]]);
-R("Attitude control (ADCS)","space","Kalman filter: one best guess","فلتر كالمان: أحسن تقدير واحد",{k:"net",layers:[3,1],tag:["noisy sensors → 1 estimate","حساسات مزعجة → تقدير واحد"]},[
+R("Attitude control (ADCS)","space","Kalman filter: one best guess","فلتر كالمان: أحسن تقدير واحد",{k:"net",v:"kalman",layers:[3,1],tag:["noisy sensors → 1 estimate","حساسات مزعجة → تقدير واحد"]},[
  ["Every sensor is noisy. A Kalman filter blends them all into one best estimate.","كل حساس فيه تشويش. فلتر كالمان بيدمجهم في تقدير واحد هو الأحسن.","point"],
  ["Trust each sensor by how reliable it is, then predict, then correct, again and again.","ثق في كل حساس بقد مصداقيته، وبعدين توقّع، وبعدين صحّح، مرة ورا مرة.","think"],
  ["Same ideas as robot localisation. Robots and satellites are cousins.","نفس أفكار تحديد موقع الروبوت. الروبوتات والأقمار أولاد عم.","laugh"]]);
-R("Hohmann transfer and delta-v","space","Hohmann: two burns","هومان: حرقتين",{k:"orbit",rx:104,ry:62,e:.45,n:1,dur:9,er:16,labels:[[40,176,"burn 1",12,C.pk],[260,176,"burn 2",12,C.pk]]},[
+R("Hohmann transfer and delta-v","space","Hohmann: two burns","هومان: حرقتين",{k:"orbit",v:"hoh",rx:104,ry:62,e:.45,n:1,dur:9,er:16,labels:[[40,176,"burn 1",12,C.pk],[260,176,"burn 2",12,C.pk]]},[
  ["To go to a higher orbit, you do two burns.","عشان تروح لمدار أعلى، بتعمل حرقتين.","point"],
  ["One at the low point stretches the orbit into an ellipse. One at the high point makes it a circle.","واحدة عند أقل نقطة بتمد المدار لقطع ناقص. وواحدة عند أعلى نقطة بتخليه دايري.","think"],
  ["Burning forward raises the opposite side of the orbit. Space is backwards like that.","الحرق قدام بيرفع الناحية التانية من المدار. الفضاء عكسي كده.","laugh"]]);
@@ -238,7 +238,7 @@ R("Hohmann transfer and delta-v","space","Delta-v: the fuel budget","Delta-v: م
  ["The total velocity change of all your burns is called delta-v. It is your fuel budget.","إجمالي تغيير السرعة في كل حرقاتك اسمه delta-v. هو ميزانية الوقود.","point"],
  ["Going from low Earth orbit to GEO costs about 3.9 kilometres a second.","الانتقال من مدار أرضي منخفض لـGEO بيكلّف حوالي 3.9 كم في الثانية.","wow"],
  ["The rocket equation shows why fuel dominates a rocket's mass.","معادلة الصاروخ بتوضح ليه الوقود هو أغلب وزن الصاروخ.","think"]]);
-R("Ground stations and Doppler","space","Pass window: 5 to 15 minutes","نافذة العبور: 5 لـ 15 دقيقة",{k:"orbit",rx:58,ry:58,n:1,dur:5,er:26,ground:true,labels:[[150,176,"5–15 min",13,C.yl]]},[
+R("Ground stations and Doppler","space","Pass window: 5 to 15 minutes","نافذة العبور: 5 لـ 15 دقيقة",{k:"orbit",v:"pass",rx:58,ry:58,n:1,dur:5,er:26,ground:true,labels:[[150,176,"5–15 min",13,C.yl]]},[
  ["A LEO satellite is above your horizon for only about 5 to 15 minutes per pass.","قمر LEO بيبقى فوق أفقك حوالي 5 لـ 15 دقيقة بس في كل عبور.","point"],
  ["So ground stations plan contact windows, and you must send fast.","فمحطات الأرض بتخطط لنوافذ الاتصال، ولازم تبعت بسرعة.","think"],
  ["Five minutes to say everything. Like a family phone call, but in space.","خمس دقايق تقول فيها كل حاجة. زي مكالمة العيلة بس في الفضاء.","laugh"]]);
@@ -274,7 +274,7 @@ R("Navigation for robots and spacecraft","space","SLAM: map while you locate","S
  ["On Mars or the Moon there is no GNSS. Rovers use visual odometry and star trackers.","على المريخ أو القمر مفيش GNSS. الروفرات بتستخدم odometry بصرية ومتتبعات نجوم.","point"],
  ["SLAM means building a map while locating yourself on it.","SLAM يعني ترسم خريطة وإنت بتحدد مكانك عليها في نفس الوقت.","wow"],
  ["The bridge between your robotics teaching and space navigation.","ده الكوبري بين تدريس الروبوتات وملاحة الفضاء.","happy"]]);
-R("Space debris and safety","space","Tracking and avoiding","التتبع وتجنب التصادم",{k:"orbit",rx:76,ry:76,n:5,spread:72,dur:6,er:22,col:C.pk,labels:[[150,176,"7–8 km/s",13,C.yl]]},[
+R("Space debris and safety","space","Tracking and avoiding","التتبع وتجنب التصادم",{k:"orbit",v:"deb",rx:76,ry:76,n:5,spread:72,dur:6,er:22,col:C.pk,labels:[[150,176,"7–8 km/s",13,C.yl]]},[
  ["Thousands of dead satellites and fragments circle Earth at 7 to 8 kilometres a second.","آلاف الأقمار الميتة والشظايا بتلف حوالين الأرض بسرعة 7 لـ 8 كم في الثانية.","wow"],
  ["Even a small piece hits with huge energy. Operators track objects and plan avoidance manoeuvres.","حتى قطعة صغيرة بتخبط بطاقة ضخمة. المشغّلون بيتتبعوا ويخططوا مناورات تجنب.","point"],
  ["And satellites must de-orbit at the end of their life. Clean up your mess!","ولازم الأقمار تنزل من المدار في نهاية عمرها. نضّف وراك!","laugh"]]);
@@ -316,7 +316,7 @@ R("Space weather and radiation","space","Solar wind, flares and CMEs","الري�
  ["The Sun sends a constant solar wind, and sometimes bursts: flares and coronal mass ejections.","الشمس بتبعت رياح شمسية مستمرة، وساعات انفجارات: توهجات وقذف كتلة إكليلية.","point"],
  ["Charged particles can flip bits in memory, damage solar cells, and charge a satellite's surface.","الجسيمات المشحونة ممكن تقلب بتات في الذاكرة، وتبوّظ الخلايا الشمسية، وتشحن سطح القمر.","wow"],
  ["The Sun is basically a moody neighbour with a very big speaker.","الشمس جار متقلب المزاج ومعاه سماعة كبيرة.","laugh"]]);
-R("Space weather and radiation","space","Van Allen belts and protection","أحزمة فان ألين والحماية",{k:"sun",tag:["shield: ECC · watchdog","حماية: ECC · watchdog"]},[
+R("Space weather and radiation","space","Van Allen belts and protection","أحزمة فان ألين والحماية",{k:"sun",v:"belts",tag:["shield: ECC · watchdog","حماية: ECC · watchdog"]},[
  ["Earth's radiation belts, the Van Allen belts, are dangerous for electronics, so orbits and shielding are chosen carefully.","أحزمة الإشعاع حوالين الأرض، فان ألين، خطر على الإلكترونيات، فبنختار المدارات والتدريع بحذر.","point"],
  ["Spacecraft use error-correcting memory, watchdog timers and radiation-tolerant parts.","المركبات بتستخدم ذاكرة بتصحح الأخطاء، وwatchdog timers، وقطع بتتحمل الإشعاع.","think"],
  ["A watchdog resets the computer if the software freezes. Add one to your own robots too.","الـwatchdog بيعمل ريستارت للكمبيوتر لو البرنامج وقف. حط واحد في روبوتاتك كمان.","happy"]]);
@@ -334,7 +334,7 @@ R("Your first model: linear regression","ai","Linear regression: predict a numbe
  ["Regression predicts a number. You give it inputs, like hours studied, and answers, like scores.","الانحدار بيتوقع رقم. بتدّيه مدخلات زي ساعات المذاكرة، وإجابات زي الدرجات.","point"],
  ["fit finds the best line. predict uses that line on new inputs.","fit بتلاقي أحسن خط. وpredict بتستخدمه على مدخلات جديدة.","happy"],
  ["More hours, higher score. Sadly, the line cannot study for you.","ساعات أكتر، درجة أعلى. للأسف الخط مش هيذاكر عنك.","laugh"]]);
-R("Classification with k-NN","ai","k-NN: let the neighbours vote","k-NN: الجيران بيصوّتوا",{k:"net",layers:[4,3,1],tag:["nearest k points vote","أقرب k نقط بيصوّتوا"]},[
+R("Classification with k-NN","ai","k-NN: let the neighbours vote","k-NN: الجيران بيصوّتوا",{k:"net",v:"knn",layers:[4,3,1],tag:["nearest k points vote","أقرب k نقط بيصوّتوا"]},[
  ["Classification predicts a label. k-Nearest Neighbours is the friendliest algorithm.","التصنيف بيتوقع تسمية. k-Nearest Neighbours أحن خوارزمية.","point"],
  ["To classify a new point, look at the k closest known points and take a vote.","عشان تصنّف نقطة جديدة، بص على أقرب k نقط معروفة وخد تصويت.","happy"],
  ["We hold back 20 percent of the data to test on examples the model never saw.","بنحجز 20 في المية من البيانات نختبر بيها على أمثلة الموديل مشافهاش.","think"]]);
@@ -342,11 +342,11 @@ R("Overfitting: memorising is not learning","ai","Overfitting: memorising isn't 
  ["A model that is too flexible memorises the training data, noise included, then fails on new data.","موديل مرن زيادة بيحفظ بيانات التدريب، بالتشويش كمان، وبعدين بيفشل على بيانات جديدة.","point"],
  ["The warning sign: a very high training score, but a much lower test score.","علامة التحذير: درجة تدريب عالية جدا، ودرجة اختبار أقل بكتير.","wow"],
  ["Fixes: more data, a simpler model, or stopping earlier. In k-NN, k equals 1 hugs every mistake.","الحلول: بيانات أكتر، موديل أبسط، أو توقف بدري. في k-NN، k بواحد بيحضن كل الغلطات.","think"]]);
-R("A tiny neural network","ai","Neuron: weights, bias, activation","النيورون: أوزان وbias وactivation",{k:"net",layers:[3,1],tag:"Σ w·x + b → ReLU"},[
+R("A tiny neural network","ai","Neuron: weights, bias, activation","النيورون: أوزان وbias وactivation",{k:"net",v:"neuron",layers:[3,1],tag:"Σ w·x + b → ReLU"},[
  ["An artificial neuron multiplies each input by a weight, adds them up with a bias, then applies an activation.","النيورون الصناعي بيضرب كل مدخل في وزن، ويجمعهم مع bias، وبعدين يطبّق activation.","point"],
  ["ReLU keeps positives and turns negatives into zero. Super simple, super useful.","ReLU بتسيب الموجب وتخلّي السالب صفر. بسيطة جدا ومفيدة جدا.","happy"],
  ["One neuron is a tiny calculator with opinions.","النيورون الواحد آلة حاسبة صغيرة ليها رأي.","laugh"]]);
-R("A tiny neural network","ai","Layers and training","الطبقات والتدريب",{k:"net",layers:[3,4,4,2],tag:["gradient descent: step downhill","gradient descent: خطوة لتحت"]},[
+R("A tiny neural network","ai","Layers and training","الطبقات والتدريب",{k:"net",v:"train",layers:[3,4,4,2],tag:["gradient descent: step downhill","gradient descent: خطوة لتحت"]},[
  ["A layer is many neurons side by side. A network stacks layers.","الطبقة هي نيورونات كتير جنب بعض. والشبكة بتكدّس طبقات.","point"],
  ["Training adjusts all the weights to reduce the error, using gradient descent: small steps downhill, many times.","التدريب بيظبط كل الأوزان عشان يقلل الخطأ، بـgradient descent: خطوات صغيرة لتحت، مرات كتير.","think"],
  ["Deep learning is just many layers. The idea per neuron stays this simple.","الـdeep learning مجرد طبقات كتير. فكرة كل نيورون بتفضل بسيطة كده.","laugh"]]);

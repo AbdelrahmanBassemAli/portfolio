@@ -188,3 +188,11 @@ html[dir=rtl] .rl-title{letter-spacing:0;text-transform:none}
 .fx-tw{transform-box:fill-box;transform-origin:center;animation:fxTw 2.2s ease-in-out infinite}
 @keyframes fxTw{0%,100%{transform:scale(.2) rotate(0);opacity:0}50%{transform:scale(1) rotate(45deg);opacity:.95}}
 @media(min-width:760px){.rl-najm{width:120px}.rl-say{font-size:clamp(24px,2.4vw,34px)}}
+
+/* ---------- v20: cinematic scenes drawn on canvas ---------- */
+.rl-scene{width:min(100vw,720px);height:min(46vh,430px);min-height:0;padding:0;display:block}
+.rl-scene::before{display:none}
+.cn-host{position:relative;width:100%;height:100%}
+.cn-cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+.rl-reel{padding-top:calc(env(safe-area-inset-top,0px) + 112px)}
+@media(max-height:700px){.rl-scene{height:min(42vh,430px)}}
