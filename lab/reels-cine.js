@@ -77,12 +77,16 @@ CN.earth=(S,cx,cy,R,rot,o)=>{o=o||{};const c=S.c,v=S.v,sun=o.sun||[-.7,-.25,.62]
   if(p.land){a=front?(.35+.65*clamp(lit+.25,0,1)):.07;c.globalAlpha=a*al;c.drawImage(night&&p.city&&front?sc:sl,cx+q[0]-dsz,cy+q[1]-dsz,dsz*2,dsz*2)}
   else{a=front?(.16+.7*clamp(lit+.2,0,1)):.04;c.globalAlpha=a*al;c.drawImage(so,cx+q[0]-dsz*.8,cy+q[1]-dsz*.8,dsz*1.6,dsz*1.6)}
  }
- CN.circle(c,cx,cy,R*1.05,90,.7,[150,205,255],.45*al,S.t*.1)};
+ {const sa=sp([150,205,255]),sb=sp([90,150,255]),n=150;
+  for(let i=0;i<n;i++){const th=i/n*TAU,nx=cos(th),ny=sin(th),lit=clamp(nx*sun[0]+ny*sun[1]+.35,0,1.2),fl=.75+.25*sin(S.t*1.3+i*.7);
+   c.globalAlpha=(.1+.55*lit)*fl*al;c.drawImage(sa,cx+nx*R*1.045-1.3,cy+ny*R*1.045-1.3,2.6,2.6);
+   c.globalAlpha=(.04+.22*lit)*al;c.drawImage(sb,cx+nx*R*1.1-2.4,cy+ny*R*1.1-2.4,4.8,4.8)}
+  const gx=cx+sun[0]*-R*.2,gy=cy+sun[1]*-R*.2;CN.glow(c,cx-sun[0]*R*1.04,cy-sun[1]*R*1.04,R*.5,[190,225,255],.16*al)}};
 /* occlusion test: is a screen offset (relative to the globe centre) hidden behind the globe? */
 const hid=(q,R)=>q[2]<0&&q[0]*q[0]+q[1]*q[1]<R*R*.9;
 
 /* satellite icon: bright core + two panels */
-CN.sat=(S,x,y,ang,sz,rgb,a)=>{const c=S.c;CN.glow(c,x,y,sz*3.2,rgb,.55*a);CN.glow(c,x,y,sz*1.3,[255,255,255],.95*a);
+CN.sat=(S,x,y,ang,sz,rgb,a)=>{const c=S.c;CN.glow(c,x,y,sz*2.8,rgb,.45*a);CN.glow(c,x,y,sz*.75,[255,255,255],.8*a);
  c.save();c.globalAlpha=.95*a;c.strokeStyle=`rgb(${rgb})`;c.lineWidth=sz*.55;c.lineCap="round";c.translate(x,y);c.rotate(ang);
  c.beginPath();c.moveTo(-sz*3.2,0);c.lineTo(-sz*1.2,0);c.moveTo(sz*1.2,0);c.lineTo(sz*3.2,0);c.stroke();
  c.lineWidth=sz*1.1;c.strokeStyle="#fff";c.beginPath();c.moveTo(-sz*.6,0);c.lineTo(sz*.6,0);c.stroke();c.restore()};
@@ -211,6 +215,7 @@ CN.sc.orbit=S=>{
 };
 
 /* ================= POST: bloom (two soft passes at low res, additive) ================= */
+const BK=(i)=>{const r=rng(i*977+3),o=[];for(let k=0;k<9;k++)o.push({x:r(),y:r(),z:.4+r()*.9,s:.02+r()*.05,p:r()*TAU,c:r()<.5?[120,170,255]:[255,170,110],d:r()*.5+.2});return o};
 CN.post=S=>{
  const W=S.cv.width,H=S.cv.height;if(!W||!H)return;
  if(!S.bl||S.bl.w!==W){const mk=(d)=>{const k=document.createElement("canvas");k.width=M.max(8,W/d|0);k.height=M.max(8,H/d|0);const g=k.getContext("2d");g.imageSmoothingQuality="high";return k};
@@ -219,7 +224,21 @@ CN.post=S=>{
  B.ac.globalCompositeOperation="copy";B.ac.drawImage(S.cv,0,0,B.a.width,B.a.height);
  B.bc.globalCompositeOperation="copy";B.bc.drawImage(B.a,0,0,B.b.width,B.b.height);
  const c=S.c;c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation="lighter";c.imageSmoothingEnabled=true;c.imageSmoothingQuality="high";
- c.globalAlpha=.5;c.drawImage(B.a,0,0,W,H);c.globalAlpha=.55;c.drawImage(B.b,0,0,W,H);c.globalAlpha=1;c.globalCompositeOperation="source-over"};
+ c.globalAlpha=.5;c.drawImage(B.a,0,0,W,H);c.globalAlpha=.55;c.drawImage(B.b,0,0,W,H);
+ 
+if(CN.lite){c.globalAlpha=1;c.globalCompositeOperation="source-over";return}
+ const D=S.dpr,t=S.t,px=S.pxs||0,py=S.pys||0;
+ /* foreground bokeh drifting with the pointer (depth) */
+ if(!S.bk)S.bk=BK(S.idx+1);
+ for(const o of S.bk){const x=((o.x+t*o.s*.08*o.d+px*.03*o.z)%1.2-.1)*W,y=(o.y+sin(t*.2*o.d+o.p)*.03+py*.03*o.z)*H,r=(34+70*o.z)*D;
+  c.globalAlpha=(.03+.04*o.z)*(.6+.4*sin(t*.5+o.p))*S.fade;c.drawImage(sp(o.c),x-r,y-r,r*2,r*2)}
+ /* anamorphic flare on every beat */
+ if(S.bt<1.6&&S.bt>=0&&!RL_RM.matches){const a=M.exp(-S.bt*2.4)*.55*S.fade,y=H*.5,cx=W*.5;
+  c.globalAlpha=a;c.drawImage(sp([140,190,255]),cx-W*.55,y-9*D,W*1.1,18*D);c.globalAlpha=a*.8;c.drawImage(sp([255,255,255]),cx-W*.18,y-3*D,W*.36,6*D)}
+ /* finger glow trail */
+ if(S.tr&&S.tr.length){for(let i=S.tr.length-1;i>=0;i--){const q=S.tr[i];q.l-=S.dt*1.6;if(q.l<=0){S.tr.splice(i,1);continue}
+  const r=(10+14*q.l)*D;c.globalAlpha=q.l*.55;c.drawImage(sp(q.c),q.x*D-r,q.y*D-r,r*2,r*2)}}
+ c.globalAlpha=1;c.globalCompositeOperation="source-over"};
 
 /* ================= ENGINE ================= */
 const INST=[];let raf=0,last=0;
@@ -229,6 +248,10 @@ function mount(host,k,idx){
  const S={host,cv,c:cv.getContext("2d"),idx,kind:r.scene.k,p:r.scene,st:{},t:0,bt:0,b:0,tok:-1,dt:.016,w:0,h:0,dpr:1,k:1,fade:1,
   cam:{z:.7,x:0,y:0},camT:{z:1,x:0,y:0},v:{yaw:0,tilt:.5},ar:LANG==="ar",done:false};
  S.sx=x=>S.W/2+(x-S.cam.x)*S.U*S.cam.z;S.sy=y=>S.H/2+(y-S.cam.y)*S.U*S.cam.z;
+ S.pxs=0;S.pys=0;S.px=0;S.py=0;S.tr=[];
+ if(!host._pp){host._pp=1;host.addEventListener("pointermove",e=>{const b=host.getBoundingClientRect(),x=e.clientX-b.left,y=e.clientY-b.top;S.px=(x/b.width-.5)*2;S.py=(y/b.height-.5)*2;
+  if(!RL_RM.matches&&S.tr.length<40)S.tr.push({x,y,l:1,c:[[120,200,255],[255,200,120],[200,150,255]][(S.tr.length+(S.idx|0))%3]})});
+  host.addEventListener("pointerleave",()=>{S.px=0;S.py=0})}
  INST.push(S);fit(S);
  try{(CN.ini[S.kind]||(()=>{}))(S)}catch(e){S.err=e;console.warn("cine init",S.kind,e)}
  /* start state for static neighbours / reduced motion */
@@ -248,7 +271,7 @@ function drawS(S,dt){
  S.fade=ease(S.t/.7);
  c.setTransform(S.dpr,0,0,S.dpr,0,0);c.clearRect(0,0,S.W,S.H);c.globalCompositeOperation="lighter";c.globalAlpha=1;c.lineCap="round";
  /* beat punch: tiny zoom kick */
- const kick=1+.028*Math.exp(-S.bt*2.2)*(S.bt>0?1:0),br=1+.012*sin(S.t*.33),dx=sin(S.t*.19)*2.2,dy=cos(S.t*.15)*1.6;
+ const kick=1+.028*Math.exp(-S.bt*2.2)*(S.bt>0?1:0),br=1+.012*sin(S.t*.33),dx=sin(S.t*.19)*2.2+S.pxs*4,dy=cos(S.t*.15)*1.6+S.pys*3;S.pxs+=(S.px-S.pxs)*M.min(1,S.dt*3);S.pys+=(S.py-S.pys)*M.min(1,S.dt*3);
  const z=S.cam.z*intro*kick*br;
  c.save();c.translate(S.W/2,S.H/2);c.scale(S.U*z,S.U*z);c.translate(-S.cam.x-dx,-S.cam.y-dy);
  const zs=S.cam.z;S.cam.z=z;
@@ -257,7 +280,7 @@ function drawS(S,dt){
  c.restore();c.globalAlpha=1;c.globalCompositeOperation="source-over";if(CN.post)CN.post(S)}
 function loop(ts){
  raf=0;if(!RL.open)return;
- const dt=last?M.min((ts-last)/1000,.05):.016;last=ts;
+ const dt=last?M.min((ts-last)/1000,.05):.016;last=ts;CN.ema=(CN.ema||.016)*.96+dt*.04;CN.lite=!window.__hq&&CN.ema>.046;
  for(let i=INST.length-1;i>=0;i--){const S=INST[i];if(!S.host.isConnected){INST.splice(i,1);continue}
   if(S.idx!==RL.idx||S.stat)continue;
   if(RL_RM.matches)continue;

@@ -62,7 +62,7 @@ function draw(dt,t){
   s.y+=dt*(.006+.02*s.z)*(1+FX.kick*8);if(s.y>1.02)s.y=-.02;
   const x=s.x*W,y=s.y*H,a=(.35+.65*Math.abs(Math.sin(t*s.s+s.p)))*s.z;
   c.globalAlpha=a;
-  if(FX.kick>.5&&s.z>.55){c.lineWidth=s.z*1.2;c.beginPath();c.moveTo(x,y);c.lineTo(x,y-FX.kick*14*s.z);c.stroke()}
+  if(FX.kick>.5&&s.z>.55&&!RL_RM.matches){c.lineWidth=s.z*1.2;c.beginPath();c.moveTo(x,y);c.lineTo(x,y-FX.kick*14*s.z);c.stroke()}
   else c.fillRect(x,y,s.z*1.9,s.z*1.9);
  }
  /* galaxy */
@@ -85,8 +85,14 @@ function draw(dt,t){
   const gr=c.createLinearGradient(k.x,k.y,k.x+90,k.y-50);gr.addColorStop(0,"rgba(255,255,255,.95)");gr.addColorStop(1,"rgba(255,255,255,0)");
   c.globalAlpha=1;c.strokeStyle=gr;c.lineWidth=2;c.beginPath();c.moveTo(k.x,k.y);c.lineTo(k.x+90,k.y-50);c.stroke();
   if(k.x<-100||k.y>H+60)FX.comet=null}
+ /* finale: a soft burst of light when a reel finishes */
+ if(RL.finished&&!FX.fin){FX.fin=1;FX.sp=Array.from({length:110},()=>{const a=rnd(0,6.283),v=rnd(40,260);return{x:FX.cx0,y:FX.cy0,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:1,r:rnd(5,13),c:Math.random()<.5?T:[255,255,255]}})}
+ if(!RL.finished)FX.fin=0;
+ if(FX.sp&&FX.sp.length){c.globalCompositeOperation="lighter";const sg=cnSp;for(let i=FX.sp.length-1;i>=0;i--){const q=FX.sp[i];q.x+=q.vx*dt;q.y+=q.vy*dt;q.vx*=Math.pow(.15,dt);q.vy*=Math.pow(.15,dt);q.l-=dt*.55;if(q.l<=0){FX.sp.splice(i,1);continue}
+   if(sg){c.globalAlpha=q.l*.8;c.drawImage(sg(q.c),q.x-q.r,q.y-q.r,q.r*2,q.r*2)}}}
  c.globalAlpha=1;c.globalCompositeOperation="source-over";
 }
+const cnSp=c=>window.CN&&CN.sp?CN.sp(c):null;
 function start(){
  init();size();
  const tr=REELS[RL.idx]&&REELS[RL.idx].track;FX.tint=TINT[tr]||TINT.space;
@@ -125,7 +131,7 @@ window.rlBeat=rlBeat=function(n){
  wordsCap();
  const box=RL.els.reels[RL.idx]&&RL.els.reels[RL.idx].querySelector(".rl-scene");
  if(box){box.style.setProperty("--bd",(Math.max(RL.dur,3.5)+1.2).toFixed(1)+"s");void box.offsetWidth}
- FX.zt=1;FX.kick=.5;
+ FX.zt=1;FX.kick=.5;try{navigator.vibrate&&navigator.vibrate(7)}catch(e){}
  restart(FX.ring,"go");restart(RL.els.najm,"hop");
 };
 window.rlScenes=rlScenes=function(i){
