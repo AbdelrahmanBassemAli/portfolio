@@ -28,7 +28,7 @@ RS.orbit=p=>{const cx=150,cy=95,rx=p.rx||90,ry=p.ry||rx,e=p.e||0,n=p.n||1,du=p.d
  for(let k=0;k<n;k++){const rot=(p.tilt||0)+(k*(p.spread==null?0:p.spread));
   const path=`M${cx+rx},${cy} a${rx},${ry} 0 1,0 ${-2*rx},0 a${rx},${ry} 0 1,0 ${2*rx},0`;
   s+=`<g transform="rotate(${rot} ${cx} ${cy})"><ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="none" stroke="${p.col||C.cy}" stroke-width="2.5" stroke-dasharray="6 6" opacity=".8"/>
-  <g><animateMotion dur="${du}s" begin="${(-k*du/n).toFixed(2)}s" repeatCount="indefinite" ${e?'calcMode="linear" keyPoints="0;.35;.65;1" keyTimes="0;.2;.8;1"':""} path="${path}"/>${p.sat==="none"?"":rsSat(p.ss||.8)}</g></g>`}
+  <g><animateMotion dur="${du}s" begin="${(p.spread?0:-k*du/n).toFixed(2)}s" repeatCount="indefinite" ${e?'calcMode="linear" keyPoints="0;.35;.65;1" keyTimes="0;.2;.8;1"':""} path="${path}"/>${p.sat==="none"?"":rsSat(p.ss||.8)}</g></g>`}
  const wedge=p.wedge?`<path d="M${fx},${cy} L${cx-rx},${cy} A${rx},${ry} 0 0,1 ${cx-rx*.6},${cy-ry*.8} Z" fill="${C.pk}" opacity=".55" class="a-pulse"/><path d="M${fx},${cy} L${cx+rx},${cy} A${rx},${ry} 0 0,0 ${cx+rx-6},${cy-ry*.35} Z" fill="${C.gr}" opacity=".55" class="a-pulse" style="animation-delay:.6s"/>`:"";
  const ground=p.ground?`<g transform="translate(${cx},${cy+(p.er||26)+6})"><path d="M-9 0 L9 0 L0 -14Z" fill="${C.or}" ${rsO}/></g>`:"";
  const labs=(p.labels||[]).map(l=>rsT(l[0],l[1],l[2],l[3]||12,l[4]||C.wh)).join("");
