@@ -96,7 +96,7 @@ function spSay(text,ar,onStart,onEnd){
  if(!SP.ok||!AU.on)return false;
  const v=spVoice(ar);if(v===null||v===undefined)return false;
  spCancel();
- const u=new SpeechSynthesisUtterance(text);u.voice=v;u.lang=v.lang;u.rate=ar?.95:1.02;u.pitch=1.18;u.volume=1;
+ let u;try{u=new SpeechSynthesisUtterance(text);u.voice=v;u.lang=v.lang;u.rate=ar?.95:1.02;u.pitch=1.18;u.volume=1}catch(e){return false}
  let done=false;const fin=()=>{if(done)return;done=true;clearTimeout(SP.wd);if(SP.cur===u)SP.cur=null;onEnd()};
  u.onstart=()=>{onStart&&onStart()};u.onend=fin;u.onerror=fin;SP.cur=u;
  setTimeout(()=>{if(SP.cur===u){try{speechSynthesis.speak(u)}catch(e){fin()}}},70);
@@ -190,7 +190,7 @@ function rlBeat(n){
  const b=r.beats[n],txt=rlText(b),ar=LANG==="ar";
  RL.els.cap.textContent=txt;RL.els.say.dir=ar?"rtl":"ltr";
  RL.els.say.classList.remove("pop");void RL.els.say.offsetWidth;RL.els.say.classList.add("pop");
- RL.dur=Math.max(2.8,txt.length*(ar?.085:.07));
+ RL.dur=Math.max(3.2,txt.length*(ar?.11:.09));
  RL.els.segs.forEach((g,k)=>{g.firstElementChild.style.width=k<n?"100%":"0"});
  RL.speech=false;
  sfx(n===r.beats.length-1?"chirp":"pop");
