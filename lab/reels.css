@@ -1,0 +1,183 @@
+/* Mission Lab Reels: full-screen swipeable concept explainers.
+   Additive layer: only .rl-* / .rls-* nodes. Pure CSS/SVG animation, no media. */
+
+/* ---------- entry points ---------- */
+.reels-open{display:inline-flex;align-items:center;gap:8px;margin:2px 0 6px;border:1px solid #56e4ff66;background:#56e4ff1a;color:var(--cyan);border-radius:999px;padding:9px 16px;font:700 14px/1 inherit;cursor:pointer}
+.reels-open:hover{background:#56e4ff30}
+.areas .reels-open{margin:0}
+@media(max-width:759px){
+  .areas button.reels-open{display:inline-flex;padding:8px 14px}
+}
+.rl-watch{display:inline-flex;align-items:center;gap:6px;margin:10px 8px 0 0;border:1px solid #56e4ff66;background:#56e4ff14;color:var(--cyan);border-radius:999px;padding:8px 14px;font:700 13px/1 inherit;cursor:pointer;transition:background .2s,transform .16s}
+.rl-watch:hover{background:#56e4ff2e}
+.rl-watch:active{transform:scale(.96)}
+
+/* ---------- overlay shell ---------- */
+.rl-wrap{position:fixed;inset:0;z-index:200;background:radial-gradient(900px 600px at 50% -10%,#101f4d 0%,#050b1b 60%);display:flex;flex-direction:column;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+.rl-wrap[hidden]{display:none}
+.rl-top{position:absolute;top:0;left:0;right:0;z-index:5;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 0}
+.rl-segs{display:flex;gap:4px;direction:ltr}
+.rl-segs i{flex:1;height:3px;border-radius:3px;background:#ffffff2b;overflow:hidden;position:relative}
+.rl-segs i b{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:3px}
+.rl-segs i.done b{width:100%}
+.rl-meta{display:flex;align-items:center;gap:10px;margin-top:10px}
+.rl-count{color:var(--muted);font-size:12.5px;font-weight:600}
+.rl-trackchip{border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--cyan);background:#0b153a99}
+.rl-x{margin-inline-start:auto;border:1px solid var(--line);background:#0b153a99;color:var(--ink);width:36px;height:36px;border-radius:50%;font-size:16px;cursor:pointer;line-height:1}
+.rl-x:hover{border-color:var(--cyan);color:var(--cyan)}
+
+.rl-stage{flex:1;position:relative;overflow:hidden}
+.rl-track{height:100%;transition:transform .38s cubic-bezier(.32,.72,.28,1)}
+.rl-wrap.rm .rl-track{transition:none}
+.rl-reel{height:100%;position:relative;display:flex;align-items:center;justify-content:center}
+.rl-reel:not(.act) *{animation-play-state:paused!important}
+
+/* scene + captions */
+.rl-scene{width:min(88vw,420px);max-height:52vh;display:flex;align-items:center;justify-content:center}
+.rl-scene svg{width:100%;height:auto;max-height:52vh;display:block}
+.rl-title{position:absolute;top:calc(env(safe-area-inset-top,0px) + 74px);left:0;right:0;text-align:center;font-size:clamp(17px,4.6vw,22px);font-weight:700;color:var(--ink);padding:0 20px;text-shadow:0 2px 12px #000a}
+.rl-caps{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 120px);display:flex;justify-content:center;padding:0 22px;pointer-events:none}
+.rl-cap{font-size:clamp(19px,5.4vw,27px);font-weight:800;line-height:1.35;text-align:center;color:#fff;text-shadow:0 2px 14px #000c;max-width:640px;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s}
+.rl-cap.show{opacity:1;transform:none}
+.rl-wrap.rm .rl-cap{opacity:1;transform:none;position:static}
+.rl-wrap.rm .rl-caps{flex-direction:column;gap:8px;align-items:center;bottom:calc(env(safe-area-inset-bottom,0px) + 100px)}
+.rl-wrap.rm .rl-cap{font-size:clamp(14px,3.8vw,17px);font-weight:600}
+
+/* Najm cameo */
+.rl-najm{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);inset-inline-start:14px;display:flex;align-items:flex-end;gap:8px;max-width:min(78vw,360px);opacity:0;transform:translateY(12px) scale(.9);transform-origin:bottom left;transition:opacity .35s,transform .35s;pointer-events:none}
+html[dir=rtl] .rl-najm{transform-origin:bottom right}
+.rl-najm.show{opacity:1;transform:none}
+.rl-wrap.rm .rl-najm{opacity:1;transform:none}
+.rl-najm svg{width:44px;height:50px;flex:none;filter:drop-shadow(0 4px 10px #0008)}
+.rl-bubble{background:#101c42f0;border:1px solid #56e4ff55;border-radius:14px 14px 14px 4px;padding:8px 12px;font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.4}
+html[dir=rtl] .rl-bubble{border-radius:14px 14px 4px 14px}
+
+/* controls */
+.rl-hint{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);left:50%;transform:translateX(-50%);color:var(--muted);font-size:12px;display:flex;align-items:center;gap:6px;pointer-events:none;transition:opacity .4s}
+html[dir=rtl] .rl-hint{transform:translateX(50%)}
+.rl-hint.gone{opacity:0}
+.rl-navd{position:absolute;inset-inline-end:12px;top:50%;transform:translateY(-50%);display:none;flex-direction:column;gap:10px;z-index:6}
+@media(min-width:760px){.rl-navd{display:flex}}
+.rl-navd button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#0b153a99;color:var(--cyan);font-size:17px;cursor:pointer;line-height:1}
+.rl-navd button:hover:not(:disabled){border-color:var(--cyan);box-shadow:0 0 14px -4px var(--cyan)}
+.rl-navd button:disabled{opacity:.3;cursor:default}
+.rl-replay{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 56px);transform:translateX(-50%);border:1px solid #ffd47977;background:#ffd4791f;color:var(--gold);border-radius:999px;padding:10px 22px;font:700 14px/1 inherit;cursor:pointer;z-index:6}
+html[dir=rtl] .rl-replay{transform:translateX(50%)}
+.rl-replay:hover{background:#ffd47938}
+.rl-paused-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:74px;height:74px;border-radius:50%;background:#050b1bb0;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--cyan);pointer-events:none;opacity:0;transition:opacity .25s;z-index:6}
+.rl-wrap.paused .rl-paused-badge{opacity:1}
+.rl-wrap.paused .rl-reel *{animation-play-state:paused!important}
+
+/* reduced motion: freeze every scene, static captions */
+.rl-wrap.rm .rl-reel *{animation:none!important}
+
+/* ---------- shared scene bits ---------- */
+.rl-svg text{font-family:"DM Sans",system-ui,sans-serif}
+.lb{fill:#8fb3d9;font-size:9px}
+.bd{fill:#0e7490;stroke:#2ad4e6;stroke-width:1.5}
+.chipb{fill:#111827;stroke:#4b5563}
+.wire{stroke:#56e4ff;stroke-width:2;fill:none}
+.gld{fill:var(--gold)}
+.cyn{fill:var(--cyan)}
+.vio{fill:var(--violet)}
+.grn{fill:var(--aurora)}
+.dim{fill:#22304f}
+.codet{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;fill:#cfe6ff}
+.numt{font-family:ui-monospace,Menlo,Consolas,monospace;fill:#fff}
+
+/* 1 blink */
+.rls-blink .led{fill:#3a2f10;animation:rlLed 1.7s steps(1) infinite}
+@keyframes rlLed{0%,45%{fill:#ffd479;filter:drop-shadow(0 0 14px #ffd479)}50%,95%{fill:#3a2f10;filter:none}}
+.rls-blink .hl{fill:#56e4ff22;animation:rlHl 6.8s steps(1) infinite}
+@keyframes rlHl{0%,24%{transform:translateY(0)}25%,49%{transform:translateY(15px)}50%,74%{transform:translateY(30px)}75%,100%{transform:translateY(45px)}}
+.rls-blink .pinpulse{animation:rlPinP 1.7s steps(1) infinite}
+@keyframes rlPinP{0%,45%{stroke:#ffd479}50%,95%{stroke:#33436b}}
+
+/* 2 ohm */
+.rls-ohm .flow circle{animation:rlFlow 1.6s linear infinite}
+.rls-ohm .flow circle:nth-child(2){animation-delay:-.53s}
+.rls-ohm .flow circle:nth-child(3){animation-delay:-1.06s}
+@keyframes rlFlow{0%{transform:translateX(0);opacity:0}12%{opacity:1}88%{opacity:1}100%{transform:translateX(150px);opacity:0}}
+.rls-ohm .vv,.rls-ohm .vi,.rls-ohm .vr{animation:rlPop 4.5s ease-in-out infinite}
+.rls-ohm .vi{animation-delay:1.5s}
+.rls-ohm .vr{animation-delay:3s}
+@keyframes rlPop{0%,100%{opacity:.55}8%,30%{opacity:1;filter:drop-shadow(0 0 8px currentColor)}}
+.rls-ohm .tri{stroke:#8fb3d9;stroke-width:2;fill:#0b153a}
+
+/* 3 pwm */
+.rls-pwm .ph{opacity:0;animation:rlPhase 9s linear infinite}
+.rls-pwm .ph2{animation-delay:3s}
+.rls-pwm .ph3{animation-delay:6s}
+@keyframes rlPhase{0%{opacity:0}2%,31%{opacity:1}33%,100%{opacity:0}}
+.rls-pwm .lume{animation:rlLume 9s linear infinite}
+@keyframes rlLume{0%,2%{opacity:.15}12%,31%{opacity:.15}33%,35%{opacity:.55}45%,64%{opacity:.55}66%,68%{opacity:1;filter:drop-shadow(0 0 16px #ffd479)}80%,98%{opacity:1;filter:drop-shadow(0 0 16px #ffd479)}100%{opacity:.15}}
+
+/* 4 vars */
+.rls-vars .val1{animation:rlV1 6s steps(1) infinite}
+.rls-vars .val2{opacity:0;animation:rlV2 6s steps(1) infinite}
+@keyframes rlV1{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes rlV2{0%,49%{opacity:0}50%,100%{opacity:1}}
+.rls-vars .box{animation:rlBox 6s ease-in-out infinite}
+@keyframes rlBox{0%,100%{filter:drop-shadow(0 0 4px #56e4ff44)}50%{filter:drop-shadow(0 0 12px #ac8bff88)}}
+
+/* 5 loops */
+.rls-loops .d{fill:#22304f;animation:rlDot 2.8s steps(1) infinite}
+.rls-loops .d1{animation-delay:0s}.rls-loops .d2{animation-delay:.56s}.rls-loops .d3{animation-delay:1.12s}.rls-loops .d4{animation-delay:1.68s}.rls-loops .d5{animation-delay:2.24s}
+@keyframes rlDot{0%,18%{fill:#56e4ff;filter:drop-shadow(0 0 8px #56e4ff)}19%,100%{fill:#22304f;filter:none}}
+.rls-loops .cnt text{opacity:0;animation:rlCnt 2.8s steps(1) infinite}
+.rls-loops .cnt .c0{animation-delay:0s}.rls-loops .cnt .c1{animation-delay:.56s}.rls-loops .cnt .c2{animation-delay:1.12s}.rls-loops .cnt .c3{animation-delay:1.68s}.rls-loops .cnt .c4{animation-delay:2.24s}
+@keyframes rlCnt{0%,18%{opacity:1}19%,100%{opacity:0}}
+
+/* 6 orbit */
+.rls-orbit .orb{transform-origin:150px 100px;animation:rlSpin 6s linear infinite}
+@keyframes rlSpin{to{transform:rotate(360deg)}}
+.rls-orbit .path{stroke:#56e4ff55;stroke-width:1.5;stroke-dasharray:5 6;fill:none}
+.rls-orbit .earth{fill:#1d4ed8;stroke:#56e4ff;stroke-width:2}
+.rls-orbit .fall{stroke:#ffd479;stroke-width:1.5;stroke-dasharray:3 4;animation:rlFall 2s linear infinite}
+@keyframes rlFall{to{stroke-dashoffset:-14}}
+
+/* 7 gps */
+.rls-gps .sig{fill:none;stroke:#56e4ff;stroke-width:2;opacity:0;transform-origin:center;transform-box:fill-box;animation:rlSig 2.4s ease-out infinite}
+.rls-gps .s2 .sig{animation-delay:.8s}
+.rls-gps .s3 .sig{animation-delay:1.6s}
+@keyframes rlSig{0%{transform:scale(.25);opacity:0}15%{opacity:.9}100%{transform:scale(2.4);opacity:0}}
+.rls-gps .pin{transform-origin:center;transform-box:fill-box;animation:rlPin 3.2s ease-in-out infinite}
+@keyframes rlPin{0%,60%{transform:scale(0)}70%{transform:scale(1.25)}80%,92%{transform:scale(1)}100%{transform:scale(0)}}
+
+/* 8 ultrasonic */
+.rls-sonic .ping{opacity:0;animation:rlPing 2.6s linear infinite}
+@keyframes rlPing{0%{transform:translateX(0);opacity:0}8%{opacity:1}42%{transform:translateX(128px);opacity:1}50%{transform:translateX(128px);opacity:0}50.1%{transform:translateX(128px) scaleX(-1);opacity:0}58%{opacity:1}92%{transform:translateX(0) scaleX(-1);opacity:1}100%{transform:translateX(0) scaleX(-1);opacity:0}}
+.rls-sonic .wall{fill:#33436b;stroke:#8fb3d9}
+.rls-sonic .eye{fill:#0b153a;stroke:#56e4ff;stroke-width:2}
+.rls-sonic .dst text{opacity:0;animation:rlDst 2.6s steps(1) infinite}
+.rls-sonic .dst .dA{animation-delay:0s}.rls-sonic .dst .dB{animation-delay:.87s}.rls-sonic .dst .dC{animation-delay:1.73s}
+@keyframes rlDst{0%,30%{opacity:1}31%,100%{opacity:0}}
+
+/* 9 neural net */
+.rls-nn .lnk{stroke:#33436b;stroke-width:1.5}
+.rls-nn .nd{fill:#22304f;stroke:#56e4ff;stroke-width:1.5}
+.rls-nn .w1{animation:rlWave 3.6s ease-in-out infinite}
+.rls-nn .w2{animation:rlWave 3.6s ease-in-out infinite;animation-delay:1.2s}
+.rls-nn .w3{animation:rlWave 3.6s ease-in-out infinite;animation-delay:2.4s}
+@keyframes rlWave{0%,100%{fill:#22304f}8%,25%{fill:#56e4ff;filter:drop-shadow(0 0 8px #56e4ff)}}
+.rls-nn .out{fill:#22304f;stroke:var(--gold);animation:rlOut 3.6s ease-in-out infinite;animation-delay:2.9s}
+@keyframes rlOut{0%,100%{fill:#22304f}10%,40%{fill:#ffd479;filter:drop-shadow(0 0 12px #ffd479)}}
+.rls-nn .ok{opacity:0;animation:rlOk 3.6s steps(1) infinite;animation-delay:2.9s}
+@keyframes rlOk{0%,40%{opacity:1}41%,100%{opacity:0}}
+
+/* 10 h-bridge */
+.rls-hb .rot{transform-origin:150px 96px;animation:rlRot 5s linear infinite}
+@keyframes rlRot{0%{transform:rotate(0)}50%{transform:rotate(360deg)}100%{transform:rotate(0)}}
+.rls-hb .swA{animation:rlSwA 5s steps(1) infinite}
+.rls-hb .swB{animation:rlSwB 5s steps(1) infinite}
+@keyframes rlSwA{0%,49%{fill:#5ef0b8}50%,100%{fill:#22304f}}
+@keyframes rlSwB{0%,49%{fill:#22304f}50%,100%{fill:#5ef0b8}}
+.rls-hb .pol1{animation:rlPol1 5s steps(1) infinite}
+.rls-hb .pol2{animation:rlPol2 5s steps(1) infinite}
+@keyframes rlPol1{0%,49%{fill:#ffd479}50%,100%{fill:#56e4ff}}
+@keyframes rlPol2{0%,49%{fill:#56e4ff}50%,100%{fill:#ffd479}}
+
+@media(prefers-reduced-motion:reduce){
+  .rl-track{transition:none}
+  .rl-cap{transition:none}
+}
