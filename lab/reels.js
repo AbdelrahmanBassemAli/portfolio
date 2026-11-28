@@ -367,7 +367,7 @@ function rlInjectHooks(){
   body.insertBefore(b,done||null);
  });
 }
-(window.EXT_RENDER=window.EXT_RENDER||[]).push(()=>{rlInjectHooks();if(RL.open)rlTexts()});
+(window.EXT_RENDER=window.EXT_RENDER||[]).push(()=>{rlInjectHooks();if(RL.open){rlTexts();if(RL_RM.matches)rlStatic()}});
 
 /* nav entry */
 {const nb=document.getElementById("reelsOpen");
