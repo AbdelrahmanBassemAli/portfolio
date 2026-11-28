@@ -21,7 +21,7 @@
 .rl-segs i b{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:3px}
 .rl-segs i.done b{width:100%}
 .rl-meta{display:flex;align-items:center;gap:10px;margin-top:10px}
-.rl-count{color:var(--muted);font-size:12.5px;font-weight:600}
+.rl-count{color:var(--muted);font-size:12.5px;font-weight:600;direction:ltr}
 .rl-trackchip{border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--cyan);background:#0b153a99}
 .rl-x{margin-inline-start:auto;border:1px solid var(--line);background:#0b153a99;color:var(--ink);width:36px;height:36px;border-radius:50%;font-size:16px;cursor:pointer;line-height:1}
 .rl-x:hover{border-color:var(--cyan);color:var(--cyan)}
@@ -54,7 +54,6 @@ html[dir=rtl] .rl-bubble{border-radius:14px 14px 4px 14px}
 
 /* controls */
 .rl-hint{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);left:50%;transform:translateX(-50%);color:var(--muted);font-size:12px;display:flex;align-items:center;gap:6px;pointer-events:none;transition:opacity .4s}
-html[dir=rtl] .rl-hint{transform:translateX(50%)}
 .rl-hint.gone{opacity:0}
 .rl-navd{position:absolute;inset-inline-end:12px;top:50%;transform:translateY(-50%);display:none;flex-direction:column;gap:10px;z-index:6}
 @media(min-width:760px){.rl-navd{display:flex}}
@@ -62,7 +61,6 @@ html[dir=rtl] .rl-hint{transform:translateX(50%)}
 .rl-navd button:hover:not(:disabled){border-color:var(--cyan);box-shadow:0 0 14px -4px var(--cyan)}
 .rl-navd button:disabled{opacity:.3;cursor:default}
 .rl-replay{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 56px);transform:translateX(-50%);border:1px solid #ffd47977;background:#ffd4791f;color:var(--gold);border-radius:999px;padding:10px 22px;font:700 14px/1 inherit;cursor:pointer;z-index:6}
-html[dir=rtl] .rl-replay{transform:translateX(50%)}
 .rl-replay:hover{background:#ffd47938}
 .rl-paused-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:74px;height:74px;border-radius:50%;background:#050b1bb0;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--cyan);pointer-events:none;opacity:0;transition:opacity .25s;z-index:6}
 .rl-wrap.paused .rl-paused-badge{opacity:1}
@@ -72,7 +70,7 @@ html[dir=rtl] .rl-replay{transform:translateX(50%)}
 .rl-wrap.rm .rl-reel *{animation:none!important}
 
 /* ---------- shared scene bits ---------- */
-.rl-svg text{font-family:"DM Sans",system-ui,sans-serif}
+.rl-svg text{font-family:"DM Sans",system-ui,sans-serif;direction:ltr}
 .lb{fill:#8fb3d9;font-size:9px}
 .bd{fill:#0e7490;stroke:#2ad4e6;stroke-width:1.5}
 .chipb{fill:#111827;stroke:#4b5563}

@@ -32,7 +32,7 @@ const REELS=[
    [7,"delay(1000): the chip just counts milliseconds and waits.","delay(1000) الشريحة بتعد ميلي ثانية وتستنى."],
    [10.3,"Loop it forever: that's every robot's heartbeat.","ويكررها للأبد: دي ضربات قلب أي روبوت."]],
  najm:{at:5.5,en:"My first blink made me prouder than graduation day 🎓",ar:"أول بلينك عملته فرّحني أكتر من يوم تخرجي 🎓"},
- scene:`<svg viewBox="0 0 300 210" class="rl-svg rls-blink">
+ scene:`<svg viewBox="0 0 300 226" class="rl-svg rls-blink">
   <rect x="18" y="26" width="170" height="120" rx="12" class="bd"/>
   <text x="30" y="46" class="lb" style="font-size:11px;fill:#bfe9f2">ARDUINO UNO</text>
   <circle cx="60" cy="80" r="8" class="chipb"/>
@@ -40,7 +40,7 @@ const REELS=[
   <circle cx="212" cy="70" r="16" class="led"/>
   <text x="204" y="104" class="lb">D13 · LED</text>
   <rect x="150" y="52" width="10" height="36" rx="2" class="chipb"/>
-  <g><rect x="26" y="158" width="248" height="15" class="hl"/><text x="30" y="169" class="codet">pinMode(13, OUTPUT);</text>
+  <g><rect x="26" y="158" width="192" height="15" class="hl"/><text x="30" y="169" class="codet">pinMode(13, OUTPUT);</text>
   <text x="30" y="184" class="codet">digitalWrite(13, HIGH);  // ON</text>
   <text x="30" y="199" class="codet">delay(1000);             // wait</text>
   <text x="30" y="214" class="codet">digitalWrite(13, LOW);   // OFF ↩</text></g></svg>`},
