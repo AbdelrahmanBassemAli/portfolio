@@ -1,0 +1,127 @@
+/* Mission Lab v24: each track is its own world (background + accent + teaching style). Additive. */
+#worldCv{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity .7s ease}
+#worldCv.on{opacity:1}
+#worldDeco{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#worldDeco i{position:absolute;display:block;opacity:0;transition:opacity .8s ease}
+
+/* ---------- ROBOTICS: the workshop bench (PCB green + copper) ---------- */
+body[data-world=robotics]{
+  --cyan:#ffb347;--violet:#ff7a59;--aurora:#6dffa0;--gold:#ffe08a;--line:#ffb34740;--glass:#0a1f19cc;--navy:#04120e;
+  --g-edge:linear-gradient(135deg,#ffb347aa,#6dffa066 50%,#ff7a5944);--g-card:linear-gradient(160deg,#0d2a20cc,#0a1f19d9 60%,#102a1bcc);
+  background:
+    linear-gradient(#ffb3470a 1px,transparent 1px) 0 0/44px 44px,
+    linear-gradient(90deg,#ffb3470a 1px,transparent 1px) 0 0/44px 44px,
+    radial-gradient(1100px 700px at 85% -10%,#0f4a35 0%,transparent 60%),
+    radial-gradient(900px 600px at 0% 100%,#2a1d08 0%,transparent 60%),#04120e fixed;
+}
+body[data-world=robotics]::before{background:radial-gradient(circle,#13a36b 0%,transparent 65%)}
+body[data-world=robotics]::after{background:radial-gradient(circle,#ff8f2b 0%,transparent 65%);opacity:.22}
+body[data-world=robotics] .stars{opacity:0}
+
+/* ---------- SPACE: deep cosmos with a planet horizon ---------- */
+body[data-world=space]{
+  --cyan:#7fd4ff;--violet:#d38bff;--aurora:#5ef0b8;--line:#7fd4ff3a;
+  background:
+    radial-gradient(900px 520px at 15% 20%,#3b1a6b66 0%,transparent 60%),
+    radial-gradient(800px 500px at 90% 55%,#0f4a8a55 0%,transparent 60%),
+    linear-gradient(#020510,#050b24 60%,#07112e) fixed,#020510;
+}
+body[data-world=space]::before{background:radial-gradient(circle,#c04bff 0%,transparent 65%);opacity:.3}
+body[data-world=space]::after{background:radial-gradient(circle,#19b5ff 0%,transparent 65%);opacity:.3}
+body[data-world=space] #wdPlanet{opacity:1}
+#wdPlanet{left:50%;bottom:-62vmin;width:150vmin;height:150vmin;margin-left:-75vmin;border-radius:50%;
+  background:radial-gradient(circle at 50% 0%,#58c7ff 0,#1a63c8 14%,#0b2f78 38%,#06143a 62%,#030816 100%);
+  box-shadow:0 -10px 60px 6px #4cb8ff66,inset 0 14px 50px #9be3ff55}
+#wdPlanet::after{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(172deg,transparent 0 26px,#ffffff08 26px 30px)}
+
+/* ---------- AI IN PYTHON: neural net + code (ink, Python blue and yellow) ---------- */
+body[data-world=ai]{
+  --cyan:#6fb7ff;--violet:#ffd43b;--aurora:#7dffb2;--gold:#ffd43b;--line:#6fb7ff3a;--glass:#0b1330cc;--navy:#060a1c;
+  --g-edge:linear-gradient(135deg,#6fb7ffaa,#ffd43b66 50%,#7dffb244);--g-card:linear-gradient(160deg,#0d1a40cc,#0a1230d9 60%,#14153acc);
+  background:
+    radial-gradient(1px 1px at 1px 1px,#6fb7ff2a 1px,transparent 1.5px) 0 0/28px 28px,
+    radial-gradient(900px 600px at 80% 0%,#0f2a6a66 0%,transparent 60%),
+    radial-gradient(800px 500px at 0% 90%,#4a3a0a40 0%,transparent 60%),#05081a fixed;
+}
+body[data-world=ai]::before{background:radial-gradient(circle,#2b6bff 0%,transparent 65%)}
+body[data-world=ai]::after{background:radial-gradient(circle,#ffd43b 0%,transparent 65%);opacity:.16}
+body[data-world=ai] .stars{opacity:0}
+
+/* ---------- ORBITWORKS PREP: mission control radar ---------- */
+body[data-world=ow]{
+  --cyan:#4ff3c8;--violet:#ff9d5c;--aurora:#4ff3c8;--gold:#ffc861;--line:#4ff3c83a;--glass:#08181ccc;--navy:#03090d;
+  --g-edge:linear-gradient(135deg,#4ff3c8aa,#ff9d5c66 50%,#ffc86144);--g-card:linear-gradient(160deg,#0a2128cc,#08181cd9 60%,#14201acc);
+  background:
+    linear-gradient(#4ff3c80a 1px,transparent 1px) 0 0/60px 60px,
+    linear-gradient(90deg,#4ff3c80a 1px,transparent 1px) 0 0/60px 60px,
+    radial-gradient(900px 600px at 50% 40%,#0b3a3a66 0%,transparent 65%),#03090d fixed;
+}
+body[data-world=ow]::before{background:radial-gradient(circle,#0fb59a 0%,transparent 65%);opacity:.25}
+body[data-world=ow]::after{background:radial-gradient(circle,#ff7a2b 0%,transparent 65%);opacity:.14}
+body[data-world=ow] .stars{opacity:.25}
+
+/* header and bottom nav pick up the world */
+body[data-world]{transition:background-color .6s}
+body[data-world=robotics] .bnav,body[data-world=ai] .bnav,body[data-world=ow] .bnav{background:color-mix(in srgb,var(--navy) 96%,transparent)}
+
+/* ---------- teaching styles ---------- */
+.ts-banner{display:flex;gap:12px;align-items:center;margin:14px 0 0;padding:12px 14px;border-radius:16px;border:1px solid var(--line);background:var(--glass);position:relative;z-index:1}
+.ts-banner>i{font-style:normal;font-size:30px;flex:none;filter:drop-shadow(0 0 10px var(--cyan))}
+.ts-banner b{display:block;font-size:15px;color:var(--cyan)}
+.ts-banner span{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.ts-rail{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px;padding:0;list-style:none;counter-reset:ts}
+.ts-rail li{counter-increment:ts;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:5px 11px 5px 6px;border-radius:999px;border:1px solid var(--line);color:var(--ink);background:#ffffff08}
+.ts-rail li::before{content:counter(ts);display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--cyan);color:#04120e;font-size:11px}
+
+/* robotics: build log, blueprint cards with copper edge and step rail */
+body[data-world=robotics] .lesson .l-body{border-inline-start:3px dashed #ffb34755;margin-inline-start:10px}
+body[data-world=robotics] .gd-row{border-radius:6px;border-inline-start:4px solid var(--cyan);background:#0b241b}
+body[data-world=robotics] .gd-row.gd-try{border-inline-start-color:var(--aurora)}
+body[data-world=robotics] .gd-row.gd-mist{border-inline-start-color:#ff6b57;background:#2a1410}
+body[data-world=robotics] .gd-row b{text-transform:uppercase;letter-spacing:.06em;font-size:12px}
+body[data-world=robotics] .l-num{border-radius:6px}
+
+/* space: story panels, rounded, glow, big first sentence */
+body[data-world=space] .ts-rail li::before{background:linear-gradient(135deg,#7fd4ff,#d38bff)}
+body[data-world=space] .gd-row{border-radius:22px;background:linear-gradient(135deg,#14275c99,#2a1a5c66)}
+body[data-world=space] .gd-row.gd-why p::first-line{font-weight:700;color:#fff}
+body[data-world=space] .gd-row.gd-fun{background:linear-gradient(135deg,#3b1a6b99,#0f3a7a66)}
+
+/* ai: notebook cells, monospace gutters */
+body[data-world=ai] .gd-row{border-radius:6px;border:1px solid #6fb7ff33;background:#0a1230;position:relative;padding-inline-start:54px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+body[data-world=ai] .gd-row>i{display:none}
+body[data-world=ai] .gd-row::before{content:"In [ ]:";position:absolute;inset-inline-start:8px;top:12px;font-size:11px;color:var(--violet);font-weight:700;direction:ltr}
+body[data-world=ai] .gd-row.gd-try::before{content:"Run ▶";color:var(--aurora)}
+body[data-world=ai] .gd-row.gd-mist::before{content:"Err!";color:#ff7b8a}
+body[data-world=ai] .gd-row.gd-fun::before{content:"Out:";color:var(--cyan)}
+body[data-world=ai] .gd-row b{font-family:inherit;color:var(--violet)}
+body[data-world=ai] .gd-row p{font-family:"DM Sans",system-ui,sans-serif}
+body[data-world=ai] .l-num{font-family:ui-monospace,Menlo,monospace;border-radius:6px}
+
+/* ow: interview coach cards, timer-chip look */
+body[data-world=ow] .gd-row{border-radius:12px;border:1px solid #4ff3c833;background:#08202a}
+body[data-world=ow] .ts-rail li{border-color:#ff9d5c66}
+body[data-world=ow] .ts-rail li::before{background:var(--violet)}
+
+/* world entry banner */
+#worldEnter{position:fixed;left:50%;top:92px;z-index:430;transform:translate(-50%,-30px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:10px;padding:10px 18px;border-radius:999px;background:var(--glass,#0b153acc);border:1px solid var(--cyan);color:var(--ink);font-weight:700;box-shadow:0 0 30px -4px var(--cyan);backdrop-filter:blur(10px);white-space:nowrap}
+#worldEnter i{font-style:normal;font-size:22px}
+#worldEnter small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+#worldEnter.go{animation:wEnter 2.4s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes wEnter{0%{opacity:0;transform:translate(-50%,-30px) scale(.9)}14%{opacity:1;transform:translate(-50%,0) scale(1)}80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-14px)}}
+#worldFlash{position:fixed;inset:0;z-index:425;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 40%,var(--cyan),transparent 62%)}
+#worldFlash.go{animation:wFlash .8s ease-out}
+@keyframes wFlash{0%{opacity:.45}100%{opacity:0}}
+@media(max-width:480px){#worldEnter{top:76px;font-size:14px;padding:8px 14px}}
+@media(prefers-reduced-motion:reduce){#worldEnter.go{animation:none;opacity:1;transform:translate(-50%,0)}#worldFlash.go{animation:none}#worldCv{transition:none}}
+
+.ts-move{display:flex;gap:12px;align-items:flex-start;margin:14px 0 4px;padding:12px 14px;border-radius:14px;border:1px dashed var(--cyan);background:color-mix(in srgb,var(--cyan) 9%,transparent)}
+.ts-move>i{font-style:normal;font-size:24px;flex:none}
+.ts-move b{display:block;color:var(--cyan);font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+.ts-move p{margin:3px 0 0;font-size:14px;color:var(--ink)}
+body[data-world=ai] .ts-move{font-family:ui-monospace,Menlo,monospace;border-style:solid;border-radius:6px}
+body[data-world=ai] .ts-move p{font-family:"DM Sans",system-ui,sans-serif}
+body[data-world=robotics] .ts-move{border-radius:6px;border-width:2px}
+body[data-world=space] .ts-move{border-radius:22px;border-style:solid;border-color:#7fd4ff55;background:linear-gradient(135deg,#14275c88,#2a1a5c55)}
+body[data-world=space] .l-body>p:first-of-type{font-size:1.04em;color:#fff}
+body[data-world=ow] .ts-move{border-radius:12px}
